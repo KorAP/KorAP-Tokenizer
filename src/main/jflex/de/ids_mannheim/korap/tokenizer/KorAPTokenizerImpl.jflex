@@ -32,6 +32,7 @@ package de.ids_mannheim.korap.tokenizer;
  See the License for the specific language governing permissions and
  limitations under the License.
 */
+
 /**
  Further Modifications 
  Copyright 2016 Marc Kupietz
