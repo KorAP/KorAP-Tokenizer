@@ -36,6 +36,7 @@ package de.ids_mannheim.korap.tokenizer;
  See the License for the specific language governing permissions and
  limitations under the License.
 */
+
 /**
  Further Modifications 
  Copyright 2016 Marc Kupietz
@@ -59,7 +60,7 @@ import java.io.InputStreamReader;
 import java.lang.StringBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import de.ids_mannheim.korap.tokenizer.Span;
+// import Span;
 
 // See https://github.com/jflex-de/jflex/issues/222
 @SuppressWarnings("FallThrough")
@@ -35615,8 +35616,8 @@ public class KorAPTokenizerImpl {
 		return milestones;
 	}
 
-	public final int yychar()	{
-			return (int)yychar;
+	public final long yychar()	{
+    return yychar;
 	}
 	
 	final Span  currentToken() {
@@ -35708,9 +35709,11 @@ public class KorAPTokenizerImpl {
 		
 		for (int i = j; i < argv.length || (i == j && argv.length == j); i++) {
 			KorAPTokenizerImpl scanner = null;
-			String fn = (argv.length > j ? argv[i] : "/dev/stdin");
+			String fn = (argv.length > j ? argv[i] : "-");
 			try {
-				scanner = new KorAPTokenizerImpl(new BufferedReader(new java.io.FileReader(fn)));
+		    BufferedReader br = "-".equals(fn) ? new BufferedReader(new InputStreamReader(System.in)) :
+		        new BufferedReader(new java.io.FileReader(fn));
+				scanner = new KorAPTokenizerImpl(br);
 				scanner.bounds = new StringBuffer(1280000);
 				scanner.xmlEcho=xmlout;
 				scanner.normalize=normalize;
