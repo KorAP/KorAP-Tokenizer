@@ -5,7 +5,6 @@ import java.util.*;
 import java.io.*;
 import java.net.URLDecoder;
 import org.junit.Test;
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
@@ -43,14 +42,14 @@ public class TokenizerCoverTest {
             String str;
             while ((str = in.readLine()) != null) {
                 content.append(str + "\n");
-            };
+            }
             in.close();
         }
         catch (IOException e) {
             fail(e.getMessage());
         }
         return content.toString();
-    };
+    }
 
 
     /**
@@ -149,12 +148,12 @@ public class TokenizerCoverTest {
             
             // Calculate the edit distance of both arrays
             distance += levenshteinForStringArrays(goldTokens, testTokens);
-        };
+        }
 
         // Return the sum of all distances
         return distance;
-    };
-    
+    }
+
 
     @Test
     public void testTokenizerCoverEmpiristCmc () {

@@ -45,10 +45,6 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <!-- or whatever version you use -->
-                    <release>${maven.compiler.release}</release>
-                    <source>${maven.compiler.release}</source>
-                    <target>${maven.compiler.release}</target>
                     <showDeprecation>true</showDeprecation>
                     <annotationProcessorPaths>
                         <path>
