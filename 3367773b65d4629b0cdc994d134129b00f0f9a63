@@ -46,6 +46,30 @@
       "revId": "3367773b65d4629b0cdc994d134129b00f0f9a63",
       "serverId": "626241b7-b7d0-4197-b843-1ee23887649c",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "56a4949b_d5eb92f6",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 19
+      },
+      "writtenOn": "2020-09-07T07:25:24Z",
+      "side": 1,
+      "message": "Sorry - just read it. I now remember the memory issue. But is it really helpful to publish the generated source instead of releasing a jar separately?\n\nI don\u0027t understand the problem with the groupID though.",
+      "parentUuid": "bb556b95_c64e0b0f",
+      "range": {
+        "startLine": 7,
+        "startChar": 13,
+        "endLine": 7,
+        "endChar": 20
+      },
+      "revId": "3367773b65d4629b0cdc994d134129b00f0f9a63",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c",
+      "unresolved": false
     }
   ]
 }
