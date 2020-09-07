@@ -18,24 +18,28 @@ and some updates for handling computer mediated communication, optimized and tes
 
 ## Installation
 ```shell script
-$ mvn clean install
+$ MAVEN_OPTS="-Xss50m" mvn clean install
 ```
-#### … with changed jflex tokenizer source
-Because of the large table of abbreviations, the conversion from the jflex source to java, i.e. the calculation of the DFA, takes more than 10 minutes and requires a lot of heap space.
+#### Note
+Because of the large table of abbreviations, the conversion from the jflex source to java,
+i.e. the calculation of the DFA, takes about 4 to 20 minutes, depending on your hardware,
+and requires a lot of heap space.
 
-For this reason the java source that depends on the jflex source is distributed with the source code and not deleted on `mvn clean`.
+For this reason the java source that is generated from the jflex source is distributed
+with the source code and not deleted on `mvn clean`.
 
-If you want to modify the jflex source, while keeping the abbreviation lists, you will need ad least 10 GB of free RAM and set
-the maven option accordingly, e.g.:
-```shell script
-$ MAVEN_OPTS="-Xss600m -Xmx16000m" mvn clean install
-```
+If you want to modify the jflex source, while keeping the abbreviation lists,
+you will need ad least 5 GB of free RAM.
+
 ## Documentation
 The KorAP tokenizer reads from standard input and writes to standard output. It currently supports two modes.
 
-In the default mode, the tokenizer prints all offsets of the first character of a token and the first character after a token.
-In order to end a text, flush the output and reset the character position, the magic escape sequence `\n\x03\n` .
-#### Invocation Example
+In the default mode, the tokenizer prints all offsets of the first character
+of a token and the first character after a token.
+In order to end a text, flush the output and reset the character position,
+the magic escape sequence `\n\x03\n` must be sent.
+
+#### Command Line Invocation
 ```
 $ echo -n -e 'This is a text.\x0a\x03\x0aAnd this is another text.\n\x03\n' |\
    java -jar target/KorAP-Tokenizer-1.2-SNAPSHOT.jar
