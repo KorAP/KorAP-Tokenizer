@@ -1,0 +1,11 @@
+.*
+!/.gitignore
+target
+!/target/generated-sources/jflex/de/ids_mannheim/korap/tokenizer/KorAPTokenizerImpl.java
+tmp
+logs
+cache_store
+*.iml
+/bin/
+*.log
+i5validation.json
