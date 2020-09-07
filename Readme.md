@@ -1,5 +1,5 @@
 # KorAP Tokenizer
-Efficient, [OpenNLP tools](https://opennlp.apache.org) compatible DFA tokenizer with character offset output based on [JFlex](https://www.jflex.de/), suitable for German and other European languages.
+Efficient, [OpenNLP tools](https://opennlp.apache.org) compatible DFA tokenizer and sentence splitter with character offset output based on [JFlex](https://www.jflex.de/), suitable for German and other European languages.
 
 ## Description
 The KorAP tokenizer is used for the German Reference Corpus DeReKo. Being based on a finite state automaton, 
@@ -34,7 +34,7 @@ The KorAP tokenizer reads from standard input and writes to standard output. It 
 
 In the default mode, the tokenizer prints all offsets of the first character of a token and the first character after a token.
 In order to end a text, flush the output and reset the character position, the magic escape sequence `\n\x03\n` .
-## Invocation Example
+### Invocation Example
 ```
 $ echo -n -e 'This is a text.\x0a\x03\x0aAnd this is another text.\n\x03\n' |\
    java -jar target/KorAP-Tokenizer-1.2-SNAPSHOT.jar
@@ -42,6 +42,16 @@ $ echo -n -e 'This is a text.\x0a\x03\x0aAnd this is another text.\n\x03\n' |\
 0 4 5 7 8 9 10 15 
 0 3 4 8 9 11 12 19 20 25 
 ```
+### With sentence splitting
+```
+$ echo -n -e ' This text. And this is a sentence!!! But what the hack????\x0a\x03\x0aAnd this is another text.\n\x03\nAnd this a sentence without marker\n' |java -jar target/KorAP-Tokenizer-1.2-SNAPSHOT.jar -s
+
+1 5 6 10 10 11 12 15 16 20 21 23 24 25 26 34 34 37 38 41 42 46 47 50 51 55 55 59 
+1 11 12 37 38 59
+0 3 4 8 9 11 12 19 20 24 24 25 
+0 25
+```
+
 ## Development and License
 
 **Authors**: 

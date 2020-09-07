@@ -16,6 +16,7 @@
                 <includes>
                     <include>opennlp/tools/util/Span.class</include>
                     <include>opennlp/tools/tokenize/Tokenizer.class</include>
+                    <include>opennlp/tools/sentdetect/SentenceDetector.class</include>
                 </includes>
             </unpackOptions>
             <scope>runtime</scope>
