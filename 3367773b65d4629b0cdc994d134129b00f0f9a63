@@ -94,6 +94,30 @@
       "revId": "3367773b65d4629b0cdc994d134129b00f0f9a63",
       "serverId": "626241b7-b7d0-4197-b843-1ee23887649c",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "522ad884_ecceff4b",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 19
+      },
+      "writtenOn": "2020-09-07T09:02:46Z",
+      "side": 1,
+      "message": "I think I always disabled the abbreviations for testing.",
+      "parentUuid": "43520817_f8733cc1",
+      "range": {
+        "startLine": 7,
+        "startChar": 13,
+        "endLine": 7,
+        "endChar": 20
+      },
+      "revId": "3367773b65d4629b0cdc994d134129b00f0f9a63",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c",
+      "unresolved": false
     }
   ]
 }
