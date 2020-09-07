@@ -1,5 +1,5 @@
 # KorAP Tokenizer
-Efficient, [OpenNLP tools](https://opennlp.apache.org) compatible DFA tokenizer with character offset output based on [JFlex](https://www.jflex.de/), suitable for German and other European languages.
+Efficient, [OpenNLP tools](https://opennlp.apache.org) compatible DFA tokenizer and sentence splitter with character offset output based on [JFlex](https://www.jflex.de/), suitable for German and other European languages.
 
 ## Description
 The KorAP tokenizer is used for the German Reference Corpus DeReKo. Being based on a finite state automaton, 
@@ -8,7 +8,8 @@ An important feature in the DeReKo/KorAP context is also, that it reliably repor
 so that this information can be used for applying standoff annotations.
  
 The main class `KorAPTokenizerImpl` implements the [`opennlp.tools.tokenize.Tokenizer`](https://opennlp.apache.org/docs/1.8.2/apidocs/opennlp-tools/opennlp/tools/tokenize/Tokenizer.html)
-interface and can thus be used as a drop-in replacement in OpenNLP applications.
+and [`opennlp.tools.sentdetect.SentenceDetector`](https://opennlp.apache.org/docs/1.8.2/apidocs/opennlp-tools/opennlp/tools/sentdetect/SentenceDetector.html)
+interfaces and can thus be used as a drop-in replacement in OpenNLP applications.
 
 The scanner is based on the Lucene scanner with modifications from [David Hall](https://github.com/dlwh).  
 
@@ -34,7 +35,7 @@ The KorAP tokenizer reads from standard input and writes to standard output. It 
 
 In the default mode, the tokenizer prints all offsets of the first character of a token and the first character after a token.
 In order to end a text, flush the output and reset the character position, the magic escape sequence `\n\x03\n` .
-## Invocation Example
+#### Invocation Example
 ```
 $ echo -n -e 'This is a text.\x0a\x03\x0aAnd this is another text.\n\x03\n' |\
    java -jar target/KorAP-Tokenizer-1.2-SNAPSHOT.jar
@@ -42,6 +43,16 @@ $ echo -n -e 'This is a text.\x0a\x03\x0aAnd this is another text.\n\x03\n' |\
 0 4 5 7 8 9 10 15 
 0 3 4 8 9 11 12 19 20 25 
 ```
+#### With sentence splitting
+```
+echo -n -e ' This ist a start of a text. And this is a sentence!!! But what the hack????\x0a\x03\x0aAnd this is another text.\n\x03\nAnd this a sentence without marker\n' |\
+   java -jar target/KorAP-Tokenizer-1.2-SNAPSHOT.jar -s
+1 5 6 9 10 11 12 17 18 20 21 22 23 27 27 28 29 32 33 37 38 40 41 42 43 51 51 54 55 58 59 63 64 67 68 72 72 76 
+1 28 29 54 55 76
+0 3 4 8 9 11 12 19 20 24 24 25 
+0 25
+```
+
 ## Development and License
 
 **Authors**: 
