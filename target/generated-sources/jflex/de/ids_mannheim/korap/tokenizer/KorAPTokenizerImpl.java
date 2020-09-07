@@ -58,13 +58,14 @@ import java.io.BufferedReader;
 import java.io.StringReader;
 import java.io.InputStreamReader;
 import java.lang.StringBuffer;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import opennlp.tools.util.Span;
 
 // See https://github.com/jflex-de/jflex/issues/222
 @SuppressWarnings("FallThrough")
-public class KorAPTokenizerImpl implements opennlp.tools.tokenize.Tokenizer {
+public class KorAPTokenizerImpl implements opennlp.tools.tokenize.Tokenizer, opennlp.tools.sentdetect.SentenceDetector {
 
   /** This character denotes the end of file. */
   public static final int YYEOF = -1;
@@ -35559,14 +35560,19 @@ public class KorAPTokenizerImpl implements opennlp.tools.tokenize.Tokenizer {
   /* user code: */
 
 	public boolean xmlEcho = false;
+    public boolean sentences = false;
 	public boolean normalize = false;
 	public boolean debug = false;
-	private long startOffset = 0;
+	private boolean newSentence = true;
+    private long fallbackSentenceEndOffset = -1;
+    private long startOffset = 0;
 	private int tokenId = 0;
 	private StringBuffer bounds = null;
-	
+    private StringBuffer sentenceBounds = null;
+
   public KorAPTokenizerImpl() {
     this.zzReader = null;
+    sentenceBounds = new StringBuffer("");
   }
 
 	public String[] tokenize(String s) {
@@ -35623,6 +35629,10 @@ public class KorAPTokenizerImpl implements opennlp.tools.tokenize.Tokenizer {
 	final Span  currentToken() {
     return currentToken(yytext());
 	}
+
+	public boolean isSentenceBound(String s) {
+        return s.matches("^[.?!]+$");
+    }
 	
 	final Span currentToken(String normalizedValue) {
 		String value;
@@ -35649,8 +35659,22 @@ public class KorAPTokenizerImpl implements opennlp.tools.tokenize.Tokenizer {
 				System.err.println(from+"-"+to+":"+ value);
 			}
 			bounds.append(from+" "+to+" ");
-		}
-		return new Span((int)from, (int)to, value);
+            if (sentences) {
+                if (newSentence) {
+                    if (sentenceBounds.length() != 0)
+                        sentenceBounds.append(" ");
+                    sentenceBounds.append(from);
+                    newSentence = false;
+                }
+                if (isSentenceBound(value)) {
+                    sentenceBounds.append(" " + to);
+                    newSentence = true;
+                } else {
+                    fallbackSentenceEndOffset = to;
+                }
+            }
+        }
+        return new Span((int)from, (int)to, value);
 	}
 	
 	final void fileEnd() {
@@ -35658,7 +35682,13 @@ public class KorAPTokenizerImpl implements opennlp.tools.tokenize.Tokenizer {
 		tokenId=0;
 		if(bounds != null && !xmlEcho) {
 			System.out.println(bounds.toString());
+            if (fallbackSentenceEndOffset != -1)
+                sentenceBounds.append(" "+fallbackSentenceEndOffset);
+            if (sentences && sentenceBounds != null) {
+                System.out.println(sentenceBounds.toString());
+            }
 			bounds.setLength(0);
+            sentenceBounds.setLength(0);
 		}
 	}
 
@@ -35697,13 +35727,16 @@ public class KorAPTokenizerImpl implements opennlp.tools.tokenize.Tokenizer {
 		int j=0;
 		boolean xmlout = false;
 		boolean normalize = false;
+        boolean sentences = false;
 
 		for (int i = 0; i < argv.length && argv[i].indexOf("-") == 0; i++) {
 			if(argv[i].equals("-ktt")) { // act as a tokenizer for KorAP TreeTagger
 				xmlout=true; 
 			} else if(argv[i].equals("-n")) { // do some normailization
 				normalize=true; 
-			}
+			}  else if(argv[i].equals("-s")) { // detect sentence boundaries
+                sentences=true;
+            }
 			j++;
 		}
 		
@@ -35715,8 +35748,10 @@ public class KorAPTokenizerImpl implements opennlp.tools.tokenize.Tokenizer {
 		        new BufferedReader(new java.io.FileReader(fn));
 				scanner = new KorAPTokenizerImpl(br);
 				scanner.bounds = new StringBuffer(1280000);
+                scanner.sentenceBounds = new StringBuffer(128000);
 				scanner.xmlEcho=xmlout;
 				scanner.normalize=normalize;
+				scanner.sentences=sentences;
 				while ( !scanner.zzAtEOF ) { scanner.getNextToken(); }
 			}
 			catch (java.io.FileNotFoundException e) {
@@ -35732,9 +35767,6 @@ public class KorAPTokenizerImpl implements opennlp.tools.tokenize.Tokenizer {
 			}
 		}
   }
-
-
-
 
   /**
    * Creates a new scanner
@@ -36311,4 +36343,33 @@ public class KorAPTokenizerImpl implements opennlp.tools.tokenize.Tokenizer {
   }
 
 
+    public String[] sentDetect(String s) {
+        Span[] spans;
+        int i;
+        String[] sentences;
+
+        spans = sentPosDetect(s);
+        sentences = new String[spans.length];
+        for (i = 0; i < spans.length; i++) {
+            sentences[i] = spans[i].getType();
+        }
+        return sentences;
+    }
+
+    public Span[] sentPosDetect(String s) {
+        final Span tokens[] = tokenizePos(s);
+        ArrayList<Span> sentences = new ArrayList<Span>();
+        int sentenceStart = 0;
+        if (tokens.length > 0)
+            tokens[0].getStart();
+        for (int i = 0; i < tokens.length; i++) {
+            if (tokens[i].getType().matches("^[.?!]+$") || i == tokens.length - 1) {
+                sentences.add(new Span(sentenceStart, tokens[i].getEnd(), s.substring(sentenceStart, tokens[i].getEnd())));
+                if (i < tokens.length - 1) {
+                    sentenceStart = tokens[i + 1].getStart();
+                }
+            }
+        }
+        return sentences.toArray(new Span[0]);
+    }
 }

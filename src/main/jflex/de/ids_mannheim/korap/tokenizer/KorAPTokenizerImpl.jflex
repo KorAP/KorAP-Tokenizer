@@ -67,7 +67,7 @@ import opennlp.tools.util.Span;
 %class KorAPTokenizerImpl
 %unicode
 %public
-%implements opennlp.tools.tokenize.Tokenizer
+%implements opennlp.tools.tokenize.Tokenizer, opennlp.tools.sentdetect.SentenceDetector
 %type Span
 %function getNextToken
 %char
@@ -75,21 +75,26 @@ import opennlp.tools.util.Span;
 %{
 
 	public boolean xmlEcho = false;
+    public boolean sentences = false;
 	public boolean normalize = false;
 	public boolean debug = false;
+	private boolean newSentence = true;
 	private long startOffset = 0;
 	private int tokenId = 0;
 	private StringBuffer bounds = null;
-	
+	private long fallbackSentenceEndOffset = -1;
+	private StringBuffer sentenceBounds = null;
+
   public KorAPTokenizerImpl() {
     this.zzReader = null;
+    sentenceBounds = null;
   }
 
 	public String[] tokenize(String s) {
 		Span[] spans;
 		int i;
 		String[] tokens;
-		
+
 		spans = tokenizePos(s);
 		tokens = new String[spans.length];
 		for(i=0; i<spans.length; i++) {
@@ -97,7 +102,7 @@ import opennlp.tools.util.Span;
 		}
 		return tokens;
 	}
-	
+
 	public Span[] tokenizePos(String s) {
 		Span token;
 		int i=0;
@@ -110,7 +115,7 @@ import opennlp.tools.util.Span;
 				if(token != null) {
 					list.add(token);
 				}
-			} 
+			}
 		} catch (java.io.IOException e) {
 			System.out.println("IO error scanning "+s);
 			System.out.println(e);
@@ -118,11 +123,41 @@ import opennlp.tools.util.Span;
 		return(list.toArray(new Span[list.size()]));
 	}
 
+	public String[] sentDetect(String s) {
+     Span[] spans;
+     int i;
+     String[] sentences;
+
+     spans = sentPosDetect(s);
+     sentences = new String[spans.length];
+     for (i = 0; i < spans.length; i++) {
+         sentences[i] = spans[i].getType();
+     }
+     return sentences;
+  }
+
+  public Span[] sentPosDetect(String s) {
+    final Span tokens[] = tokenizePos(s);
+    ArrayList<Span> sentences = new ArrayList<Span>();
+    int sentenceStart = 0;
+    if (tokens.length > 0)
+        tokens[0].getStart();
+    for (int i = 0; i < tokens.length; i++) {
+        if (tokens[i].getType().matches("^[.?!]+$") || i == tokens.length - 1) {
+            sentences.add(new Span(sentenceStart, tokens[i].getEnd(), s.substring(sentenceStart, tokens[i].getEnd())));
+            if (i < tokens.length - 1) {
+                sentenceStart = tokens[i + 1].getStart();
+            }
+        }
+    }
+    return sentences.toArray(new Span[0]);
+  }
+
 	public int[] tokenizeMilestones(String s) {
 		Span[] spans;
 		int i;
 		int[] milestones;
-		
+
 		spans = tokenizePos(s);
 		milestones = new int[2*spans.length];
 		for(i=0; i<spans.length; i++) {
@@ -135,11 +170,15 @@ import opennlp.tools.util.Span;
 	public final long yychar()	{
     return yychar;
 	}
-	
+
 	final Span  currentToken() {
     return currentToken(yytext());
 	}
-	
+
+	public boolean isSentenceBound(String s) {
+        return s.matches("^[.?!]+$");
+    }
+
 	final Span currentToken(String normalizedValue) {
 		String value;
 		long lengthDiff=0;
@@ -165,16 +204,37 @@ import opennlp.tools.util.Span;
 				System.err.println(from+"-"+to+":"+ value);
 			}
 			bounds.append(from+" "+to+" ");
-		}
-		return new Span((int)from, (int)to, value);
+            if (sentences) {
+                if (newSentence) {
+                    if (sentenceBounds.length() != 0)
+                        sentenceBounds.append(" ");
+                    sentenceBounds.append(from);
+                    newSentence = false;
+                }
+                if (isSentenceBound(value)) {
+                    sentenceBounds.append(" " + to);
+                    fallbackSentenceEndOffset = -1;
+                    newSentence = true;
+                } else {
+                    fallbackSentenceEndOffset = to;
+                }
+            }
+        }
+        return new Span((int)from, (int)to, value);
 	}
-	
+
 	final void fileEnd() {
 		startOffset = yychar+yylength();
 		tokenId=0;
 		if(bounds != null && !xmlEcho) {
 			System.out.println(bounds.toString());
+            if (sentences && sentenceBounds != null) {
+                if (fallbackSentenceEndOffset != -1)
+                    sentenceBounds.append(" "+fallbackSentenceEndOffset);
+                System.out.println(sentenceBounds.toString());
+            }
 			bounds.setLength(0);
+            sentenceBounds.setLength(0);
 		}
 	}
 
@@ -191,7 +251,7 @@ import opennlp.tools.util.Span;
 			return currentToken();
 		}
 	}
-	
+
 	final void zipArchive() {
 		String name;
 		String matched = yytext();
@@ -213,16 +273,19 @@ import opennlp.tools.util.Span;
 		int j=0;
 		boolean xmlout = false;
 		boolean normalize = false;
+        boolean sentences = false;
 
 		for (int i = 0; i < argv.length && argv[i].indexOf("-") == 0; i++) {
 			if(argv[i].equals("-ktt")) { // act as a tokenizer for KorAP TreeTagger
-				xmlout=true; 
+				xmlout=true;
 			} else if(argv[i].equals("-n")) { // do some normailization
-				normalize=true; 
-			}
+				normalize=true;
+			}  else if(argv[i].equals("-s")) { // detect sentence boundaries
+        sentences=true;
+      }
 			j++;
 		}
-		
+
 		for (int i = j; i < argv.length || (i == j && argv.length == j); i++) {
 			KorAPTokenizerImpl scanner = null;
 			String fn = (argv.length > j ? argv[i] : "-");
@@ -231,8 +294,10 @@ import opennlp.tools.util.Span;
 		        new BufferedReader(new java.io.FileReader(fn));
 				scanner = new KorAPTokenizerImpl(br);
 				scanner.bounds = new StringBuffer(1280000);
+        scanner.sentenceBounds = new StringBuffer(128000);
 				scanner.xmlEcho=xmlout;
 				scanner.normalize=normalize;
+				scanner.sentences=sentences;
 				while ( !scanner.zzAtEOF ) { scanner.getNextToken(); }
 			}
 			catch (java.io.FileNotFoundException e) {
@@ -248,8 +313,6 @@ import opennlp.tools.util.Span;
 			}
 		}
   }
-
-
 %}
 
 THAI       = [\u0E00-\u0E59]
