@@ -1,5 +1,5 @@
 # KorAP Tokenizer
-Efficient DFA tokenizer with character offset output based on [JFlex](https://www.jflex.de/), suitable for German and other European languages. 
+Efficient, [OpenNLP tools](https://opennlp.apache.org) compatible DFA tokenizer with character offset output based on [JFlex](https://www.jflex.de/), suitable for German and other European languages.
 
 ## Description
 The KorAP tokenizer is used for the German Reference Corpus DeReKo. Being based on a finite state automaton, 
@@ -7,6 +7,9 @@ it is not accurate as language model based tokenizers, but with ~5 billion words
 An important feature in the DeReKo/KorAP context is also, that it reliably reports the character offsets of the tokens 
 so that this information can be used for applying standoff annotations.
  
+The main class `KorAPTokenizerImpl` implements the [`opennlp.tools.tokenize.Tokenizer`](https://opennlp.apache.org/docs/1.8.2/apidocs/opennlp-tools/opennlp/tools/tokenize/Tokenizer.html)
+interface and can thus be used as a drop-in replacement in OpenNLP applications.
+
 The scanner is based on the Lucene scanner with modifications from [David Hall](https://github.com/dlwh).  
 
 Our changes mainly concern a good coverage of German abbreviations, 
@@ -51,8 +54,7 @@ This package is developed as part of the [KorAP](http://korap.ids-mannheim.de/)
 Corpus Analysis Platform at the Leibniz Institute for German Language
 ([IDS](http://www.ids-mannheim.de/)).
 
-The package contains code from [Apache Lucene](https://lucene.apache.org/) with modifications by Jim Hall and code from 
-[Apache OpenNLP](https://opennlp.apache.org/) tools (Span class).
+The package contains code from [Apache Lucene](https://lucene.apache.org/) with modifications by Jim Hall.
 
 It is published under the [Apache 2.0 License](LICENSE).
 

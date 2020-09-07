@@ -60,11 +60,11 @@ import java.io.InputStreamReader;
 import java.lang.StringBuffer;
 import java.util.ArrayList;
 import java.util.List;
-// import Span;
+import opennlp.tools.util.Span;
 
 // See https://github.com/jflex-de/jflex/issues/222
 @SuppressWarnings("FallThrough")
-public class KorAPTokenizerImpl {
+public class KorAPTokenizerImpl implements opennlp.tools.tokenize.Tokenizer {
 
   /** This character denotes the end of file. */
   public static final int YYEOF = -1;

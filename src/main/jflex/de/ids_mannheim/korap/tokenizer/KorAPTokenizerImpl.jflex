@@ -56,7 +56,7 @@ import java.io.InputStreamReader;
 import java.lang.StringBuffer;
 import java.util.ArrayList;
 import java.util.List;
-// import Span;
+import opennlp.tools.util.Span;
 %%
 
 /**
@@ -67,7 +67,7 @@ import java.util.List;
 %class KorAPTokenizerImpl
 %unicode
 %public
-// %implements opennlp.tools.tokenize.Tokenizer
+%implements opennlp.tools.tokenize.Tokenizer
 %type Span
 %function getNextToken
 %char
