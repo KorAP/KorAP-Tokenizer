@@ -70,6 +70,30 @@
       "revId": "3367773b65d4629b0cdc994d134129b00f0f9a63",
       "serverId": "626241b7-b7d0-4197-b843-1ee23887649c",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "43520817_f8733cc1",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2020-09-07T07:41:17Z",
+      "side": 1,
+      "message": "\u003e Sorry - just read it. I now remember the memory issue. But is it really helpful to publish the generated source instead of releasing a jar separately?\n\nThis has proven to be very practical for me. Changes that do not involve the grammar can be tested by (just/also) changing the generated java source.\n\nAn even better way would be to separate the grammar part...",
+      "parentUuid": "56a4949b_d5eb92f6",
+      "range": {
+        "startLine": 7,
+        "startChar": 13,
+        "endLine": 7,
+        "endChar": 20
+      },
+      "revId": "3367773b65d4629b0cdc994d134129b00f0f9a63",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c",
+      "unresolved": false
     }
   ]
 }
