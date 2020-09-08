@@ -34,11 +34,8 @@ you will need ad least 5 GB of free RAM.
 ## Documentation
 The KorAP tokenizer reads from standard input and writes to standard output. It currently supports two modes.
 
-In the default mode, the tokenizer prints all offsets of the first character
-of a token and the first character after a token.
-In order to end a text, flush the output and reset the character position,
-the magic escape sequence `\n\x03\n` must be sent.
-
+In the default mode, the tokenizer prints all offsets of the first character of a token and the first character after a token.
+In order to end a text, flush the output and reset the character position, an EOT character (0x04) can be used.
 #### Command Line Invocation
 ```
 $ echo -n -e 'This is a text.\x0a\x03\x0aAnd this is another text.\n\x03\n' |\
@@ -47,7 +44,7 @@ $ echo -n -e 'This is a text.\x0a\x03\x0aAnd this is another text.\n\x03\n' |\
 0 4 5 7 8 9 10 15 
 0 3 4 8 9 11 12 19 20 25 
 ```
-#### With sentence splitting
+#### Invocation with Sentence Splitting
 ```
 echo -n -e ' This ist a start of a text. And this is a sentence!!! But what the hack????\x0a\x03\x0aAnd this is another text.\n\x03\nAnd this a sentence without marker\n' |\
    java -jar target/KorAP-Tokenizer-1.2-SNAPSHOT.jar -s
