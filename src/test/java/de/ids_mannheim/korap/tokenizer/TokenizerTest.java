@@ -1,10 +1,14 @@
 package de.ids_mannheim.korap.tokenizer;
 
 import static org.junit.Assert.*;
+
+import org.apache.maven.surefire.shade.org.apache.commons.io.output.ByteArrayOutputStream;
 import org.junit.Test;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import java.io.PrintStream;
 
 @RunWith(JUnit4.class)
 public class TokenizerTest {
@@ -472,6 +476,8 @@ public class TokenizerTest {
     @Test
     public void testZipOuputArchive () {
         KorAPTokenizerImpl tok = new KorAPTokenizerImpl();
+        final ByteArrayOutputStream clearOut = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(clearOut));
         String[] tokens = tok.tokenize("Archive:  ich/bin/ein.zip\n");
         assertEquals(0, tokens.length);
     }
