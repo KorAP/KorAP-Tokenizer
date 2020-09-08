@@ -207,7 +207,7 @@ import opennlp.tools.util.Span;
 			}
 			bounds.append(from+" "+to+" ");
             if (sentences) {
-                if (newSentence) {
+                if (newSentence || sentenceBounds.length() == 0) {
                     if (sentenceBounds.length() != 0)
                         sentenceBounds.append(" ");
                     sentenceBounds.append(from);
@@ -541,7 +541,7 @@ SEABBR = (A|AAnw|AAnz|ABC-Dir|ABest|ABez|ABgm|ABl|ABlAllKdtr|ABlEurGem|ABlSch|AD
 %s OPEN_QUOTE POLISH_CONDITIONAL_MODE JUST_AFTER_PERIOD CLITIC_MODE
 
 %%
-{ENDMARKER}+                                             { fileEnd(); }
+{ENDMARKER}+                                             { fileEnd(); return null; }
 
 
 // dates and fractions

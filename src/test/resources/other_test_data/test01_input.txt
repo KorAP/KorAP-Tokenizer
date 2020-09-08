@@ -1,9 +1,3 @@
 This ist a start of a text.
-This ist a start of a text.
-And this is a sentence!!! But what the hack????
-
-And this is another text.
-
-And this another one.
-
-END
+This ist text number 2.
+This is text number3.

@@ -35692,7 +35692,7 @@ public class KorAPTokenizerImpl implements opennlp.tools.tokenize.Tokenizer, ope
 			}
 			bounds.append(from+" "+to+" ");
             if (sentences) {
-                if (newSentence) {
+                if (newSentence || sentenceBounds.length() == 0) {
                     if (sentenceBounds.length() != 0)
                         sentenceBounds.append(" ");
                     sentenceBounds.append(from);
@@ -36184,7 +36184,7 @@ public class KorAPTokenizerImpl implements opennlp.tools.tokenize.Tokenizer, ope
             // fall through
           case 24: break;
           case 2:
-            { fileEnd();
+            { fileEnd(); return null;
             }
             // fall through
           case 25: break;
