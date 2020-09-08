@@ -391,8 +391,16 @@ SLASH = [⁄∕／/]
 
 // http://code.ohloh.net/file?fid=wEylHt__FppVh8Ub_GTsx__CTK4&cid=d0f5PFFYrnk&s=UAX29URLEmailTokenizerImpl&filterChecked=true&fp=473333&mp,=1&ml=1&me=1&md=1&projSelected=true#L0
 
+%include ASCIITLD.jflex-macro
+
 DomainLabel = [A-Za-z0-9] ([-A-Za-z0-9]* [A-Za-z0-9])?
-DomainNameLoose  = {DomainLabel} (("."|"[dot]") {DomainLabel})*
+DomainLabelSequence = {DomainLabel} ("." {DomainLabel})*
+DomainNameStrict                       = {DomainLabelSequence} ({ASCIITLD} | {ASCIITLDprefix_1CharSuffix} | {ASCIITLDprefix_2CharSuffix})
+DomainNameStrict_NoTLDprefix           = {DomainLabelSequence} {ASCIITLD}
+DomainNameStrict_TLDprefix_1CharSuffix = {DomainLabelSequence} {ASCIITLDprefix_1CharSuffix}
+DomainNameStrict_TLDprefix_2CharSuffix = {DomainLabelSequence} {ASCIITLDprefix_2CharSuffix}
+
+DomainNameLoose  = {DomainLabel} ("." {DomainLabel})*
 
 IPv4DecimalOctet = "0"{0,2} [0-9] | "0"? [1-9][0-9] | "1" [0-9][0-9] | "2" ([0-4][0-9] | "5" [0-5])
 IPv4Address  = {IPv4DecimalOctet} ("." {IPv4DecimalOctet}){3}
@@ -410,24 +418,29 @@ IPv6Address =                                                  ({IPv6Hex16Bit} "
 
 URIunreserved = [-._~A-Za-z0-9]
 URIpercentEncoded = "%" [0-9A-Fa-f]{2}
-URIsubDelims = [!$&\'()*+,;=]
+URIsubDelims = [!$&'()*+,;=]
 URIloginSegment = ({URIunreserved} | {URIpercentEncoded} | {URIsubDelims})*
 URIlogin = {URIloginSegment} (":" {URIloginSegment})? "@"
 URIquery    = "?" ({URIunreserved} | {URIpercentEncoded} | {URIsubDelims} | [:@/?])*
 URIfragment = "#" ({URIunreserved} | {URIpercentEncoded} | {URIsubDelims} | [:@/?])*
 URIport = ":" [0-9]{1,5}
-URIhostStrict = ("[" {IPv6Address} "]") | {IPv4Address}
+URIhostStrict                       = ("[" {IPv6Address} "]") | {IPv4Address} | {DomainNameStrict}
+URIhostStrict_NoTLDprefix           = ("[" {IPv6Address} "]") | {IPv4Address} | {DomainNameStrict_NoTLDprefix}
+URIhostStrict_TLDprefix_1CharSuffix = ("[" {IPv6Address} "]") | {IPv4Address} | {DomainNameStrict_TLDprefix_1CharSuffix}
+URIhostStrict_TLDprefix_2CharSuffix = ("[" {IPv6Address} "]") | {IPv4Address} | {DomainNameStrict_TLDprefix_2CharSuffix}
 URIhostLoose  = ("[" {IPv6Address} "]") | {IPv4Address} | {DomainNameLoose}
-
-URIauthorityStrict =             {URIhostStrict} {URIport}?
 URIauthorityLoose  = {URIlogin}? {URIhostLoose}  {URIport}?
 
 HTTPsegment = ({URIunreserved} | {URIpercentEncoded} | [;:@&=])*
-HTTPpath = ("/" {HTTPsegment})*
+HTTPpath = ("/" {HTTPsegment})+
 HTTPscheme = [hH][tT][tT][pP][sS]? "://"
-HTTPurlFull = {HTTPscheme} {URIauthorityLoose}  {HTTPpath}? {URIquery}? {URIfragment}?
+HTTPurlFull = {HTTPscheme} {URIlogin}? {URIhostLoose} {URIport}? {HTTPpath}? {URIquery}? {URIfragment}?
+URIportRequired = {URIport} {HTTPpath}? {URIquery}? {URIfragment}?
+HTTPpathRequired = {URIport}? {HTTPpath} {URIquery}? {URIfragment}?
+URIqueryRequired = {URIport}? {HTTPpath}? {URIquery} {URIfragment}?
+URIfragmentRequired = {URIport}? {HTTPpath}? {URIquery}? {URIfragment}
 // {HTTPurlNoScheme} excludes {URIlogin}, because it could otherwise accept e-mail addresses
-HTTPurlNoScheme =          {URIauthorityStrict} {HTTPpath}? {URIquery}? {URIfragment}?
+HTTPurlNoScheme = {URIhostStrict} ({URIportRequired} | {HTTPpathRequired} | {URIqueryRequired} | {URIfragmentRequired})
 HTTPurl = {HTTPurlFull} | {HTTPurlNoScheme}
 
 FTPorFILEsegment = ({URIunreserved} | {URIpercentEncoded} | [?:@&=])*
@@ -442,18 +455,17 @@ FILEurl = {FILEscheme} {URIhostLoose}? {FTPorFILEpath} {URIfragment}?
 URL = {HTTPurl} | {FTPurl} | {FILEurl}
 
 EMAILquotedString = [\"] ([\u0001-\u0008\u000B\u000C\u000E-\u0021\u0023-\u005B\u005D-\u007E] | [\\] [\u0000-\u007F])* [\"]
-EMAILatomText = [A-Za-z0-9!#$%&\'*+-/=?\^_`{|}~]
+EMAILatomText = [A-Za-z0-9!#$%&'*+-/=?\^_`{|}~]
 EMAILlabel = {EMAILatomText}+ | {EMAILquotedString}
 EMAILlocalPart = {EMAILlabel} ("." {EMAILlabel})*
-EMAILdomainLiteralText = {ALPHANUM}|{DomainNameLoose}
-//EMAILdomainLiteralText = ([\u0001-\u0008\u000B\u000C\u000E-\u005A\u005E-\u007F]|[\\][\u0000-\u007F])*{ALPHANUM}
+EMAILdomainLiteralText = [\u0001-\u0008\u000B\u000C\u000E-\u005A\u005E-\u007F] | [\\] [\u0000-\u007F]
 // DFA minimization allows {IPv6Address} and {IPv4Address} to be included
 // in the {EMAILbracketedHost} definition without incurring any size penalties,
 // since {EMAILdomainLiteralText} recognizes all valid IP addresses.
 // The IP address regexes are included in {EMAILbracketedHost} simply as a
 // reminder that they are acceptable bracketed host forms.
-EMAILbracketedHost = "["? ({EMAILdomainLiteralText}+ | {IPv4Address} | [iI][pP][vV] "6:" {IPv6Address}) "]"?
-EMAIL = {EMAILlocalPart} ("@"|"["at"]") ({EMAILbracketedHost})
+EMAILbracketedHost = "[" ({EMAILdomainLiteralText}* | {IPv4Address} | [iI][pP][vV] "6:" {IPv6Address}) "]"
+EMAIL = {EMAILlocalPart} "@" ({DomainNameStrict} | {EMAILbracketedHost})
 
  //  {ALPHANUM} "://" {HOST} (ALPHANUM|\/)*
 // URL =  ({ALPHA}({ALPHANUM}|-)+:(/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)([^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))
