@@ -207,7 +207,7 @@ import opennlp.tools.util.Span;
 			}
 			bounds.append(from+" "+to+" ");
             if (sentences) {
-                if (newSentence) {
+                if (newSentence || sentenceBounds.length() == 0) {
                     if (sentenceBounds.length() != 0)
                         sentenceBounds.append(" ");
                     sentenceBounds.append(from);
@@ -235,7 +235,7 @@ import opennlp.tools.util.Span;
 		if(bounds != null && !xmlEcho) {
 			System.out.println(bounds.toString().trim());
         if (sentences && sentenceBounds != null) {
-            if (fallbackSentenceEndOffset != -1)
+             if (fallbackSentenceEndOffset != -1 && bounds.toString().trim().length() != 0)
                 sentenceBounds.append(" "+fallbackSentenceEndOffset);
             System.out.println(sentenceBounds.toString());
         }
@@ -511,7 +511,7 @@ POLISH_PAST_ENDING_2 = ([mś]?|śmy|ście)
 
 WHITESPACE = \s
 
-ENDMARKER = (\n?\004+\n?)
+ENDMARKER = (\n?\004\n?)
 XML = <(\/text|\?xml|\?xml-model|\/?raw_text|\/?metadata) ?[^\004\n>]{0,100}>
 
 EMOTICON = ( [<>]?[BX;8:=][o\-\']?[DdPp()\/3>oO*]+|<\/?3+|ಠ_ಠ|\(-.-\)|\(T_T\)|\(♥_♥\)|\)\':|\)-:|\(-:|\)=|\)o:|\)x|:\'C|:\/|:<|:C|:[|=\(|=\)|=D|=P|>:|D\':|D:|\:|]:|x\(|\^\^|o.O|oO|\\{o}\/|\\m\/|:;\)\)|_\)\)|\*_\*|._.|:wink:|>_<|\*<:-\)|[:;]\)|[;;]" "\))
@@ -541,7 +541,7 @@ SEABBR = (A|AAnw|AAnz|ABC-Dir|ABest|ABez|ABgm|ABl|ABlAllKdtr|ABlEurGem|ABlSch|AD
 %s OPEN_QUOTE POLISH_CONDITIONAL_MODE JUST_AFTER_PERIOD CLITIC_MODE
 
 %%
-{ENDMARKER}+                                             { fileEnd(); }
+{ENDMARKER}                                             { fileEnd(); return null; }
 
 
 // dates and fractions
