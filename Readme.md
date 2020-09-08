@@ -34,7 +34,7 @@ $ MAVEN_OPTS="-Xss600m -Xmx16000m" mvn clean install
 The KorAP tokenizer reads from standard input and writes to standard output. It currently supports two modes.
 
 In the default mode, the tokenizer prints all offsets of the first character of a token and the first character after a token.
-In order to end a text, flush the output and reset the character position, the magic escape sequence `\n\x03\n` .
+In order to end a text, flush the output and reset the character position, an EOT character (0x04) can be used.
 #### Invocation Example
 ```
 $ echo -n -e 'This is a text.\x0a\x03\x0aAnd this is another text.\n\x03\n' |\

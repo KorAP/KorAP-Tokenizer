@@ -75,11 +75,12 @@ import opennlp.tools.util.Span;
 %{
 
 	public boolean xmlEcho = false;
-    public boolean sentences = false;
+  public boolean sentences = false;
 	public boolean normalize = false;
 	public boolean debug = false;
 	private boolean newSentence = true;
 	private long startOffset = 0;
+	private long previousFileEndOffset = -1;
 	private int tokenId = 0;
 	private StringBuffer bounds = null;
 	private long fallbackSentenceEndOffset = -1;
@@ -182,6 +183,7 @@ import opennlp.tools.util.Span;
 	final Span currentToken(String normalizedValue) {
 		String value;
 		long lengthDiff=0;
+    previousFileEndOffset = -1;
 
 		if(normalize) {
 			value = normalizedValue;
@@ -225,16 +227,20 @@ import opennlp.tools.util.Span;
 
 	final void fileEnd() {
 		startOffset = yychar+yylength();
+		// do not end a file multiple times because of additional EOT characters
+		if (startOffset == previousFileEndOffset)
+		    return;;
+    previousFileEndOffset = startOffset;
 		tokenId=0;
 		if(bounds != null && !xmlEcho) {
-			System.out.println(bounds.toString());
-            if (sentences && sentenceBounds != null) {
-                if (fallbackSentenceEndOffset != -1)
-                    sentenceBounds.append(" "+fallbackSentenceEndOffset);
-                System.out.println(sentenceBounds.toString());
-            }
-			bounds.setLength(0);
-            sentenceBounds.setLength(0);
+			System.out.println(bounds.toString().trim());
+        if (sentences && sentenceBounds != null) {
+            if (fallbackSentenceEndOffset != -1)
+                sentenceBounds.append(" "+fallbackSentenceEndOffset);
+            System.out.println(sentenceBounds.toString());
+        }
+        bounds.setLength(0);
+        sentenceBounds.setLength(0);
 		}
 	}
 
@@ -505,8 +511,8 @@ POLISH_PAST_ENDING_2 = ([mś]?|śmy|ście)
 
 WHITESPACE = \s
 
-ENDMARKER = (\n?\003\n)
-XML = <(\/text|\?xml|\?xml-model|\/?raw_text|\/?metadata) ?[^\003\n>]{0,100}>
+ENDMARKER = (\n?\004+\n?)
+XML = <(\/text|\?xml|\?xml-model|\/?raw_text|\/?metadata) ?[^\004\n>]{0,100}>
 
 EMOTICON = ( [<>]?[BX;8:=][o\-\']?[DdPp()\/3>oO*]+|<\/?3+|ಠ_ಠ|\(-.-\)|\(T_T\)|\(♥_♥\)|\)\':|\)-:|\(-:|\)=|\)o:|\)x|:\'C|:\/|:<|:C|:[|=\(|=\)|=D|=P|>:|D\':|D:|\:|]:|x\(|\^\^|o.O|oO|\\{o}\/|\\m\/|:;\)\)|_\)\)|\*_\*|._.|:wink:|>_<|\*<:-\)|[:;]\)|[;;]" "\))
 
@@ -535,7 +541,7 @@ SEABBR = (A|AAnw|AAnz|ABC-Dir|ABest|ABez|ABgm|ABl|ABlAllKdtr|ABlEurGem|ABlSch|AD
 %s OPEN_QUOTE POLISH_CONDITIONAL_MODE JUST_AFTER_PERIOD CLITIC_MODE
 
 %%
-{ENDMARKER}                                             { fileEnd(); }
+{ENDMARKER}+                                             { fileEnd(); }
 
 
 // dates and fractions
@@ -593,8 +599,6 @@ SEABBR = (A|AAnw|AAnz|ABC-Dir|ABest|ABez|ABgm|ABl|ABlAllKdtr|ABlEurGem|ABlSch|AD
 \[\[+                                                          { return currentToken();}
 \]\]+                                                          { return currentToken();}
 
-
-
 // normal stuff
 // dashed words
 {WORD}({DASH}{NEWLINE}*{WORD})+                                { return currentToken();}
@@ -628,6 +632,7 @@ SEABBR = (A|AAnw|AAnz|ABC-Dir|ABest|ABez|ABgm|ABl|ABlAllKdtr|ABlEurGem|ABlSch|AD
 {PUNCT}                                               { return currentToken();}
 {EMOTICON}                                          { return currentToken();}
 {DASH}{DoubleLiteral}                               { return currentToken();}
+<<EOF>>                                             { fileEnd(); return null;}
 .                                                   { return currentToken();}
 
 
