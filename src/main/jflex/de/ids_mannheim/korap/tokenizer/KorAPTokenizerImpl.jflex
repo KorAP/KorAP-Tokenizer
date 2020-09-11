@@ -441,9 +441,12 @@ FILEurl = {FILEscheme} {URIhostLoose}? {FTPorFILEpath} {URIfragment}?
 
 URL = {HTTPurl} | {FTPurl} | {FILEurl}
 
-EMAILquotedString = [\"] ([\u0001-\u0008\u000B\u000C\u000E-\u0021\u0023-\u005B\u005D-\u007E] | [\\] [\u0000-\u007F])* [\"]
+// EMAILquotedString without space
+// EMAILquotedString = [\"] ([\u0001-\u0008\u000B\u000C\u000E-\u001F\u0021\u0023-\u005B\u005D-\u007E] | [\\] [\u0000-\u007F])* [\"]
+// original version from lucene
+// EMAILquotedString = [\"] ([\u0001-\u0008\u000B\u000C\u000E-\u0021\u0023-\u005B\u005D-\u007E] | [\\] [\u0000-\u007F])* [\"]
 EMAILatomText = [A-Za-z0-9!#$%&\'*+-/=?\^_`{|}~]
-EMAILlabel = {EMAILatomText}+ | {EMAILquotedString}
+EMAILlabel = {EMAILatomText}+
 EMAILlocalPart = {EMAILlabel} ("." {EMAILlabel})*
 EMAILdomainLiteralText = {ALPHANUM}|{DomainNameLoose}
 //EMAILdomainLiteralText = ([\u0001-\u0008\u000B\u000C\u000E-\u005A\u005E-\u007F]|[\\][\u0000-\u007F])*{ALPHANUM}

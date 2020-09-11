@@ -113,6 +113,20 @@ public class TokenizerTest {
     }
 
     @Test
+    public void testTokenizerDoNotAcceptQuotedEmailNames () {
+        KorAPTokenizerImpl tok = new KorAPTokenizerImpl();
+        String[] tokens = tok.tokenize("\"John Doe\"@xx.com");
+        assertEquals("\"", tokens[0]);
+        assertEquals("John", tokens[1]);
+        assertEquals("Doe", tokens[2]);
+        assertEquals("\"", tokens[3]);
+        assertEquals("@xx", tokens[4]);
+        assertEquals(".", tokens[5]);
+        assertEquals("com", tokens[6]);
+        assertEquals(7, tokens.length);
+    }
+
+    @Test
     public void testTokenizerTwitter () {
         KorAPTokenizerImpl tok = new KorAPTokenizerImpl();
         String[] tokens = tok.tokenize("Folgt @korap und #korap");
