@@ -6,7 +6,7 @@
 
     <groupId>groupId</groupId>
     <artifactId>KorAP-Tokenizer</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2-${git.commit.id.abbrev}</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -112,17 +112,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.0</version>
-                <executions>
-                    <execution>
-                        <id>default-jar</id>
-                        <!-- use assembly plugin to build the jar -->
-                        <phase>none</phase>
-                        <configuration>
-                            <finalName>unwanted</finalName>
-                            <classifier>unwanted</classifier>
-                        </configuration>
-                    </execution>
-                </executions>
                 <configuration>
                     <archive>
                         <manifest>
@@ -152,7 +141,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.3.0</version>
                 <configuration>
-                    <appendAssemblyId>false</appendAssemblyId>
+                    <appendAssemblyId>true</appendAssemblyId>
                     <descriptors>
                         <descriptor>src/assembly/src-distribution.xml</descriptor>
                         <descriptor>src/assembly/bin-distribution.xml</descriptor>
@@ -172,6 +161,24 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>4.0.2</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <dateFormat>yyyyMMdd-HHmmss</dateFormat><!--  human-readable part of the version number -->
+                    <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+                    <generateGitPropertiesFile>false</generateGitPropertiesFile><!-- somehow necessary. otherwise the variables are not available in the pom -->
+                </configuration>
             </plugin>
         </plugins>
     </build>
