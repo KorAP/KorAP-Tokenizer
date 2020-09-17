@@ -32,14 +32,14 @@ If you want to modify the jflex source, while keeping the abbreviation lists,
 you will need ad least 5 GB of free RAM.
 
 ## Documentation
-The KorAP tokenizer reads from standard input and writes to standard output. It currently supports two modes.
+The KorAP tokenizer reads from standard input and writes to standard output. It supports multiple modes of operations.
 
-In the default mode, the tokenizer prints all offsets of the first character of a token and the first character after a token.
+With the `--positions` option, for example, the tokenizer prints all offsets of the first character of a token and the first character after a token.
 In order to end a text, flush the output and reset the character position, an EOT character (0x04) can be used.
 #### Command Line Invocation
 ```
 $ echo -n -e 'This is a text.\x0a\x03\x0aAnd this is another text.\n\x03\n' |\
-   java -jar target/KorAP-Tokenizer-1.2-SNAPSHOT.jar
+   java -jar target/KorAP-Tokenizer-1.3-SNAPSHOT.jar --positions
 
 0 4 5 7 8 9 10 15 
 0 3 4 8 9 11 12 19 20 25 
@@ -47,7 +47,7 @@ $ echo -n -e 'This is a text.\x0a\x03\x0aAnd this is another text.\n\x03\n' |\
 #### Invocation with Sentence Splitting
 ```
 echo -n -e ' This ist a start of a text. And this is a sentence!!! But what the hack????\x0a\x03\x0aAnd this is another text.\n\x03\nAnd this a sentence without marker\n' |\
-   java -jar target/KorAP-Tokenizer-1.2-SNAPSHOT.jar -s
+   java -jar target/KorAP-Tokenizer-1.2-SNAPSHOT.jar --positions --sentence-boundaries
 1 5 6 9 10 11 12 17 18 20 21 22 23 27 27 28 29 32 33 37 38 40 41 42 43 51 51 54 55 58 59 63 64 67 68 72 72 76 
 1 28 29 54 55 76
 0 3 4 8 9 11 12 19 20 24 24 25 

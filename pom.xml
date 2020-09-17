@@ -6,7 +6,7 @@
 
     <groupId>groupId</groupId>
     <artifactId>KorAP-Tokenizer</artifactId>
-    <version>1.3-${git.commit.id.abbrev}</version>
+    <version>1.3-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -117,7 +117,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>de.ids_mannheim.korap.tokenizer.KorAPTokenizerImpl</mainClass>
+                            <mainClass>de.ids_mannheim.korap.tokenizer.KorAPTokenizer</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -148,7 +148,7 @@
                     </descriptors>
                     <archive>
                         <manifest>
-                            <mainClass>de.ids_mannheim.korap.tokenizer.KorAPTokenizerImpl</mainClass>
+                            <mainClass>de.ids_mannheim.korap.tokenizer.KorAPTokenizer</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -180,10 +180,42 @@
                     <generateGitPropertiesFile>false</generateGitPropertiesFile><!-- somehow necessary. otherwise the variables are not available in the pom -->
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>appassembler-maven-plugin</artifactId>
+                <version>1.10</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assemble</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <binFolder>bin</binFolder>
+                    <binFileExtensions>
+                        <unix></unix>
+                    </binFileExtensions>
+                    <programs>
+                        <program>
+                            <mainClass>de.ids_mannheim.korap.tokenizer.KorAPTokenizer</mainClass>
+                            <id>koraptokenizer</id>
+                        </program>
+                    </programs>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>info.picocli</groupId>
+            <artifactId>picocli</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.apache.opennlp/opennlp-tools -->
         <dependency>
             <groupId>org.apache.opennlp</groupId>
@@ -205,6 +237,12 @@
             <artifactId>jcip-annotations</artifactId>
             <version>1.0-1</version>
             <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.codehaus.mojo/appassembler-maven-plugin -->
+        <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>appassembler-maven-plugin</artifactId>
+            <version>2.1.0</version>
         </dependency>
     </dependencies>
 </project>
