@@ -1,6 +1,5 @@
 package de.ids_mannheim.korap.tokenizer;
 
-import org.apache.maven.surefire.shade.org.apache.commons.io.output.ByteArrayOutputStream;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -16,7 +15,6 @@ import java.util.Collection;
 import static org.junit.Assert.*;
 
 @RunWith(Parameterized.class)
-@net.jcip.annotations.NotThreadSafe
 public class IPCOffsetTests {
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
@@ -47,12 +45,12 @@ public class IPCOffsetTests {
 
     @Test
     public void testMainWithOffsetsAndSentencesOnDifferentInputFiles() throws IOException {
-        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(myOut));
-        String[] args = {"-s", input};
-        KorAPTokenizerImpl.main(args);
+        File tempFile = File.createTempFile("tokenoutput", ".txt");
+        String[] args = {"--no-tokens", "--positions", "--sentence-boundaries", "--force", "-o", tempFile.getAbsolutePath(), input};
+        KorAPTokenizer.main(args);
+        String actualResult = readFile(tempFile.getAbsolutePath());
         String goldData = readFile(gold);
-        assertEquals(goldData, myOut.toString(StandardCharsets.UTF_8));
+        assertEquals(goldData, actualResult);
     }
 }
 

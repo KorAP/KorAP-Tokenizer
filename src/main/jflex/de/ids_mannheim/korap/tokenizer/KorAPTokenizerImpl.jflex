@@ -51,6 +51,7 @@ package de.ids_mannheim.korap.tokenizer;
 */
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.InputStreamReader;
 import java.lang.StringBuffer;
@@ -73,252 +74,225 @@ import opennlp.tools.util.Span;
 %char
 
 %{
+    private boolean xmlEcho = false;
+    private boolean normalize = false;
+    private boolean debug = false;
+    private boolean newSentence = true;
+    private long startOffset = 0;
+    private long previousFileEndOffset = -1;
+    private int tokenId = 0;
+    private boolean atEOT = false;
+    private boolean sentencize = false;
+    private boolean echo = false;
+    private boolean positions = false;
 
-	public boolean xmlEcho = false;
-  public boolean sentences = false;
-	public boolean normalize = false;
-	public boolean debug = false;
-	private boolean newSentence = true;
-	private long startOffset = 0;
-	private long previousFileEndOffset = -1;
-	private int tokenId = 0;
-	private StringBuffer bounds = null;
-	private long fallbackSentenceEndOffset = -1;
-	private StringBuffer sentenceBounds = null;
+    public KorAPTokenizerImpl() {
+        this.zzReader = null;
+    }
 
-  public KorAPTokenizerImpl() {
-    this.zzReader = null;
-    sentenceBounds = null;
-  }
+    public KorAPTokenizerImpl(java.io.Reader in, boolean echo, boolean sentencize, boolean positions, boolean xmlEcho, boolean normalize) {
+        this.zzReader = in;
+        this.sentencize = sentencize;
+        this.positions = positions;
+        this.echo = echo;
+        this.xmlEcho = xmlEcho;
+        this.normalize = normalize;
+    }
 
-	public String[] tokenize(String s) {
-		Span[] spans;
-		int i;
-		String[] tokens;
-
-		spans = tokenizePos(s);
-		tokens = new String[spans.length];
-		for(i=0; i<spans.length; i++) {
-			tokens[i]=spans[i].getType();
-		}
-		return tokens;
-	}
-
-	public Span[] tokenizePos(String s) {
-		Span token;
-		int i=0;
-		List<Span> list = new ArrayList<Span>();
-		tokenId=0;
-		yyreset(new StringReader(s));
-		try {
-			while(!this.zzAtEOF) {
-				token = this.getNextToken();
-				if(token != null) {
-					list.add(token);
-				}
-			}
-		} catch (java.io.IOException e) {
-			System.out.println("IO error scanning "+s);
-			System.out.println(e);
-		}
-		return(list.toArray(new Span[list.size()]));
-	}
-
-	public String[] sentDetect(String s) {
-     Span[] spans;
-     int i;
-     String[] sentences;
-
-     spans = sentPosDetect(s);
-     sentences = new String[spans.length];
-     for (i = 0; i < spans.length; i++) {
-         sentences[i] = spans[i].getType();
-     }
-     return sentences;
-  }
-
-  public Span[] sentPosDetect(String s) {
-    final Span tokens[] = tokenizePos(s);
-    ArrayList<Span> sentences = new ArrayList<Span>();
-    int sentenceStart = 0;
-    if (tokens.length > 0)
-        tokens[0].getStart();
-    for (int i = 0; i < tokens.length; i++) {
-        if (tokens[i].getType().matches("^[.?!]+$") || i == tokens.length - 1) {
-            sentences.add(new Span(sentenceStart, tokens[i].getEnd(), s.substring(sentenceStart, tokens[i].getEnd())));
-            if (i < tokens.length - 1) {
-                sentenceStart = tokens[i + 1].getStart();
+    public void scanThrough() throws IOException {
+        List<Span> list = new ArrayList<Span>();
+        Span token;
+        while (!zzAtEOF) {
+            token = this.getNextToken();
+            if (atEOT) {
+                if (echo) {
+                    printTokenPositions(list, sentencize);
+                    list.clear();
+                }
+                atEOT = false;
+            }
+            if (token != null) {
+                list.add(token);
             }
         }
     }
-    return sentences.toArray(new Span[0]);
-  }
 
-	public int[] tokenizeMilestones(String s) {
-		Span[] spans;
-		int i;
-		int[] milestones;
+    public String[] tokenize(String s) {
+        Span[] spans;
+        int i;
+        String[] tokens;
 
-		spans = tokenizePos(s);
-		milestones = new int[2*spans.length];
-		for(i=0; i<spans.length; i++) {
-			milestones[i*2]=spans[i].getStart();
-			milestones[i*2+1]=spans[i].getEnd();
-		}
-		return milestones;
-	}
+        spans = tokenizePos(s);
+        tokens = new String[spans.length];
+        for (i = 0; i < spans.length; i++) {
+            tokens[i] = spans[i].getType();
+        }
+        return tokens;
+    }
 
-	public final long yychar()	{
-    return yychar;
-	}
+    public void printTokenPositions(List<Span> spanList, boolean sentencize) {
+        int sentenceStart = -1;
+        StringBuffer tokenStringBuffer = new StringBuffer("");
+        StringBuffer sentenceStringBuffer = new StringBuffer("");
+        for (int i = 0; i < spanList.size(); i++) {
+            Span s = spanList.get(i);
+            if (sentenceStart == -1)
+                sentenceStart = s.getStart();
+            if (positions) {
+                tokenStringBuffer.append(s.getStart())
+                        .append(" ")
+                        .append(s.getEnd());
+                if (i < spanList.size() - 1)
+                    tokenStringBuffer.append(" ");
+            } else {
+                tokenStringBuffer.append(s.getType()).append("\n");
+            }
+            if (isSentenceBound(s.getType()) || (i == spanList.size() - 1)) {
+                sentenceStringBuffer.append(sentenceStart)
+                        .append(" ")
+                        .append(s.getEnd());
+                sentenceStart = -1;
+                if (i < spanList.size() - 1)
+                    sentenceStringBuffer.append(" ");
+            }
+        }
+        System.out.println(tokenStringBuffer.toString().trim());
+        if (sentencize)
+            System.out.println(sentenceStringBuffer.toString().trim());
+    }
 
-	final Span  currentToken() {
-    return currentToken(yytext());
-	}
+    public Span[] tokenizePos(String s) {
+        Span token;
+        int i = 0;
+        List<Span> list = new ArrayList<Span>();
+        tokenId = 0;
+        yyreset(new StringReader(s));
+        try {
+            while (!this.zzAtEOF) {
+                token = this.getNextToken();
+                if (atEOT) {
+                    if (echo) {
+                        printTokenPositions(list, sentencize);
+                        list.clear();
+                    }
+                    atEOT = false;
+                }
+                if (token != null) {
+                    list.add(token);
+                }
+            }
+        } catch (java.io.IOException e) {
+            System.out.println("IO error scanning " + s);
+            System.out.println(e);
+        }
+        return (list.toArray(new Span[list.size()]));
+    }
 
-	public boolean isSentenceBound(String s) {
+    public String[] sentDetect(String s) {
+        Span[] spans;
+        int i;
+        String[] sentences;
+
+        spans = sentPosDetect(s);
+        sentences = new String[spans.length];
+        for (i = 0; i < spans.length; i++) {
+            sentences[i] = spans[i].getType();
+        }
+        return sentences;
+    }
+
+    public Span[] sentPosDetect(String s) {
+        final Span tokens[] = tokenizePos(s);
+        ArrayList<Span> sentences = new ArrayList<Span>();
+        int sentenceStart = 0;
+        if (tokens.length > 0)
+            tokens[0].getStart();
+        for (int i = 0; i < tokens.length; i++) {
+            if (tokens[i].getType().matches("^[.?!]+$") || i == tokens.length - 1) {
+                sentences.add(new Span(sentenceStart, tokens[i].getEnd(), s.substring(sentenceStart, tokens[i].getEnd())));
+                if (i < tokens.length - 1) {
+                    sentenceStart = tokens[i + 1].getStart();
+                }
+            }
+        }
+        return sentences.toArray(new Span[0]);
+    }
+
+    public final long yychar() {
+        return yychar;
+    }
+
+    final Span currentToken() {
+        return currentToken(yytext());
+    }
+
+    public boolean isSentenceBound(String s) {
         return s.matches("^[.?!]+$");
     }
 
-	final Span currentToken(String normalizedValue) {
-		String value;
-		long lengthDiff=0;
-    previousFileEndOffset = -1;
+    final Span currentToken(String normalizedValue) {
+        String value;
+        long lengthDiff = 0;
+        previousFileEndOffset = -1;
 
-		if(normalize) {
-			value = normalizedValue;
-		} else {
-			value = yytext();
-			lengthDiff = value.length() - value.codePointCount(0, value.length());
-		}
-		if(startOffset > yychar || startOffset < 0) { // how can this happen?
-			startOffset = 0;
-		}
-		long from = (yychar-startOffset),
-			to =  (yychar-startOffset+yylength()-lengthDiff);
-		if(xmlEcho) {
-			System.out.println("<span id=\"t_"+tokenId+"\" from=\""+from+"\" to=\"" + to + "\"/>\n"+value);
-		}
-		startOffset += lengthDiff;
-		tokenId++;
-		if(bounds != null) {
-			if(debug) {
-				System.err.println(from+"-"+to+":"+ value);
-			}
-			bounds.append(from+" "+to+" ");
-            if (sentences) {
-                if (newSentence || sentenceBounds.length() == 0) {
-                    if (sentenceBounds.length() != 0)
-                        sentenceBounds.append(" ");
-                    sentenceBounds.append(from);
-                    newSentence = false;
-                }
-                if (isSentenceBound(value)) {
-                    sentenceBounds.append(" " + to);
-                    fallbackSentenceEndOffset = -1;
-                    newSentence = true;
-                } else {
-                    fallbackSentenceEndOffset = to;
-                }
+        if (normalize) {
+            value = normalizedValue;
+        } else {
+            value = yytext();
+            lengthDiff = value.length() - value.codePointCount(0, value.length());
+        }
+        if (startOffset > yychar || startOffset < 0) { // how can this happen?
+            startOffset = 0;
+        }
+        long from = (yychar - startOffset),
+                to = (yychar - startOffset + yylength() - lengthDiff);
+        if (xmlEcho) {
+            System.out.println("<span id=\"t_" + tokenId + "\" from=\"" + from + "\" to=\"" + to + "\"/>\n" + value);
+        }
+        startOffset += lengthDiff;
+        tokenId++;
+        return new Span((int) from, (int) to, value);
+    }
+
+    final void fileEnd() {
+        startOffset = yychar + yylength();
+        // do not end a file multiple times because of additional EOT characters
+        if (startOffset == previousFileEndOffset)
+            return;
+        atEOT = true;
+        previousFileEndOffset = startOffset;
+        tokenId = 0;
+    }
+
+    final Span xmlPassage() {
+        if (xmlEcho) {
+            String dings = yytext();
+            if (dings.indexOf("<text") >= 0) {
+                startOffset = yychar + yylength();
+                tokenId = 0;
             }
+            System.out.println(dings.replaceAll("[\n\r]+", ""));
+            return null;
+        } else {
+            return currentToken();
         }
-        return new Span((int)from, (int)to, value);
-	}
+    }
 
-	final void fileEnd() {
-		startOffset = yychar+yylength();
-		// do not end a file multiple times because of additional EOT characters
-		if (startOffset == previousFileEndOffset)
-		    return;;
-    previousFileEndOffset = startOffset;
-		tokenId=0;
-		if(bounds != null && !xmlEcho) {
-			System.out.println(bounds.toString().trim());
-        if (sentences && sentenceBounds != null) {
-             if (fallbackSentenceEndOffset != -1 && bounds.toString().trim().length() != 0)
-                sentenceBounds.append(" "+fallbackSentenceEndOffset);
-            System.out.println(sentenceBounds.toString());
-        }
-        bounds.setLength(0);
-        sentenceBounds.setLength(0);
-		}
-	}
+    final void zipArchive() {
+        String name;
+        String matched = yytext();
+        int start = 10;
+        name = matched.substring(start, matched.length() - 1);
+        System.out.println("<archive name=\"" + name + "\"/>");
+    }
 
-	final Span xmlPassage() {
-		if(xmlEcho) {
-			String dings = yytext();
-			if(dings.indexOf("<text")>=0 ) {
-				startOffset = yychar+yylength();
-				tokenId=0;
-			}
-			System.out.println(dings.replaceAll("[\n\r]+",""));
-			return null;
-		} else {
-			return currentToken();
-		}
-	}
-
-	final void zipArchive() {
-		String name;
-		String matched = yytext();
-		int start = 10;
-		name = matched.substring(start, matched.length() - 1);
-		System.out.println("<archive name=\"" + name + "\"/>");
-	}
-
-	final void zippedFile() {
-		String name;
-		String matched = yytext();
-		int start = 13;
-		name = matched.substring(start, matched.length() - 3);
-		System.out.println("<file name=\"" + name + "\"/>");
-	}
-
-  public static void main(String argv[]) {
-		int args=argv.length;
-		int j=0;
-		boolean xmlout = false;
-		boolean normalize = false;
-        boolean sentences = false;
-
-		for (int i = 0; i < argv.length && argv[i].indexOf("-") == 0; i++) {
-			if(argv[i].equals("-ktt")) { // act as a tokenizer for KorAP TreeTagger
-				xmlout=true;
-			} else if(argv[i].equals("-n")) { // do some normailization
-				normalize=true;
-			}  else if(argv[i].equals("-s")) { // detect sentence boundaries
-        sentences=true;
-      }
-			j++;
-		}
-
-		for (int i = j; i < argv.length || (i == j && argv.length == j); i++) {
-			KorAPTokenizerImpl scanner = null;
-			String fn = (argv.length > j ? argv[i] : "-");
-			try {
-		    BufferedReader br = "-".equals(fn) ? new BufferedReader(new InputStreamReader(System.in)) :
-		        new BufferedReader(new java.io.FileReader(fn));
-				scanner = new KorAPTokenizerImpl(br);
-				scanner.bounds = new StringBuffer(1280000);
-        scanner.sentenceBounds = new StringBuffer(128000);
-				scanner.xmlEcho=xmlout;
-				scanner.normalize=normalize;
-				scanner.sentences=sentences;
-				while ( !scanner.zzAtEOF ) { scanner.getNextToken(); }
-			}
-			catch (java.io.FileNotFoundException e) {
-				System.out.println("File not found : \""+fn+"\"");
-			}
-			catch (java.io.IOException e) {
-				System.out.println("IO error scanning file \""+fn+"\"");
-				System.out.println(e);
-			}
-			catch (Exception e) {
-				System.out.println("Unexpected exception:");
-				e.printStackTrace();
-			}
-		}
-  }
+    final void zippedFile() {
+        String name;
+        String matched = yytext();
+        int start = 13;
+        name = matched.substring(start, matched.length() - 3);
+        System.out.println("<file name=\"" + name + "\"/>");
+    }
 %}
 
 THAI       = [\u0E00-\u0E59]
