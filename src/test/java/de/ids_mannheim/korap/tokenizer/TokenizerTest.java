@@ -2,6 +2,7 @@ package de.ids_mannheim.korap.tokenizer;
 
 import static org.junit.Assert.*;
 
+import opennlp.tools.util.Span;
 import org.apache.maven.surefire.shade.org.apache.commons.io.output.ByteArrayOutputStream;
 import org.junit.Test;
 import org.junit.Ignore;
@@ -494,5 +495,13 @@ public class TokenizerTest {
         System.setOut(new PrintStream(clearOut));
         String[] tokens = tok.tokenize("Archive:  ich/bin/ein.zip\n");
         assertEquals(0, tokens.length);
+    }
+
+    @Test
+    public void testTextBreakOutputArchive () {
+        KorAPTokenizerImpl tok = new KorAPTokenizerImpl(null, null, false, false, false, true, false, false);
+        Span[] tokens = tok.tokenizePos("Text1\004\nText2 Hallo\004Rumsdibums\004Das freut mich sehr.\n");
+        assertEquals("Text1", tokens[0].getType());
+        assertEquals(tokens.length, 9 );
     }
 }
