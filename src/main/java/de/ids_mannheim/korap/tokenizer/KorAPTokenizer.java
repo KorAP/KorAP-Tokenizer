@@ -57,12 +57,12 @@ public class KorAPTokenizer implements Callable<Integer> {
         }
 
         for (int i = 0; i < inputFiles.size() || (i == 0 && inputFiles.size() == 0); i++) {
-            KorAPTokenizerImpl scanner = null;
+            KorAPDFATokenizer scanner = null;
             String fn = (inputFiles.size() > 0 ? inputFiles.get(i) : "-");
             try {
                 BufferedReader br = "-".equals(fn) ? new BufferedReader(new InputStreamReader(System.in)) :
                         new BufferedReader(new FileReader(fn));
-                scanner = new KorAPTokenizerImpl(br, output_stream, true, tokens, sentencize, positions,  ktt, normalize);
+                scanner = new KorAPDFATokenizer(br, output_stream, true, tokens, sentencize, positions,  ktt, normalize);
                 scanner.scanThrough();
             } catch (FileNotFoundException e) {
                 System.err.println("File not found : \"" + fn + "\"");

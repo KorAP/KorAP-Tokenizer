@@ -61,7 +61,7 @@ import opennlp.tools.util.Span;
 * ... which is ...
 * Based on Lucene's StandardTokenizerImpl, but heavily modified.
 */
-%class KorAPTokenizerImpl
+%class KorAPDFATokenizer
 %unicode
 %public
 %implements opennlp.tools.tokenize.Tokenizer, opennlp.tools.sentdetect.SentenceDetector
@@ -84,11 +84,11 @@ import opennlp.tools.util.Span;
     private boolean tokens = false;
     private PrintStream outputStream = System.out;
 
-    public KorAPTokenizerImpl() {
+    public KorAPDFATokenizer() {
         this.zzReader = null;
     }
 
-    public KorAPTokenizerImpl(java.io.Reader in, PrintStream outputStream, boolean echo, boolean tokens, boolean sentencize, boolean positions, boolean xmlEcho, boolean normalize) {
+    public KorAPDFATokenizer(java.io.Reader in, PrintStream outputStream, boolean echo, boolean tokens, boolean sentencize, boolean positions, boolean xmlEcho, boolean normalize) {
         this.zzReader = in;
         if (outputStream != null)
             this.outputStream = outputStream;
