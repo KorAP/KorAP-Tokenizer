@@ -1,7 +1,7 @@
 .*
 !/.gitignore
 target
-!/target/generated-sources/jflex/de/ids_mannheim/korap/tokenizer/KorAPTokenizerImpl.java
+!/target/generated-sources/jflex/de/ids_mannheim/korap/tokenizer/*.java
 tmp
 logs
 cache_store

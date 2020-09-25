@@ -8,7 +8,10 @@ import java.util.concurrent.Callable;
 
 @CommandLine.Command(mixinStandardHelpOptions = true,
         name = "koraptokenizer", version = "{}", description = "Tokenizes (and sentence splits) text input.")
-public class KorAPTokenizer implements Callable<Integer> {
+public class Main implements Callable<Integer> {
+
+    @CommandLine.Option(names = {"-T",  "--tokenizer-class"}, description = "Class name of the actual tokenizer that will be used (default: ${DEFAULT-VALUE})")
+    String tokenizerClassName = DerekoDfaTokenizer.class.getName();
 
     @CommandLine.Option(names = {"--no-tokens"}, negatable = true, description = "Print tokens (default: ${DEFAULT-VALUE})")
     boolean tokens = true;
@@ -38,12 +41,12 @@ public class KorAPTokenizer implements Callable<Integer> {
     @CommandLine.Parameters(arity = "0..*", paramLabel = "FILES", description = "input files")
     private final ArrayList<String> inputFiles = new ArrayList<>();
 
-    public KorAPTokenizer() {
+    public Main() {
 
     }
 
     public static void main(String[] args) {
-        new CommandLine(new KorAPTokenizer()).execute(args);
+        new CommandLine(new Main()).execute(args);
     }
 
     @Override
@@ -57,13 +60,21 @@ public class KorAPTokenizer implements Callable<Integer> {
         }
 
         for (int i = 0; i < inputFiles.size() || (i == 0 && inputFiles.size() == 0); i++) {
-            KorAPDFATokenizer scanner = null;
             String fn = (inputFiles.size() > 0 ? inputFiles.get(i) : "-");
             try {
                 BufferedReader br = "-".equals(fn) ? new BufferedReader(new InputStreamReader(System.in)) :
                         new BufferedReader(new FileReader(fn));
-                scanner = new KorAPDFATokenizer(br, output_stream, true, tokens, sentencize, positions,  ktt, normalize);
-                scanner.scanThrough();
+                new KorapTokenizer.Builder()
+                        .tokenizerClassName(tokenizerClassName)
+                        .inputReader(br)
+                        .outputStream(output_stream)
+                        .printTokens(tokens)
+                        .printOffsets(positions)
+                        .normalize(normalize)
+                        .splitSentences(sentencize)
+                        .setEcho(true)
+                        .build()
+                        .scan();
             } catch (FileNotFoundException e) {
                 System.err.println("File not found : \"" + fn + "\"");
             } catch (IOException e) {
