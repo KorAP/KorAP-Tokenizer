@@ -1,13 +1,18 @@
 # KorAP Tokenizer
-Efficient, [OpenNLP tools](https://opennlp.apache.org) compatible DFA tokenizer and sentence splitter with character offset output based on [JFlex](https://www.jflex.de/), suitable for German and other European languages.
+Interface and implementation of a tokenizer and sentence splitter that can be used
 
-## Description
-The KorAP tokenizer is used for the German Reference Corpus DeReKo. Being based on a finite state automaton, 
+* as standalone tokenizer and/or sentence splitter
+* within the KorAP ingestion pipeline
+* within the [OpenNLP tools](https://opennlp.apache.org) framework
+
+## DeReKo Tokenizer (included default implementation)
+The included default implementation (`DerekoDfaTokenizer`) is a highly efficient DFA tokenizer and sentence splitter with character offset output based on [JFlex](https://www.jflex.de/), suitable for German and other European languages.
+It is used for the German Reference Corpus DeReKo. Being based on a finite state automaton, 
 it is not accurate as language model based tokenizers, but with ~5 billion words per hour typically more efficient.
 An important feature in the DeReKo/KorAP context is also, that it reliably reports the character offsets of the tokens 
 so that this information can be used for applying standoff annotations.
  
-The main class `KorAPTokenizerImpl` implements the [`opennlp.tools.tokenize.Tokenizer`](https://opennlp.apache.org/docs/1.8.2/apidocs/opennlp-tools/opennlp/tools/tokenize/Tokenizer.html)
+`DerekoDfaTokenizer` and any implementation of the `KorapTokenizer` interface also implement the [`opennlp.tools.tokenize.Tokenizer`](https://opennlp.apache.org/docs/1.8.2/apidocs/opennlp-tools/opennlp/tools/tokenize/Tokenizer.html)
 and [`opennlp.tools.sentdetect.SentenceDetector`](https://opennlp.apache.org/docs/1.8.2/apidocs/opennlp-tools/opennlp/tools/sentdetect/SentenceDetector.html)
 interfaces and can thus be used as a drop-in replacement in OpenNLP applications.
 
@@ -15,6 +20,10 @@ The scanner is based on the Lucene scanner with modifications from [David Hall](
 
 Our changes mainly concern a good coverage of German abbreviations, 
 and some updates for handling computer mediated communication, optimized and tested against the gold data from the [EmpiriST 2015](https://sites.google.com/site/empirist2015/) shared task (Beißwenger et al. 2016).
+
+### Adaptations for other Languages
+To adapt the included implementation to another language you will probably want to start with replacing the abbreviations
+pattern defined in `SEABBR` in the jflex source.
 
 ## Installation
 ```shell script

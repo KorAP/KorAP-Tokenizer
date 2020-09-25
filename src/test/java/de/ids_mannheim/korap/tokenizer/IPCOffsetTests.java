@@ -47,7 +47,7 @@ public class IPCOffsetTests {
     public void testMainWithOffsetsAndSentencesOnDifferentInputFiles() throws IOException {
         File tempFile = File.createTempFile("tokenoutput", ".txt");
         String[] args = {"--no-tokens", "--positions", "--sentence-boundaries", "--force", "-o", tempFile.getAbsolutePath(), input};
-        KorAPTokenizer.main(args);
+        Main.main(args);
         String actualResult = readFile(tempFile.getAbsolutePath());
         String goldData = readFile(gold);
         assertEquals(goldData, actualResult);
