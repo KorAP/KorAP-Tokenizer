@@ -61,15 +61,16 @@ import opennlp.tools.util.Span;
 * ... which is ...
 * Based on Lucene's StandardTokenizerImpl, but heavily modified.
 */
-%class KorAPDFATokenizer
+%class DerekoDfaTokenizer
 %unicode
 %public
-%implements opennlp.tools.tokenize.Tokenizer, opennlp.tools.sentdetect.SentenceDetector
+%implements KorapTokenizer, opennlp.tools.tokenize.Tokenizer, opennlp.tools.sentdetect.SentenceDetector
 %type Span
 %function getNextToken
 %char
 
 %{
+   private static final CharSequence[] targetLanguages = {"de"};
     private boolean xmlEcho = false;
     private boolean normalize = false;
     private boolean debug = false;
@@ -78,36 +79,65 @@ import opennlp.tools.util.Span;
     private long previousFileEndOffset = -1;
     private int tokenId = 0;
     private boolean atEOT = false;
-    private boolean sentencize = false;
+    private boolean splitSentences = false;
     private boolean echo = false;
-    private boolean positions = false;
-    private boolean tokens = false;
+    private boolean printOffsets = false;
+    private boolean printTokens = false;
     private PrintStream outputStream = System.out;
 
-    public KorAPDFATokenizer() {
+    @Override
+    public CharSequence[] getTargetLanguages() {
+        return targetLanguages;
+    }
+
+    public DerekoDfaTokenizer() {
         this.zzReader = null;
     }
 
-    public KorAPDFATokenizer(java.io.Reader in, PrintStream outputStream, boolean echo, boolean tokens, boolean sentencize, boolean positions, boolean xmlEcho, boolean normalize) {
-        this.zzReader = in;
-        if (outputStream != null)
-            this.outputStream = outputStream;
-        this.tokens = tokens;
-        this.sentencize = sentencize;
-        this.positions = positions;
+    @Override
+    public void setInputReader(Reader inputReader) {
+        this.zzReader = inputReader;
+    }
+
+    @Override
+    public void setSplitSentences(boolean splitSentences) {
+        this.splitSentences = splitSentences;
+    }
+
+    @Override
+    public void setEcho(boolean echo) {
         this.echo = echo;
-        this.xmlEcho = xmlEcho;
+    }
+
+    @Override
+    public void setPrintOffsets(boolean printOffsets) {
+        this.printOffsets = printOffsets;
+    }
+
+    @Override
+    public void setPrintTokens(boolean printTokens) {
+        this.printTokens = printTokens;
+    }
+
+    @Override
+    public void setOutputStream(PrintStream outputStream) {
+        this.outputStream = outputStream;
+    }
+
+    @Override
+    public void setNormalize(boolean normalize) {
         this.normalize = normalize;
     }
 
-    public void scanThrough() throws IOException {
+    @Override
+    public void scan() throws IOException {
         List<Span> list = new ArrayList<Span>();
         Span token;
         while (!zzAtEOF) {
             token = this.getNextToken();
             if (atEOT) {
                 if (echo) {
-                    printTokenPositions(list, sentencize);
+                    printTokenPositions(list, splitSentences);
                     list.clear();
                 }
                 atEOT = false;
@@ -118,6 +148,7 @@ import opennlp.tools.util.Span;
         }
     }
 
+    @Override
     public String[] tokenize(String s) {
         Span[] spans;
         int i;
@@ -131,7 +162,7 @@ import opennlp.tools.util.Span;
         return tokens;
     }
 
-    public void printTokenPositions(List<Span> spanList, boolean sentencize) {
+    void printTokenPositions(List<Span> spanList, boolean sentencize) {
         int sentenceStart = -1;
         StringBuilder tokenStringBuffer = new StringBuilder();
         StringBuilder sentenceStringBuffer = new StringBuilder();
@@ -139,7 +170,7 @@ import opennlp.tools.util.Span;
             Span s = spanList.get(i);
             if (sentenceStart == -1)
                 sentenceStart = s.getStart();
-            if (positions) {
+            if (printOffsets) {
                 tokenStringBuffer.append(s.getStart())
                         .append(" ")
                         .append(s.getEnd());
@@ -160,6 +191,7 @@ import opennlp.tools.util.Span;
             outputStream.println(sentenceStringBuffer.toString());
     }
 
+    @Override
     public Span[] tokenizePos(String s) {
         Span token;
         int i = 0;
@@ -171,7 +203,7 @@ import opennlp.tools.util.Span;
                 token = this.getNextToken();
                 if (atEOT) {
                     if (echo) {
-                        printTokenPositions(list, sentencize);
+                        printTokenPositions(list, splitSentences);
                         list.clear();
                     }
                     atEOT = false;
@@ -187,6 +219,7 @@ import opennlp.tools.util.Span;
         return (list.toArray(new Span[list.size()]));
     }
 
+    @Override
     public String[] sentDetect(String s) {
         Span[] spans;
         int i;
@@ -200,6 +233,7 @@ import opennlp.tools.util.Span;
         return sentences;
     }
 
+    @Override
     public Span[] sentPosDetect(String s) {
         final Span tokens[] = tokenizePos(s);
         ArrayList<Span> sentences = new ArrayList<Span>();
@@ -247,7 +281,7 @@ import opennlp.tools.util.Span;
                 to = (yychar - startOffset + yylength() - lengthDiff);
         if (xmlEcho) {
             outputStream.println("<span id=\"t_" + tokenId + "\" from=\"" + from + "\" to=\"" + to + "\"/>\n" + value);
-        } else if (echo && tokens) {
+        } else if (echo && printTokens) {
             outputStream.println(value);
         }
         startOffset += lengthDiff;

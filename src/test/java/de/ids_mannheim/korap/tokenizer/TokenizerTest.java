@@ -16,7 +16,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerSimple () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Der alte Mann");
         assertEquals(tokens[0], "Der");
         assertEquals(tokens[1], "alte");
@@ -34,7 +34,7 @@ public class TokenizerTest {
     @Test
     @Ignore
     public void testTokenizerAbbr () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Der Vorsitzende der F.D.P. hat gewählt");
         assertEquals(tokens[0], "Der");
         assertEquals(tokens[1], "Vorsitzende");
@@ -47,7 +47,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerHost1 () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Gefunden auf wikipedia.org");
         assertEquals(tokens[0], "Gefunden");
         assertEquals(tokens[1], "auf");
@@ -58,7 +58,7 @@ public class TokenizerTest {
     @Test
     @Ignore
     public void testTokenizerHost2 () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Gefunden auf www.wikipedia.org");
         assertEquals(tokens[0], "Gefunden");
         assertEquals(tokens[1], "auf");
@@ -68,7 +68,7 @@ public class TokenizerTest {
     
     @Test
     public void testTokenizerDash () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Das war -- spitze");
         assertEquals(tokens[0], "Das");
         assertEquals(tokens[1], "war");
@@ -79,7 +79,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerEmail1 () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Ich bin unter korap@ids-mannheim.de erreichbar.");
         assertEquals(tokens[0], "Ich");
         assertEquals(tokens[1], "bin");
@@ -92,7 +92,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerEmail2 () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Oder unter korap[at]ids-mannheim[dot]de.");
         assertEquals(tokens[0], "Oder");
         assertEquals(tokens[1], "unter");
@@ -104,7 +104,7 @@ public class TokenizerTest {
     @Test
     @Ignore
     public void testTokenizerEmail3 () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Oder unter korap(at)ids-mannheim(dot)de.");
         assertEquals(tokens[0], "Oder");
         assertEquals(tokens[1], "unter");
@@ -115,7 +115,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerDoNotAcceptQuotedEmailNames () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("\"John Doe\"@xx.com");
         assertEquals("\"", tokens[0]);
         assertEquals("John", tokens[1]);
@@ -129,7 +129,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerTwitter () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Folgt @korap und #korap");
         assertEquals(tokens[0], "Folgt");
         assertEquals(tokens[1], "@korap");
@@ -140,7 +140,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerWeb1 () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Unsere Website ist https://korap.ids-mannheim.de/?q=Baum");
         assertEquals(tokens[0], "Unsere");
         assertEquals(tokens[1], "Website");
@@ -152,7 +152,7 @@ public class TokenizerTest {
     @Test
     @Ignore
     public void testTokenizerWeb2 () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Wir sind auch im Internet (https://korap.ids-mannheim.de/?q=Baum)");
         assertEquals(tokens[0], "Wir");
         assertEquals(tokens[1], "sind");
@@ -168,7 +168,7 @@ public class TokenizerTest {
     @Test
     @Ignore
     public void testTokenizerWeb3 () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Die Adresse ist https://korap.ids-mannheim.de/?q=Baum.");
         assertEquals(tokens[0], "Die");
         assertEquals(tokens[1], "Adresse");
@@ -180,7 +180,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerServer () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Unser Server ist 10.0.10.51.");
         assertEquals(tokens[0], "Unser");
         assertEquals(tokens[1], "Server");
@@ -192,7 +192,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerNum () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Zu 50,4% ist es sicher");
         assertEquals(tokens[0], "Zu");
         assertEquals(tokens[1], "50,4");
@@ -205,7 +205,7 @@ public class TokenizerTest {
     
     @Test
     public void testTokenizerDate () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Der Termin ist am 5.9.2018");
         assertEquals(tokens[0], "Der");
         assertEquals(tokens[1], "Termin");
@@ -226,7 +226,7 @@ public class TokenizerTest {
     @Test
     @Ignore
     public void testTokenizerDateRange () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Der Termin war vom 4.-5.9.2018");
         assertEquals(tokens[0], "Der");
         assertEquals(tokens[1], "Termin");
@@ -240,7 +240,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerEmoji1 () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Das ist toll! ;)");
         assertEquals(tokens[0], "Das");
         assertEquals(tokens[1], "ist");
@@ -252,7 +252,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerRef1 () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Kupietz und Schmidt (2018): Korpuslinguistik");
         assertEquals(tokens[0], "Kupietz");
         assertEquals(tokens[1], "und");
@@ -267,7 +267,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerRef2 () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Kupietz und Schmidt [2018]: Korpuslinguistik");
         assertEquals(tokens[0], "Kupietz");
         assertEquals(tokens[1], "und");
@@ -282,7 +282,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerOmission1 () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Er ist ein A****loch!");
         assertEquals(tokens[0], "Er");
         assertEquals(tokens[1], "ist");
@@ -294,7 +294,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerOmission2 () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("F*ck!");
         assertEquals(tokens[0], "F*ck");
         assertEquals(tokens[1], "!");
@@ -303,7 +303,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerOmission3 () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Dieses verf***** Kleid!");
         assertEquals(tokens[0], "Dieses");
         assertEquals(tokens[1], "verf*****");
@@ -315,7 +315,7 @@ public class TokenizerTest {
     @Test
     // Probably interpreted as HOST
     public void testTokenizerFileExtension1 () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Ich habe die readme.txt heruntergeladen");
         assertEquals(tokens[0], "Ich");
         assertEquals(tokens[1], "habe");
@@ -328,7 +328,7 @@ public class TokenizerTest {
     @Test
     // Probably interpreted as HOST
     public void testTokenizerFileExtension2 () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Nimm die README.TXT!");
         assertEquals(tokens[0], "Nimm");
         assertEquals(tokens[1], "die");
@@ -340,7 +340,7 @@ public class TokenizerTest {
     @Test
     // Probably interpreted as HOST
     public void testTokenizerFileExtension3 () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Zeig mir profile.jpeg");
         assertEquals(tokens[0], "Zeig");
         assertEquals(tokens[1], "mir");
@@ -350,7 +350,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerFile1 () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Zeig mir c:\\Dokumente\\profile.docx");
         assertEquals(tokens[0], "Zeig");
         assertEquals(tokens[1], "mir");
@@ -360,7 +360,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerFile2 () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Gehe zu /Dokumente/profile.docx");
         assertEquals(tokens[0], "Gehe");
         assertEquals(tokens[1], "zu");
@@ -371,7 +371,7 @@ public class TokenizerTest {
     @Test
     @Ignore
     public void testTokenizerFile3 () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Zeig mir c:\\Dokumente\\profile.jpeg");
         assertEquals(tokens[0], "Zeig");
         assertEquals(tokens[1], "mir");
@@ -381,7 +381,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerPunct () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Er sagte: \"Es geht mir gut!\", daraufhin ging er.");
         assertEquals(tokens[0], "Er");
         assertEquals(tokens[1], "sagte");
@@ -403,7 +403,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerPlusAmpersand () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("&quot;Das ist von C&A!&quot;");
         assertEquals(tokens[0], "&quot;");
         assertEquals(tokens[1], "Das");
@@ -417,7 +417,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerLongEnd () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Siehst Du?!!?");
         assertEquals(tokens[0], "Siehst");
         assertEquals(tokens[1], "Du");
@@ -427,7 +427,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerIrishO () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Peter O'Toole");
         assertEquals(tokens[0], "Peter");
         assertEquals(tokens[1], "O'Toole");
@@ -436,7 +436,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerAbr () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Früher bzw. später ...");
         assertEquals(tokens[0], "Früher");
         assertEquals(tokens[1], "bzw.");
@@ -448,7 +448,7 @@ public class TokenizerTest {
     @Test
     @Ignore
     public void testTokenizerUppercaseRule () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Es war spät.Morgen ist es früh.");
         assertEquals(tokens[0], "Es");
         assertEquals(tokens[1], "war");
@@ -464,7 +464,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerOrd () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Sie erreichte den 1. Platz!");
         assertEquals(tokens[0], "Sie");
         assertEquals(tokens[1], "erreichte");
@@ -477,7 +477,7 @@ public class TokenizerTest {
 
     @Test
     public void testNoZipOuputArchive () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         String[] tokens = tok.tokenize("Archive:  Ich bin kein zip\n");
         assertEquals(tokens[0], "Archive");
         assertEquals(tokens[1], ":");
@@ -490,7 +490,7 @@ public class TokenizerTest {
 
     @Test
     public void testZipOuputArchive () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
         final ByteArrayOutputStream clearOut = new ByteArrayOutputStream();
         System.setOut(new PrintStream(clearOut));
         String[] tokens = tok.tokenize("Archive:  ich/bin/ein.zip\n");
@@ -498,8 +498,11 @@ public class TokenizerTest {
     }
 
     @Test
-    public void testTextBreakOutputArchive () {
-        KorAPDFATokenizer tok = new KorAPDFATokenizer(null, null, false, false, false, true, false, false);
+    public void testTextBreakOutputArchive () throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+        DerekoDfaTokenizer tok = (DerekoDfaTokenizer) new KorapTokenizer.Builder()
+                .tokenizerClassName(DerekoDfaTokenizer.class.getName())
+                .printOffsets(true)
+                .build();
         Span[] tokens = tok.tokenizePos("Text1\004\nText2 Hallo\004Rumsdibums\004Das freut mich sehr.\n");
         assertEquals("Text1", tokens[0].getType());
         assertEquals(tokens.length, 9 );

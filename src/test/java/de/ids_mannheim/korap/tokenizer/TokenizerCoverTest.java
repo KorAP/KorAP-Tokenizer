@@ -116,7 +116,7 @@ public class TokenizerCoverTest {
      * with the gold standard and return the sum of
      * levenshtein distances.
      */
-    public int distanceToGoldStandard (KorAPDFATokenizer tok, String suite, String postings) {
+    public int distanceToGoldStandard (DerekoDfaTokenizer tok, String suite, String postings) {
 
         // Load raw postings
         EmpiristScanner esRaw = new EmpiristScanner(
@@ -159,7 +159,7 @@ public class TokenizerCoverTest {
     public void testTokenizerCoverEmpiristCmc () {
 
         // Create tokenizer object
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
 
         String test = "cmc_test_blog_comment";
         int dist = distanceToGoldStandard(tok, "test_cmc", test);
@@ -191,7 +191,7 @@ public class TokenizerCoverTest {
     public void testTokenizerCoverEmpiristWeb () {
 
         // Create tokenizer object
-        KorAPDFATokenizer tok = new KorAPDFATokenizer();
+        DerekoDfaTokenizer tok = new DerekoDfaTokenizer();
 
         String test = "web_test_001";
         int dist = distanceToGoldStandard(tok, "test_web", test);
