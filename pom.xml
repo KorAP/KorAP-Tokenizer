@@ -33,6 +33,54 @@
         </testResources>
         <plugins>
             <plugin>
+                <groupId>com.igormaznitsa</groupId>
+                <artifactId>jcp</artifactId>
+                <version>7.0.4</version>
+                <executions>
+                    <execution>
+                        <id>preprocess for de</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>preprocess</goal>
+                        </goals>
+                        <configuration>
+                            <vars>
+                                <target.language>de</target.language>
+                            </vars>
+                            <target>src/main/jflex/de</target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>preprocess for en</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>preprocess</goal>
+                        </goals>
+                        <configuration>
+                            <vars>
+                                <target.language>en</target.language>
+                            </vars>
+                            <target>src/main/jflex/en</target>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <sources>src/main/jpc/jflex</sources>
+                    <target>src/main/jflex</target>
+                    <extensions>
+                        <extension>jflex</extension>
+                    </extensions>
+                    <keepAttributes>true</keepAttributes>
+                    <keepComments>false</keepComments>
+                    <keepLines>true</keepLines>
+                    <verbose>true</verbose>
+                    <clearTarget>true</clearTarget>
+                    <replaceSources>true</replaceSources>
+                    <dontOverwriteSameContent>false</dontOverwriteSameContent>
+                    <skip>false</skip>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
@@ -249,6 +297,12 @@
             <artifactId>annotations</artifactId>
             <version>RELEASE</version>
             <scope>compile</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.igormaznitsa/jcp -->
+        <dependency>
+            <groupId>com.igormaznitsa</groupId>
+            <artifactId>jcp</artifactId>
+            <version>7.0.4</version>
         </dependency>
     </dependencies>
 </project>
