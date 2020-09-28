@@ -14,7 +14,7 @@ import java.util.concurrent.Callable;
 public class Main implements Callable<Integer> {
 
     @CommandLine.Option(names = {"-T",  "--tokenizer-class"}, description = "Class name of the actual tokenizer that will be used (default: ${DEFAULT-VALUE})")
-    String tokenizerClassName = DerekoDfaTokenizer.class.getName();
+    String tokenizerClassName = DerekoDfaTokenizer_de.class.getName();
 
     @CommandLine.Option(names = {"--no-tokens"}, negatable = true, description = "Print tokens (default: ${DEFAULT-VALUE})")
     boolean tokens = true;
