@@ -1,0 +1,3 @@
+// Use the same abbreviations as the IDS sentence splitter /takes 30min to compile)
+// cat /usr/local/res/SatzEnde.abb8bit | recode latin1..utf8 | perl -wne \'chomp; $a .= "$1|" if(/^\+([^.]{1,}$)/); BEGIN {$a="";}; END {chop $a; print "SEABBREV=($a)\n"}\'  > abbr
+SEABBR = (approx|Dr)
