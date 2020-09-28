@@ -1,7 +1,8 @@
 .*
 !/.gitignore
-target
-!/target/generated-sources/jflex/de/ids_mannheim/korap/tokenizer/DerekoDfaTokenizer.java
+/target
+!/target/generated-sources/jflex/de/ids_mannheim/korap/tokenizer/DerekoDfaTokenizer_de.java
+!/target/generated-sources/jflex/de/ids_mannheim/korap/tokenizer/DerekoDfaTokenizer_en.java
 tmp
 logs
 cache_store

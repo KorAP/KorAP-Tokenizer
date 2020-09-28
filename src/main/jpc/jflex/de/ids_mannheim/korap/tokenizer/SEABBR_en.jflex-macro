@@ -1,0 +1,2 @@
+// sample expression for dot followed abbreviations used in English
+SEABBR = ([A-Za-z]|approx|appt|Bvd|ca|dept|dest|Dr|est|max|min|Mr|Mrs|no|Rd|St|[Tt]el|temp|vs)
