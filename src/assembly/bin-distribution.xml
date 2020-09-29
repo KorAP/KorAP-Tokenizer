@@ -18,6 +18,8 @@
                     <include>opennlp/tools/tokenize/Tokenizer.class</include>
                     <include>opennlp/tools/sentdetect/SentenceDetector.class</include>
                     <include>picocli/CommandLine*.class</include>
+                    <include>io/github/classgraph/*.class</include>
+                    <include>nonapi/io/github/classgraph/**/*.class</include>
                 </includes>
             </unpackOptions>
             <scope>runtime</scope>
