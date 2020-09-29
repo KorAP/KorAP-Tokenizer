@@ -1,16 +1,39 @@
 package de.ids_mannheim.korap.tokenizer;
 
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfoList;
+import io.github.classgraph.ScanResult;
 import picocli.CommandLine;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 
 @CommandLine.Command(mixinStandardHelpOptions = true,
         name = "koraptokenizer", version = "{}", description = "Tokenizes (and sentence splits) text input.")
 public class Main implements Callable<Integer> {
 
-    @CommandLine.Option(names = {"-T",  "--tokenizer-class"}, description = "Class name of the actual tokenizer that will be used (default: ${DEFAULT-VALUE})")
+    static class AvailableKorapTokenizerList extends ArrayList<String> {
+        AvailableKorapTokenizerList() {
+            super(listKorAPTokenizerImplementations());
+        }
+
+        static List<String> listKorAPTokenizerImplementations() {
+            List<String> widgetClassNames;
+            try (ScanResult scanResult = new ClassGraph().enableAllInfo().acceptPackages("*")
+                    .scan()) {
+                ClassInfoList korapTokenizerClasses = scanResult.getClassesImplementing("de.ids_mannheim.korap.tokenizer.KorapTokenizer");
+                widgetClassNames = korapTokenizerClasses.getNames();
+            }
+            return widgetClassNames;
+        }
+    }
+
+    @CommandLine.Option(names = {"-T", "--tokenizer-class"},
+            completionCandidates= AvailableKorapTokenizerList.class,
+            description = "Class name of the actual tokenizer that will be used (candidates: ${COMPLETION-CANDIDATES} default: ${DEFAULT-VALUE})")
     String tokenizerClassName = DerekoDfaTokenizer_de.class.getName();
 
     @CommandLine.Option(names = {"--no-tokens"}, negatable = true, description = "Print tokens (default: ${DEFAULT-VALUE})")
