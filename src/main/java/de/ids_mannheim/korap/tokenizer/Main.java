@@ -1,19 +1,42 @@
 package de.ids_mannheim.korap.tokenizer;
 
-import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ClassInfoList;
-import io.github.classgraph.ScanResult;
+import io.github.classgraph.*;
 import picocli.CommandLine;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 @CommandLine.Command(mixinStandardHelpOptions = true,
         name = "koraptokenizer", version = "{}", description = "Tokenizes (and sentence splits) text input.")
 public class Main implements Callable<Integer> {
+
+    static class AvailableLanguagesList extends ArrayList<String> {
+        AvailableLanguagesList() {
+            super(listKorAPTokenizerLanguages());
+        }
+
+        static List<String> listKorAPTokenizerLanguages() {
+            ArrayList<String> languages = new ArrayList<>();
+            try (ScanResult scanResult = new ClassGraph().enableAllInfo().acceptPackages("*")
+                    .scan()) {
+                ClassInfoList korapTokenizerClasses = scanResult.getClassesImplementing("de.ids_mannheim.korap.tokenizer.KorapTokenizer");
+                for (String n: korapTokenizerClasses.getNames()) {
+                    AnnotationInfo v = scanResult.getClassInfo(n).getAnnotationInfo(Languages.class.getName());
+                    if(v != null)
+                        for (AnnotationParameterValue i : v.getParameterValues()) {
+                            for (String lang : (String []) i.getValue()) {
+                                languages.add(lang);
+                            }
+                        }
+                }
+            }
+            return languages.stream().sorted().distinct().collect(Collectors.toList());
+        }
+    }
 
     static class AvailableKorapTokenizerList extends ArrayList<String> {
         AvailableKorapTokenizerList() {
@@ -35,6 +58,11 @@ public class Main implements Callable<Integer> {
             completionCandidates= AvailableKorapTokenizerList.class,
             description = "Class name of the actual tokenizer that will be used (candidates: ${COMPLETION-CANDIDATES} default: ${DEFAULT-VALUE})")
     String tokenizerClassName = DerekoDfaTokenizer_de.class.getName();
+
+    @CommandLine.Option(names = {"-l", "--language"},
+            completionCandidates= AvailableLanguagesList.class,
+            description = "ISO-639-1 two letter language code (candidates: ${COMPLETION-CANDIDATES} default: ${DEFAULT-VALUE})")
+    String language = "de";
 
     @CommandLine.Option(names = {"--no-tokens"}, negatable = true, description = "Print tokens (default: ${DEFAULT-VALUE})")
     boolean tokens = true;
