@@ -54,6 +54,8 @@ import java.lang.StringBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import opennlp.tools.util.Span;
+
+@Languages({ /*$"\""+target.language+"\" })$*/ /*-*/ ""})
 %%
 
 /**
@@ -70,7 +72,7 @@ import opennlp.tools.util.Span;
 %char
 
 %{
-   private static final CharSequence[] targetLanguages = { /*$"\""+target.language+"\"};$*/ /*-*/ "" };
+    private static final CharSequence[] targetLanguages = { /*$"\""+target.language+"\"};$*/ /*-*/ "" };
     private boolean xmlEcho = false;
     private boolean normalize = false;
     private boolean debug = false;
