@@ -1,3 +1,0 @@
-This ist a start of a text.
-This ist text number 2.
-This is text number4.
