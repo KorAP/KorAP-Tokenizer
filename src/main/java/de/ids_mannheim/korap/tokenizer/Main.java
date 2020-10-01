@@ -96,8 +96,19 @@ public class Main implements Callable<Integer> {
 
     }
 
+    static CommandLine.Help.ColorScheme colorScheme = new CommandLine.Help.ColorScheme.Builder()
+            .commands    (CommandLine.Help.Ansi.Style.bold, CommandLine.Help.Ansi.Style.underline)    // combine multiple styles
+            .options     (CommandLine.Help.Ansi.Style.fg_green)                // yellow foreground color
+            .parameters  (CommandLine.Help.Ansi.Style.fg_green)
+            .optionParams(CommandLine.Help.Ansi.Style.italic)
+            .errors      (CommandLine.Help.Ansi.Style.fg_red, CommandLine.Help.Ansi.Style.bold)
+            .stackTraces (CommandLine.Help.Ansi.Style.italic)
+            .build();
+
     public static void main(String[] args) {
-        new CommandLine(new Main()).execute(args);
+        new CommandLine(new Main())
+                .setColorScheme(colorScheme)
+                .execute(args);
     }
 
     @Override
