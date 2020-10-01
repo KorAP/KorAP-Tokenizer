@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import opennlp.tools.util.Span;
 
+@Languages({ "de" }) 
+
 // See https://github.com/jflex-de/jflex/issues/222
 @SuppressWarnings("FallThrough")
 public class DerekoDfaTokenizer_de implements KorapTokenizer, opennlp.tools.tokenize.Tokenizer, opennlp.tools.sentdetect.SentenceDetector {
@@ -34092,7 +34094,7 @@ public class DerekoDfaTokenizer_de implements KorapTokenizer, opennlp.tools.toke
   private boolean zzEOFDone;
 
   /* user code: */
-   private static final CharSequence[] targetLanguages = { "de"}; 
+    private static final CharSequence[] targetLanguages = { "de"}; 
     private boolean xmlEcho = false;
     private boolean normalize = false;
     private boolean debug = false;
