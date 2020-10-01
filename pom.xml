@@ -100,7 +100,7 @@
                         <path>
                             <groupId>info.picocli</groupId>
                             <artifactId>picocli-codegen</artifactId>
-                            <version>4.2.0</version>
+                            <version>4.5.1</version>
                         </path>
                     </annotationProcessorPaths>
                     <compilerArgs>
@@ -243,7 +243,7 @@
         <dependency>
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
-            <version>4.2.0</version>
+            <version>4.5.1</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.opennlp/opennlp-tools -->
@@ -285,6 +285,11 @@
             <groupId>com.igormaznitsa</groupId>
             <artifactId>jcp</artifactId>
             <version>7.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.classgraph</groupId>
+            <artifactId>classgraph</artifactId>
+            <version>4.8.90</version>
         </dependency>
     </dependencies>
 </project>
