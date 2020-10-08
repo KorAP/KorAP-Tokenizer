@@ -3,6 +3,9 @@ package de.ids_mannheim.korap.tokenizer;
 import picocli.CommandLine;
 
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
@@ -34,6 +37,11 @@ public class Main implements Callable<Integer> {
     String output_filename = "-";
 
     @SuppressWarnings("CanBeFinal")
+    @CommandLine.Option(names = {"-e",
+            "--encoding"}, description = "Input encoding (default: ${DEFAULT-VALUE})")
+    Charset encoding = StandardCharsets.UTF_8;
+
+    @SuppressWarnings("CanBeFinal")
     @CommandLine.Option(names = {"--force"}, description = "Force overwrite (default: ${DEFAULT-VALUE})")
     boolean force_overwrite = false;
 
@@ -62,8 +70,8 @@ public class Main implements Callable<Integer> {
         for (int i = 0; i < inputFiles.size() || (i == 0 && inputFiles.size() == 0); i++) {
             String fn = (inputFiles.size() > 0 ? inputFiles.get(i) : "-");
             try {
-                BufferedReader br = "-".equals(fn) ? new BufferedReader(new InputStreamReader(System.in)) :
-                        new BufferedReader(new FileReader(fn));
+                BufferedReader br = "-".equals(fn) ? new BufferedReader(new InputStreamReader(System.in, encoding)) :
+                        Files.newBufferedReader(new File(fn).toPath(), encoding);
                 new KorapTokenizer.Builder()
                         .tokenizerClassName(tokenizerClassName)
                         .inputReader(br)
