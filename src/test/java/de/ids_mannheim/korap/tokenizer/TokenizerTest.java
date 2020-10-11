@@ -489,6 +489,14 @@ public class TokenizerTest {
     }
 
     @Test
+    public void testTokenizerStrasse () {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        String[] tokens = tok.tokenize("Ich wohne in der Weststr. und Du?");
+        assertEquals(tokens[4], "Weststr.");
+        assertEquals(8, tokens.length);
+    }
+
+    @Test
     public void testZipOuputArchive () {
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
         final ByteArrayOutputStream clearOut = new ByteArrayOutputStream();

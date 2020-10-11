@@ -93,6 +93,13 @@ public class SentenceSplitterTest {
     }
 
     @Test
+    public void testSentSplitterStrasse () {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        String[] sentences = tok.sentDetect("Ich wohne in der Weststr. und Du?");
+        assertEquals(sentences.length, 1);
+    }
+
+    @Test
     @Ignore
     public void testSentSplitterQuote () {
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
