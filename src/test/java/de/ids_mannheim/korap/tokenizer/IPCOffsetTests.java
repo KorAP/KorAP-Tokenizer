@@ -21,7 +21,7 @@ public class IPCOffsetTests {
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         Collection<Object[]> testData = new ArrayList<>();
-        for (String language : new String[]{"de", "en"}) {
+        for (String language : new String[]{"de", "en", "fr"}) {
             for (String encoding : new String[]{"ascii", "latin1", "utf8"}) {
                 for (int i = 1; true; i++) {
                     URL inputUrl = IPCOffsetTests.class.getResource(String.format(testFiletemplate, language, encoding, i, "input"));

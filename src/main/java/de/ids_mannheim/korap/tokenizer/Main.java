@@ -8,6 +8,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
@@ -55,9 +56,7 @@ public class Main implements Callable<Integer> {
                     AnnotationInfo v = scanResult.getClassInfo(n).getAnnotationInfo(Languages.class.getName());
                     if(v != null)
                         for (AnnotationParameterValue i : v.getParameterValues()) {
-                            for (String lang : (String []) i.getValue()) {
-                                languages.add(lang);
-                            }
+                            languages.addAll(Arrays.asList((String[]) i.getValue()));
                         }
                 }
             }
