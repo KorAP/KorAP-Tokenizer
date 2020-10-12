@@ -497,6 +497,44 @@ public class TokenizerTest {
     }
 
     @Test
+    public void testEnglishTokenizerScienceAbbreviations () {
+        DerekoDfaTokenizer_en tok = new DerekoDfaTokenizer_en();
+        String[] tokens = tok.tokenize("Approx. in Sept. 1954, Assoc. Prof. Dr. R. J. Ewing reviewed articles on Enzymol. Bacteriol. effects later published in Nutr. Rheumatol. No. 12 and Nº. 13., pp. 17-18.");
+        assertEquals("Approx.", tokens[0]);
+        assertEquals("in", tokens[1]);
+        assertEquals("Sept.", tokens[2]);
+        assertEquals("1954", tokens[3]);
+        assertEquals(",", tokens[4]);
+        assertEquals("Assoc.", tokens[5]);
+        assertEquals("Prof.", tokens[6]);
+        assertEquals("Dr.", tokens[7]);
+        assertEquals("R.", tokens[8]);
+        assertEquals("J.", tokens[9]);
+        assertEquals("Ewing", tokens[10]);
+        assertEquals("reviewed", tokens[11]);
+        assertEquals("articles", tokens[12]);
+        assertEquals("on", tokens[13]);
+        assertEquals("Enzymol.", tokens[14]);
+        assertEquals("Bacteriol.", tokens[15]);
+        assertEquals("effects", tokens[16]);
+        assertEquals("later", tokens[17]);
+        assertEquals("published", tokens[18]);
+        assertEquals("in", tokens[19]);
+        assertEquals("Nutr.", tokens[20]);
+        assertEquals("Rheumatol.", tokens[21]);
+        assertEquals("No.", tokens[22]);
+        assertEquals("12", tokens[23]);
+        assertEquals("and", tokens[24]);
+        assertEquals("Nº.", tokens[25]);
+        assertEquals("13.", tokens[26]);
+        assertEquals(",", tokens[27]);
+        assertEquals("pp.", tokens[28]);
+        assertEquals("17-18", tokens[29]);
+        assertEquals(".", tokens[30]);
+    }
+
+
+    @Test
     public void testZipOuputArchive () {
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
         final ByteArrayOutputStream clearOut = new ByteArrayOutputStream();
