@@ -29,9 +29,6 @@ After building the project (see below) your added language specific tokenizer / 
 
 Alternatively, you can also provide `KorAPTokenizer` implementations independently on the class path and select them with the `--tokenizer-class` option.
 
-Please note that the current `DerekoDfaTokenizer_en` implementation is mainly for demonstration purposes and only
-contains a small list of abbreviations.
-
 ## Installation
 ```shell script
 $ MAVEN_OPTS="-Xss50m" mvn clean install
