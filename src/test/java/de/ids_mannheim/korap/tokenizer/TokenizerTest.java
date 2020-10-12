@@ -497,6 +497,18 @@ public class TokenizerTest {
     }
 
     @Test
+    public void frenchTokenizerKnowsFrenchAbbreviations () {
+        DerekoDfaTokenizer_fr tok = new DerekoDfaTokenizer_fr();
+        String[] tokens = tok.tokenize("Approx. en juill. 2004 mon prof. M. Foux m'a dit qu'il faut faire exerc. no. 4, et lire pp. 27-30.");
+        assertEquals("Approx.", tokens[0]);
+        assertEquals("juill.", tokens[2]);
+        assertEquals("prof.", tokens[5]);
+        assertEquals("exerc.", tokens[13]);
+        assertEquals("no.", tokens[14]);
+        assertEquals("pp.", tokens[19]);
+    }
+
+    @Test
     public void testZipOuputArchive () {
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
         final ByteArrayOutputStream clearOut = new ByteArrayOutputStream();

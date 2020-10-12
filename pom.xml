@@ -63,6 +63,19 @@
                             <target>src/main/jflex/en</target>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>preprocess for fr</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>preprocess</goal>
+                        </goals>
+                        <configuration>
+                            <vars>
+                                <target.language>fr</target.language>
+                            </vars>
+                            <target>src/main/jflex/fr</target>
+                        </configuration>
+                    </execution>
                 </executions>
                 <configuration>
                     <sources>src/main/jpc/jflex</sources>
