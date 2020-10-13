@@ -56,16 +56,33 @@ public class TokenizerTest {
     }
 
     @Test
-    @Ignore
-    public void testTokenizerHost2 () {
+    public void testTokenizerWwwHost () {
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
         String[] tokens = tok.tokenize("Gefunden auf www.wikipedia.org");
-        assertEquals(tokens[0], "Gefunden");
-        assertEquals(tokens[1], "auf");
-        assertEquals(tokens[2], "www.wikipedia.org");
-        assertEquals(tokens.length, 3);
+        assertEquals("Gefunden", tokens[0]);
+        assertEquals("auf", tokens[1]);
+        assertEquals("www.wikipedia.org", tokens[2]);
+        assertEquals(3, tokens.length);
     }
-    
+
+    @Test
+    public void testTokenizerWwwUrl () {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        String[] tokens = tok.tokenize("Weitere Infos unter www.info.biz/info");
+        assertEquals("www.info.biz/info", tokens[3]);
+    }
+
+    @Ignore
+    @Test
+    public void testTokenizerFtpHost () {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        String[] tokens = tok.tokenize("Kann von ftp.download.org heruntergeladen werden");
+        assertEquals("Kann", tokens[0]);
+        assertEquals("von", tokens[1]);
+        assertEquals("ftp.download.org", tokens[2]);
+        assertEquals(5, tokens.length);
+    }
+
     @Test
     public void testTokenizerDash () {
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
