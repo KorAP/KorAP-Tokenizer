@@ -404,6 +404,7 @@ SLASH = [⁄∕／/]
 
 DomainLabel = [A-Za-z0-9] ([-A-Za-z0-9]* [A-Za-z0-9])?
 DomainNameLoose  = {DomainLabel} (("."|"[dot]") {DomainLabel})*
+WWWDomainName = "www" (("."|"[dot]") {DomainLabel})*
 
 IPv4DecimalOctet = "0"{0,2} [0-9] | "0"? [1-9][0-9] | "1" [0-9][0-9] | "2" ([0-4][0-9] | "5" [0-5])
 IPv4Address  = {IPv4DecimalOctet} ("." {IPv4DecimalOctet}){3}
@@ -438,7 +439,7 @@ HTTPpath = ("/" {HTTPsegment})*
 HTTPscheme = [hH][tT][tT][pP][sS]? "://"
 HTTPurlFull = {HTTPscheme} {URIauthorityLoose}  {HTTPpath}? {URIquery}? {URIfragment}?
 // {HTTPurlNoScheme} excludes {URIlogin}, because it could otherwise accept e-mail addresses
-HTTPurlNoScheme =          {URIauthorityStrict} {HTTPpath}? {URIquery}? {URIfragment}?
+HTTPurlNoScheme =          ( {URIauthorityStrict} | {WWWDomainName} ) {HTTPpath}? {URIquery}? {URIfragment}?
 HTTPurl = {HTTPurlFull} | {HTTPurlNoScheme}
 
 FTPorFILEsegment = ({URIunreserved} | {URIpercentEncoded} | [?:@&=])*
