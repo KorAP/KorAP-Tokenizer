@@ -31,7 +31,7 @@ Alternatively, you can also provide `KorAPTokenizer` implementations independent
 
 ## Installation
 ```shell script
-$ MAVEN_OPTS="-Xss50m" mvn clean install
+$ MAVEN_OPTS="-Xss2m" mvn clean install
 ```
 #### Note
 Because of the large table of abbreviations, the conversion from the jflex source to java,
