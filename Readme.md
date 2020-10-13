@@ -38,12 +38,6 @@ Because of the large table of abbreviations, the conversion from the jflex sourc
 i.e. the calculation of the DFA, takes about 4 to 20 minutes, depending on your hardware,
 and requires a lot of heap space.
 
-For this reason the java source that is generated from the jflex source is distributed
-with the source code and not deleted on `mvn clean`.
-
-If you want to modify the jflex source, while keeping the abbreviation lists,
-you will need ad least 5 GB of free RAM.
-
 ## Documentation
 The KorAP tokenizer reads from standard input and writes to standard output. It supports multiple modes of operations.
 
