@@ -550,6 +550,16 @@ public class TokenizerTest {
         assertEquals(".", tokens[30]);
     }
 
+    @Test
+    public void englishTokenizerCanGuessWhetherIIsAbbrev () {
+        DerekoDfaTokenizer_en tok = new DerekoDfaTokenizer_en();
+        String[] tokens = tok.tokenize("M. I. Baxter was born during World War I. So was I. He went to the Peter I. Hardy school. So did I.");
+        assertEquals("I.", tokens[1]);
+        assertEquals("I", tokens[8]);
+        assertEquals(".", tokens[9]);
+        assertEquals("I", tokens[12]);
+        assertEquals(".", tokens[13]);
+    }
 
     @Test
     public void testZipOuputArchive () {

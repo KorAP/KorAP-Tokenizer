@@ -513,6 +513,8 @@ IRISH_O = [Oo]{Q}
 
 FRENCH_INIT_CLITIC = ([dcjlmnstDCJLNMST]\'|[Qq]u\'|[Jj]usqu\'|[Ll]orsqu\')
 
+ENGLISH_MARKERS_FOR_NON_ABBREVIATION_I = (am|was|will|have|had|would|do|did|and|War|than|not|[Pp]art)
+
 CLITIC = ({ENGLISH_CLITIC}|{FRENCH_CLITIC})
 
 INIT_CLITIC = ({FRENCH_INIT_CLITIC})
@@ -551,7 +553,7 @@ PRAGMA = \[_[A-Z\-]+_\]
 
 %include language-specific_/*$target.language$*/.jflex-macro
 
-%s OPEN_QUOTE POLISH_CONDITIONAL_MODE JUST_AFTER_PERIOD CLITIC_MODE
+%s OPEN_QUOTE POLISH_CONDITIONAL_MODE JUST_AFTER_PERIOD CLITIC_MODE ENGLISH_NON_ABBREVIATION_I_MODE
 
 %%
 {ENDMARKER}                                             { fileEnd(); return null; }
@@ -565,15 +567,19 @@ PRAGMA = \[_[A-Z\-]+_\]
 {URL}                                                         { return currentToken(); }
 
 // special words
-{c}an / not                                                      {return currentToken();}
+{c}an / not                                                     {return currentToken();}
 {l}em / me                                                      {return currentToken();}
 {g}on / na                                                      {return currentToken();}
 {g}im / me                                                      {return currentToken();}
 {w}an / na                                                      {return currentToken();}
 {g}ot / ta                                                      {return currentToken();}
 
+// M. I. Baxter was killed in World War I.<s> So was I.<s>
+{ENGLISH_MARKERS_FOR_NON_ABBREVIATION_I} / {WHITESPACE} [I] \.  {yybegin(ENGLISH_NON_ABBREVIATION_I_MODE); return currentToken(); }
+<ENGLISH_NON_ABBREVIATION_I_MODE>[I] / \.                       {yybegin(YYINITIAL); return currentToken(); }
+
 {LETTER}\.                                                      {return currentToken();}
-{LETTER}{2,12} / \.[:uppercase:]                                  {return currentToken();}
+{LETTER}{2,12} / \.[:uppercase:]                                {return currentToken();}
 {PLUSAMPERSAND}                                                 {return currentToken();}
 {SEABBR}\.                                                      {return currentToken();}
 {PRAGMA}                                                        {return currentToken();}
