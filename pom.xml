@@ -6,11 +6,10 @@
 
     <groupId>groupId</groupId>
     <artifactId>KorAP-Tokenizer</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>2.0.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jackson.version>[2.10.3,)</jackson.version>
     </properties>
 
     <build>

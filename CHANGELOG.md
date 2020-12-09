@@ -1,6 +1,7 @@
 # Changelog
 
-## 2.0.0 [Unreleased]
+## 2.0.0
+* Dependencies updated
 * Tokenizer and sentence splitter for English (`-l en` option) added
 * Tokenizer and sentence splitter for French (`-l fr` option) added
 * Support for adding more languages
