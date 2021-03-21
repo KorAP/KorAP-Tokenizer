@@ -138,10 +138,10 @@ import opennlp.tools.util.Span;
         while (!zzAtEOF) {
             token = this.getNextToken();
             if (atEOT) {
-                if (echo) {
+                if (echo && printOffsets) {
                     printTokenPositions(list, splitSentences);
-                    list.clear();
                 }
+                list.clear();
                 atEOT = false;
             }
             if (token != null) {
@@ -285,6 +285,8 @@ import opennlp.tools.util.Span;
             outputStream.println("<span id=\"t_" + tokenId + "\" from=\"" + from + "\" to=\"" + to + "\"/>\n" + value);
         } else if (echo && printTokens) {
             outputStream.println(value);
+            if (splitSentences && isSentenceBound(normalizedValue))
+                outputStream.println("");
         }
         startOffset += lengthDiff;
         tokenId++;
