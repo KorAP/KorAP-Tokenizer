@@ -41,9 +41,43 @@ and requires a lot of heap space.
 ## Documentation
 The KorAP tokenizer reads from standard input and writes to standard output. It supports multiple modes of operations.
 
+#### Split into tokens
+```
+$ echo 'This is a sentence. This is a second sentence.' | java -jar target/KorAP-Tokenizer-2.0.0-standalone.jar
+This
+is
+a
+sentence
+.
+This
+is
+a
+second
+sentence
+.
+
+```
+#### Split into tokens and sentences
+```
+$ echo 'This is a sentence. This is a second sentence.' | java -jar target/KorAP-Tokenizer-2.0.0-standalone.jar -s
+This
+is
+a
+sentence
+.
+
+This
+is
+a
+second
+sentence
+.
+
+```
+
+#### Print token character offsets
 With the `--positions` option, for example, the tokenizer prints all offsets of the first character of a token and the first character after a token.
 In order to end a text, flush the output and reset the character position, an EOT character (0x04) can be used.
-#### Command Line Invocation
 ```
 $ echo -n -e 'This is a text.\x0a\x04\x0aAnd this is another text.\n\x04\n' |\
      java -jar target/KorAP-Tokenizer-2.0.0-standalone.jar  --positions
@@ -61,7 +95,7 @@ text
 .
 0 3 4 8 9 11 12 19 20 24 24 25
 ```
-#### Invocation with Sentence Splitting
+#### Print token and sentence offset
 ```
 echo -n -e ' This ist a start of a text. And this is a sentence!!! But what the hack????\x0a\x04\x0aAnd this is another text.'  |\
    java -jar target/KorAP-Tokenizer-2.0.0-standalone.jar --no-tokens --positions --sentence-boundaries

@@ -6,15 +6,12 @@ of
 a
 text
 .
-
 This
 is
 approx.
 text
 number
 2.
-
-
 This
 is
 bspw
@@ -22,4 +19,3 @@ bspw
 text
 number4
 .
-
