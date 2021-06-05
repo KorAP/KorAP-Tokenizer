@@ -80,7 +80,7 @@ With the `--positions` option, for example, the tokenizer prints all offsets of 
 In order to end a text, flush the output and reset the character position, an EOT character (0x04) can be used.
 ```
 $ echo -n -e 'This is a text.\x0a\x04\x0aAnd this is another text.\n\x04\n' |\
-     java -jar target/KorAP-Tokenizer-2.0.0-standalone.jar  --positions
+     java -jar target/KorAP-Tokenizer-2.0.0.9000-standalone.jar  --positions
 This
 is
 a
@@ -111,7 +111,7 @@ echo -n -e ' This ist a start of a text. And this is a sentence!!! But what the 
 * [Marc Kupietz](https://www1.ids-mannheim.de/digspra/personal/kupietz.html)
 * [Nils Diewald](https://www1.ids-mannheim.de/digspra/personal/diewald.html)
 
-Copyright (c) 2020, [Leibniz Institute for the German Language](http://www.ids-mannheim.de/), Mannheim, Germany
+Copyright (c) 2021, [Leibniz Institute for the German Language](http://www.ids-mannheim.de/), Mannheim, Germany
 
 This package is developed as part of the [KorAP](http://korap.ids-mannheim.de/)
 Corpus Analysis Platform at the Leibniz Institute for German Language
