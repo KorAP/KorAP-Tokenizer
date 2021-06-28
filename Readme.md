@@ -8,7 +8,7 @@ Interface and implementation of a tokenizer and sentence splitter that can be us
 ## DeReKo Tokenizer (included default implementation)
 The included default implementation (`DerekoDfaTokenizer_de`) is a highly efficient DFA tokenizer and sentence splitter with character offset output based on [JFlex](https://www.jflex.de/), suitable for German and other European languages.
 It is used for the German Reference Corpus DeReKo. Being based on a finite state automaton, 
-it is not accurate as language model based tokenizers, but with ~5 billion words per hour typically more efficient.
+it is not as accurate as language model based tokenizers, but with ~5 billion words per hour typically more efficient.
 An important feature in the DeReKo/KorAP context is also, that it reliably reports the character offsets of the tokens 
 so that this information can be used for applying standoff annotations.
  
@@ -43,7 +43,7 @@ The KorAP tokenizer reads from standard input and writes to standard output. It 
 
 #### Split into tokens
 ```
-$ echo 'This is a sentence. This is a second sentence.' | java -jar target/KorAP-Tokenizer-2.0.0-standalone.jar
+$ echo 'This is a sentence. This is a second sentence.' | java -jar target/KorAP-Tokenizer-2.1.0-standalone.jar
 This
 is
 a
@@ -59,7 +59,7 @@ sentence
 ```
 #### Split into tokens and sentences
 ```
-$ echo 'This is a sentence. This is a second sentence.' | java -jar target/KorAP-Tokenizer-2.0.0-standalone.jar -s
+$ echo 'This is a sentence. This is a second sentence.' | java -jar target/KorAP-Tokenizer-2.1.0-standalone.jar -s
 This
 is
 a
@@ -80,7 +80,7 @@ With the `--positions` option, for example, the tokenizer prints all offsets of 
 In order to end a text, flush the output and reset the character position, an EOT character (0x04) can be used.
 ```
 $ echo -n -e 'This is a text.\x0a\x04\x0aAnd this is another text.\n\x04\n' |\
-     java -jar target/KorAP-Tokenizer-2.0.0.9000-standalone.jar  --positions
+     java -jar target/KorAP-Tokenizer-2.1.0-standalone.jar  --positions
 This
 is
 a
@@ -98,7 +98,7 @@ text
 #### Print token and sentence offset
 ```
 echo -n -e ' This ist a start of a text. And this is a sentence!!! But what the hack????\x0a\x04\x0aAnd this is another text.'  |\
-   java -jar target/KorAP-Tokenizer-2.0.0-standalone.jar --no-tokens --positions --sentence-boundaries
+   java -jar target/KorAP-Tokenizer-2.1.0-standalone.jar --no-tokens --positions --sentence-boundaries
 1 5 6 9 10 11 12 17 18 20 21 22 23 27 27 28 29 32 33 37 38 40 41 42 43 51 51 54 55 58 59 63 64 67 68 72 72 76
 1 28 29 54 55 76
 0 3 4 8 9 11 12 19 20 24 24 25
