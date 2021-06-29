@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72e7ef90_bd185d9e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19
+      },
+      "writtenOn": "2021-06-29T11:16:25Z",
+      "side": 1,
+      "message": "It seems you are no default reviewer for KorAP-Tokenizer ...",
+      "revId": "236e557986a1ffd028d5adcfef7cc2ba047c3f5c",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
+    }
+  ]
+}
