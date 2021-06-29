@@ -574,6 +574,21 @@ public class TokenizerTest {
     }
 
     @Test
+    public void testTokenizerDiversity () {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        String[] tokens = tok.tokenize("Die Besucher*innen trafen den/die Nutzer:In");
+        assertEquals(tokens[0], "Die");
+        assertEquals(tokens[1], "Besucher*innen");
+        assertEquals(tokens[6], "Nutzer:In");
+        assertEquals(tokens.length, 7);
+
+        tokens = tok.tokenize("Später kamen Besucher_innen.");
+        assertEquals(tokens[2], "Besucher_innen");
+        assertEquals(tokens[3], ".");
+        assertEquals(tokens.length, 4);
+    }
+  
+    @Test
     public void testZipOuputArchive () {
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
         final ByteArrayOutputStream clearOut = new ByteArrayOutputStream();
