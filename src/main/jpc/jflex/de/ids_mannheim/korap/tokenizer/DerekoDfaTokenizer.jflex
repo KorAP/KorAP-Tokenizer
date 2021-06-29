@@ -548,7 +548,7 @@ TWITTER_HASHTAG = #{ALPHANUM}
 // blocks of question marks and exclamation marks are one token
 LONG_END_PUNCT = [?!][?!1]+
 
-WORD = ({IRISH_O}?{ALPHANUM}+|[Qq]ur{Q}an)
+WORD = ({IRISH_O}?{ALPHANUM}+([:*][iI]n(nen)?)?|[Qq]ur{Q}an)
 
 // pragmas used for anonymization etc.
 PRAGMA = \[_[A-Z\-]+_\]

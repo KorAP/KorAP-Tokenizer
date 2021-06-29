@@ -1,5 +1,7 @@
 # Changelog
 
+* Introduced support for gender neutral forms in german.
+	
 ## 2.1.0
 
 * GitHub CI test workflow added
