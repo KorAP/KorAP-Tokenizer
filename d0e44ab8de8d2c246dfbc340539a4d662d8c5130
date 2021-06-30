@@ -16,6 +16,24 @@
       "message": "Let\u0027s not merge this by accident until we revise our decision not to include gender notations in the tokenization and until we have the capacity to reapply all annotations. We\u0027d have to announce this also in advance. Or do you want to apply this only to new data?\n\nA nice compromise until then could be a switch with a command line option.",
       "revId": "d0e44ab8de8d2c246dfbc340539a4d662d8c5130",
       "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81675c69_5a383526",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19
+      },
+      "writtenOn": "2021-06-30T07:42:05Z",
+      "side": 1,
+      "message": "I guess first it should work as expected. Was mainly motivated by a question from Harald.\n\nAs long as positions are not relevant at least in KorAP there would be not much of a difference regarding the stability of the results after reannotation.\n\nFor the moment this commit can be the base for discussions.",
+      "parentUuid": "0f3f8b26_b84d586d",
+      "revId": "d0e44ab8de8d2c246dfbc340539a4d662d8c5130",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
     }
   ]
 }
