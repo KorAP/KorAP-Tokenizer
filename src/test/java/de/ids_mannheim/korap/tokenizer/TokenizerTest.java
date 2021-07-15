@@ -520,9 +520,18 @@ public class TokenizerTest {
         assertEquals("Approx.", tokens[0]);
         assertEquals("juill.", tokens[2]);
         assertEquals("prof.", tokens[5]);
-        assertEquals("exerc.", tokens[13]);
-        assertEquals("no.", tokens[14]);
-        assertEquals("pp.", tokens[19]);
+        assertEquals("exerc.", tokens[15]);
+        assertEquals("no.", tokens[16]);
+        assertEquals("pp.", tokens[21]);
+    }
+
+    @Test
+    public void frenchTokenizerKnowsFrenchContractions () {
+        DerekoDfaTokenizer_fr tok = new DerekoDfaTokenizer_fr();
+        String[] tokens = tok.tokenize("J'ai dit qu'il faut d'un");
+        assertEquals("J'", tokens[0]);
+        assertEquals("qu'", tokens[3]);
+        assertEquals("d'", tokens[6]);
     }
 
     @Test
