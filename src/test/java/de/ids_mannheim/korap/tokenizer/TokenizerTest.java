@@ -514,15 +514,83 @@ public class TokenizerTest {
     }
 
     @Test
+    public void germanTokenizerKnowsGermanOmissionWords () {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        String[] tokens = tok.tokenize("D'dorf Ku'damm Lu'hafen M'gladbach W'schaft");
+        assertEquals("D'dorf", tokens[0]);
+        assertEquals("Ku'damm", tokens[1]);
+        assertEquals("Lu'hafen", tokens[2]);
+        assertEquals("M'gladbach", tokens[3]);
+        assertEquals("W'schaft", tokens[4]);
+        assertEquals(5, tokens.length);
+    }
+
+    @Test
+    public void germanTokenizerDoesNOTSeparateGermanContractions () {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        String[] tokens = tok.tokenize("mach's macht's was'n ist's haste willste kannste biste kriegste");
+        assertEquals("mach's", tokens[0]);
+        assertEquals("macht's", tokens[1]);
+        assertEquals("was'n", tokens[2]);
+        assertEquals("ist's", tokens[3]);
+        assertEquals("haste", tokens[4]);
+        assertEquals("willste", tokens[5]);
+        assertEquals("kannste", tokens[6]);
+        assertEquals("biste", tokens[7]);
+        assertEquals("kriegste", tokens[8]);
+        assertEquals(9, tokens.length);
+    }
+
+    @Test
+    public void englishTokenizerSeparatesEnglishContractionsAndClitics () {
+        DerekoDfaTokenizer_en tok = new DerekoDfaTokenizer_en();
+        String[] tokens = tok.tokenize("I've we'll you'd I'm we're Peter's isn't");
+        assertEquals("'ve", tokens[1]);
+        assertEquals("'ll", tokens[3]);
+        assertEquals("'d", tokens[5]);
+        assertEquals("'m", tokens[7]);
+        assertEquals("'re", tokens[9]);
+        assertEquals("'s", tokens[11]);
+        assertEquals("is", tokens[12]);
+        assertEquals("n't", tokens[13]);
+        assertEquals(14, tokens.length);
+    }
+
+    @Test
     public void frenchTokenizerKnowsFrenchAbbreviations () {
         DerekoDfaTokenizer_fr tok = new DerekoDfaTokenizer_fr();
         String[] tokens = tok.tokenize("Approx. en juill. 2004 mon prof. M. Foux m'a dit qu'il faut faire exerc. no. 4, et lire pp. 27-30.");
         assertEquals("Approx.", tokens[0]);
         assertEquals("juill.", tokens[2]);
         assertEquals("prof.", tokens[5]);
-        assertEquals("exerc.", tokens[13]);
-        assertEquals("no.", tokens[14]);
-        assertEquals("pp.", tokens[19]);
+        assertEquals("exerc.", tokens[15]);
+        assertEquals("no.", tokens[16]);
+        assertEquals("pp.", tokens[21]);
+    }
+
+    @Test
+    public void frenchTokenizerKnowsFrenchContractions () {
+        DerekoDfaTokenizer_fr tok = new DerekoDfaTokenizer_fr();
+        String[] tokens = tok.tokenize("J'ai j'habite qu'il d'un jusqu'à Aujourd'hui D'accord Quelqu'un Presqu'île");
+        assertEquals("J'", tokens[0]);
+        assertEquals("j'", tokens[2]);
+        assertEquals("qu'", tokens[4]);
+        assertEquals("d'", tokens[6]);
+        assertEquals("jusqu'", tokens[8]);
+        assertEquals("Aujourd'hui", tokens[10]);
+        assertEquals("D'", tokens[11]); // ’
+        assertEquals("Quelqu'un", tokens[13]); // ’
+        assertEquals("Presqu'île", tokens[14]); // ’
+    }
+
+    @Test
+    public void frenchTokenizerKnowsFrenchClitics () {
+        DerekoDfaTokenizer_fr tok = new DerekoDfaTokenizer_fr();
+        String[] tokens = tok.tokenize("suis-je sont-elles ");
+        assertEquals("suis", tokens[0]);
+        assertEquals("-je", tokens[1]);
+        assertEquals("sont", tokens[2]);
+        assertEquals("-elles", tokens[3]);
     }
 
     @Test

@@ -340,11 +340,11 @@ THAI       = [\u0E00-\u0E59]
 ALPHANUM   = ({LETTER}|{THAI}|[:digit:]|_)+
 
 // case insensitivity is useful sometimes
-// a = [aA]
+a = [aA]
 // b = [bB]
 c = [cC]
 // d = [dD]
-e = [eE]
+// e = [eE]
 // f = [fF]
 g = [gG]
 // h = [hH]
@@ -355,8 +355,8 @@ l = [lL]
 // m = [mM]
 // n = [nN]
 o = [oO]
-// p = [pP]
-// q = [qQ]
+p = [pP]
+q = [qQ]
 // r = [rR]
 // s = [sS]
 // t = [tT]
@@ -517,8 +517,6 @@ FRENCH_INIT_CLITIC = ([dcjlmnstDCJLNMST]\'|[Qq]u\'|[Jj]usqu\'|[Ll]orsqu\')
 
 ENGLISH_MARKERS_FOR_NON_ABBREVIATION_I = (am|was|will|have|had|would|do|did|and|War|than|not|[Pp]art)
 
-CLITIC = ({ENGLISH_CLITIC}|{FRENCH_CLITIC})
-
 INIT_CLITIC = ({FRENCH_INIT_CLITIC})
 
 POLISH_CONDITIONAL_CLITIC = (by)
@@ -535,7 +533,8 @@ XML = <(\/text|\?xml|\?xml-model|\/?raw_text|\/?metadata) ?[^\004\n>]{0,100}>
 
 EMOTICON = ( [<>]?[BX;8:=][o\-\']?[DdPp()\/3>oO*]+|<\/?3+|ಠ_ಠ|\(-.-\)|\(T_T\)|\(♥_♥\)|\)\':|\)-:|\(-:|\)=|\)o:|\)x|:\'C|:\/|:<|:C|:[|=\(|=\)|=D|=P|>:|D\':|D:|\:|]:|x\(|\^\^|o.O|oO|\\{o}\/|\\m\/|:;\)\)|_\)\)|\*_\*|._.|:wink:|>_<|\*<:-\)|[:;]\)|[;;]" "\))
 
-OMISSIONWORD = ({LETTER}+\*\*+{LETTER}*|{LETTER}+\*{LETTER}+|{LETTER}+[\'`]{LETTER}+)
+LC_CONSONANT = [bcdfgjklmnpqrstvwxs]
+OMISSIONWORD = ({p}resqu'île|{a}ujourd\'hui|{q}uelqu\'une?|[^\P{L}Qq]{LETTER}?[^dcjlmnstDCJLNMST][\'`]|{LETTER}+\*\*+{LETTER}*|{LETTER}+\*{LETTER}+|!(!({LETTER}+[\'`]{LC_CONSONANT})|{INIT_CLITIC})){LETTER}*
 
 EXTENSION = (html|htm|doc|docx|pdf|jpg|mp3|mp4|ogg|png|avi|txt|xls|xml|aac|DOC|DOCX|GIF|JPG|JPEG)
 FNAME = (({LETTER}:[\\/])?|\/)?({LETTER}+|[\\_/-])+\.{EXTENSION}
@@ -588,7 +587,11 @@ PRAGMA = \[_[A-Z\-]+_\]
 {FNAME}                                                         {return currentToken();}
 
 // contractions and other clitics
-{INIT_CLITIC}{CLITIC}                                           {return currentToken();}
+{INIT_CLITIC}                                                   {return currentToken();}
+<CLITIC_MODE>{CLITIC}                                           {yybegin(YYINITIAL); return currentToken();}
+{WORD} / {CLITIC}                                               {yybegin(CLITIC_MODE); return currentToken();}
+d{Q} / ye                                                       {return currentToken(); }
+{Q}[Tt] / is                                                    {return currentToken(); }
 
 // polish clitics
 {ALPHANUM}{ALPHANUM}+[lł][aeoiy]? / {POLISH_CONDITIONAL_CLITIC}{POLISH_CONDITIONAL_ENDING}             {yybegin(POLISH_CONDITIONAL_MODE); return currentToken(); }
