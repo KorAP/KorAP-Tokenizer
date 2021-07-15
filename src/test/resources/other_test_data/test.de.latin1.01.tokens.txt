@@ -9921,9 +9921,7 @@ da
 als
 lieÃ
 
-Â
-
-'
+Â'
 sie's
 um
 Geld
@@ -68641,7 +68639,8 @@ tzbaren
 Werk
 des
 Herrn
-d'Agincourt
+d'
+Agincourt
 auf
 das
 genauste
@@ -82243,7 +82242,8 @@ Francois
 Blondel
 ,
 Cours
-d'Architecture
+d'
+Architecture
 .
 Cinquieme
 partie
@@ -97866,7 +97866,8 @@ daÃ
 Â
 
 in
-d'Agincourts
+d'
+Agincourts
 Werk
 Histoire
 des
