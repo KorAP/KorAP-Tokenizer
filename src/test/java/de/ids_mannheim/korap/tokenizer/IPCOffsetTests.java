@@ -63,7 +63,7 @@ public class IPCOffsetTests {
         Main.main(args);
         String actualResult = readFile(tempFile.getAbsolutePath());
         String goldData = readFile(positions);
-        assertEquals(goldData, actualResult);
+        assertEquals("Testing "+tempFile+ " against " + new File(positions).getName(), goldData, actualResult);
     }
 
     @Test
@@ -73,7 +73,7 @@ public class IPCOffsetTests {
         Main.main(args);
         String actualResult = readFile(tempFile.getAbsolutePath());
         String goldData = readFile(tokens);
-        assertEquals(goldData, actualResult);
+        assertEquals("Testing " + tempFile + " against " + new File(tokens).getName(), goldData, actualResult);
     }
 }
 
