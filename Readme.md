@@ -108,8 +108,8 @@ echo -n -e ' This ist a start of a text. And this is a sentence!!! But what the 
 ## Development and License
 
 **Authors**: 
-* [Marc Kupietz](https://www1.ids-mannheim.de/digspra/personal/kupietz.html)
-* [Nils Diewald](https://www1.ids-mannheim.de/digspra/personal/diewald.html)
+* [Marc Kupietz](https://www.ids-mannheim.de/digspra/personal/kupietz.html)
+* [Nils Diewald](https://www.ids-mannheim.de/digspra/personal/diewald.html)
 
 Copyright (c) 2021, [Leibniz Institute for the German Language](http://www.ids-mannheim.de/), Mannheim, Germany
 
