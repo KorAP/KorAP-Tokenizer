@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.1.0.9000
+## 2.2.0
 
 * Apostrophe and hyphen marked contractions and clitics in English (I've, isn't, Peter's, …) 
   and French (j'ai, d'un, l'art, sont-elles, …) are now separated.
