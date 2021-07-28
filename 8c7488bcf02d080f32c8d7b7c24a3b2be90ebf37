@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30ba6e90_fe478a6c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2021-07-28T14:41:22Z",
+      "side": 1,
+      "message": "Let\u0027s release v2.2. I also forgot to add you as second author for v2.1 on Zenodo.\n",
+      "revId": "8c7488bcf02d080f32c8d7b7c24a3b2be90ebf37",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
+    }
+  ]
+}
