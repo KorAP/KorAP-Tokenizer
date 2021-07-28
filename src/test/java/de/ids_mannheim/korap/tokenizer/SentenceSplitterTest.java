@@ -32,7 +32,6 @@ public class SentenceSplitterTest {
     }
 
     @Test
-    @Ignore
     public void testSentSplitterHost2 () {
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
         String[] sentences = tok.sentDetect("Gefunden auf www.wikipedia.org");
@@ -46,7 +45,6 @@ public class SentenceSplitterTest {
         assertEquals(sentences.length, 1);
     }
 
-
     @Test
     public void testSentSplitterWeb1 () {
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
@@ -54,7 +52,7 @@ public class SentenceSplitterTest {
         assertEquals(sentences.length, 1);
     }
 
-   @Test
+    @Test
     public void testSentSplitterServer () {
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
         String[] sentences = tok.sentDetect("Unser Server ist 10.0.10.51.");

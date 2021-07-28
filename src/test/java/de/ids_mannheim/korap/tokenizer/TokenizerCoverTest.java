@@ -167,7 +167,7 @@ public class TokenizerCoverTest {
 
         test = "cmc_test_professional_chat";
         dist = distanceToGoldStandard(tok, "test_cmc", test);
-        assertTrue(test + " = " + dist, dist <= 20);
+        assertTrue(test + " = " + dist, dist <= 8);
 
         test = "cmc_test_social_chat";
         dist = distanceToGoldStandard(tok, "test_cmc", test);
@@ -175,11 +175,11 @@ public class TokenizerCoverTest {
 
         test = "cmc_test_twitter";
         dist = distanceToGoldStandard(tok, "test_cmc", test);
-        assertTrue(test + " = " + dist, dist <= 153);
+        assertTrue(test + " = " + dist, dist <= 142);
 
         test = "cmc_test_whatsapp";
         dist = distanceToGoldStandard(tok, "test_cmc", test);
-        assertTrue(test + " = " + dist, dist <= 0);
+        assertTrue(test + " = " + dist, dist == 0);
 
         test = "cmc_test_wiki_discussion";
         dist = distanceToGoldStandard(tok, "test_cmc", test);
@@ -203,15 +203,15 @@ public class TokenizerCoverTest {
 
         test = "web_test_003";
         dist = distanceToGoldStandard(tok, "test_web", test);
-        assertTrue(test + " = " + dist, dist <= 17);
+        assertTrue(test + " = " + dist, dist <= 9);
 
         test = "web_test_004";
         dist = distanceToGoldStandard(tok, "test_web", test);
-        assertTrue(test + " = " + dist, dist <= 20);
+        assertTrue(test + " = " + dist, dist == 0);
 
         test = "web_test_005";
         dist = distanceToGoldStandard(tok, "test_web", test);
-        assertTrue(test + " = " + dist, dist <= 8);
+        assertTrue(test + " = " + dist, dist <= 2);
 
         test = "web_test_006";
         dist = distanceToGoldStandard(tok, "test_web", test);
@@ -219,7 +219,7 @@ public class TokenizerCoverTest {
 
         test = "web_test_007";
         dist = distanceToGoldStandard(tok, "test_web", test);
-        assertTrue(test + " = " + dist, dist <= 12);
+        assertTrue(test + " = " + dist, dist <= 8);
 
         test = "web_test_008";
         dist = distanceToGoldStandard(tok, "test_web", test);
@@ -227,7 +227,7 @@ public class TokenizerCoverTest {
 
         test = "web_test_009";
         dist = distanceToGoldStandard(tok, "test_web", test);
-        assertTrue(test + " = " + dist, dist <= 8);
+        assertTrue(test + " = " + dist, dist <= 6);
 
         test = "web_test_010";
         dist = distanceToGoldStandard(tok, "test_web", test);
@@ -235,7 +235,7 @@ public class TokenizerCoverTest {
 
         test = "web_test_011";
         dist = distanceToGoldStandard(tok, "test_web", test);
-        assertTrue(test + " = " + dist, dist <= 28);
+        assertTrue(test + " = " + dist, dist <= 21);
 
         test = "web_test_012";
         dist = distanceToGoldStandard(tok, "test_web", test);
