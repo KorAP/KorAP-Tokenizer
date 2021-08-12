@@ -419,6 +419,19 @@ public class TokenizerTest {
     }
 
     @Test
+    public void testTokenizerPunct2 () {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        String[] tokens = tok.tokenize("Aber das schreibe ich nur Dir. Innstetten darf nicht davon wissen.");
+        assertEquals(tokens[0], "Aber");
+        assertEquals(tokens[5], "Dir");
+        assertEquals(tokens[6], ".");
+        assertEquals(tokens[11], "wissen");
+        assertEquals(tokens[12], ".");
+        assertEquals(tokens.length, 13);
+    }
+
+    
+    @Test
     public void testTokenizerPlusAmpersand () {
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
         String[] tokens = tok.tokenize("&quot;Das ist von C&A!&quot;");
