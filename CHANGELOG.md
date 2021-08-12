@@ -2,6 +2,8 @@
 
 ## 2.2.0.9000
 
+* "Dir." and "dir." are no longer treated as abbreviations.
+
 ## 2.2.0
 
 * Apostrophe and hyphen marked contractions and clitics in English (I've, isn't, Peter's, …) 
