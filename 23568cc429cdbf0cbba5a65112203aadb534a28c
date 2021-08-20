@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d271bad4_5d8045aa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2021-08-20T13:33:36Z",
+      "side": 1,
+      "message": "The question is if [Dd]ir as pronoun is more frequent in DeReKo than as abbreviation ;)\nIn any case, a bias towards pronoun is the more expected error.",
+      "revId": "23568cc429cdbf0cbba5a65112203aadb534a28c",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
+    }
+  ]
+}
