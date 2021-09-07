@@ -386,7 +386,6 @@ public class TokenizerTest {
     }
 
     @Test
-    @Ignore
     public void testTokenizerFile3 () {
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
         String[] tokens = tok.tokenize("Zeig mir c:\\Dokumente\\profile.jpeg");
