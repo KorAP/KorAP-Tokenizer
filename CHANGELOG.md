@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.1
+
+* "du" is no longer treated as an abbreviation.
+
 ## 2.2.0.9000
 
 * "Dir." and "dir." are no longer treated as abbreviations.
