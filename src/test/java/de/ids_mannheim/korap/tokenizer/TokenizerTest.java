@@ -525,6 +525,19 @@ public class TokenizerTest {
     }
 
     @Test
+    public void testTokenizerDu () {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        String[] tokens = tok.tokenize("Ach, da wohnst du.");
+        assertEquals(tokens[0], "Ach");
+        assertEquals(tokens[1], ",");
+        assertEquals(tokens[2], "da");
+        assertEquals(tokens[3], "wohnst");
+        assertEquals(tokens[4], "du");
+        assertEquals(tokens[5], ".");
+        assertEquals(6, tokens.length);
+    }
+
+    @Test
     public void germanTokenizerKnowsGermanOmissionWords () {
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
         String[] tokens = tok.tokenize("D'dorf Ku'damm Lu'hafen M'gladbach W'schaft");
