@@ -16,6 +16,23 @@
       "message": "Should I invite another reviewer?",
       "revId": "7cbc20562818db285b044ffc0049001075f893df",
       "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ae1d2a2_2f6d028c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2021-10-26T15:19:46Z",
+      "side": 1,
+      "message": "No, I just had no time to actually test it, but I think it\u0027s safe 😊",
+      "revId": "7cbc20562818db285b044ffc0049001075f893df",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
     }
   ]
 }
