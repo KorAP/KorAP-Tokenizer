@@ -538,6 +538,37 @@ public class TokenizerTest {
     }
 
     @Test
+    public void testTokenizerTime () {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        String[] tokens = tok.tokenize("Es ist gleich 2:30 Uhr.");
+        assertEquals(tokens[0], "Es");
+        assertEquals(tokens[1], "ist");
+        assertEquals(tokens[2], "gleich");
+        assertEquals(tokens[3], "2:30");
+        assertEquals(tokens[4], "Uhr");
+        assertEquals(tokens[5], ".");
+        assertEquals(6, tokens.length);
+    }
+
+    @Test
+    public void WasteExample () {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        String[] tokens = tok.tokenize("Am 24.1.1806 feierte E. T. A. Hoffmann seinen 30. Geburtstag.");
+        assertEquals(tokens[0], "Am");
+        assertEquals(tokens[1], "24.1.1806");
+        assertEquals(tokens[2], "feierte");
+        assertEquals(tokens[3], "E.");
+        assertEquals(tokens[4], "T.");
+        assertEquals(tokens[5], "A.");
+        assertEquals(tokens[6], "Hoffmann");
+        assertEquals(tokens[7], "seinen");
+        assertEquals(tokens[8], "30.");
+        assertEquals(tokens[9], "Geburtstag");
+        assertEquals(tokens[10], ".");
+        assertEquals(11, tokens.length);
+    }
+    
+    @Test
     public void germanTokenizerKnowsGermanOmissionWords () {
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
         String[] tokens = tok.tokenize("D'dorf Ku'damm Lu'hafen M'gladbach W'schaft");
