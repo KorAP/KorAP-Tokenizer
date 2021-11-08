@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61bea3d1_b2842af1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19
+      },
+      "writtenOn": "2021-11-08T11:02:50Z",
+      "side": 1,
+      "message": "Das Beispiel stammt aus dem Waste-Paper von Bryan.\n\nAnscheinend bist Du bei KorAP-Tokenizer nicht in der Reviewer-Liste.",
+      "revId": "1501f5ab34b936c4491bcf14b38658c77df47501",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
+    }
+  ]
+}
