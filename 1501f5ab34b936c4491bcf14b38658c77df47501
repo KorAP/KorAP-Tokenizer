@@ -16,6 +16,23 @@
       "message": "Das Beispiel stammt aus dem Waste-Paper von Bryan.\n\nAnscheinend bist Du bei KorAP-Tokenizer nicht in der Reviewer-Liste.",
       "revId": "1501f5ab34b936c4491bcf14b38658c77df47501",
       "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0c56236_9e410264",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2021-11-08T11:08:49Z",
+      "side": 1,
+      "message": "Danke für den Hinweis! Hab jetzt alle KorAP-Tokenizer Notifications in den Settings abonniert.",
+      "revId": "1501f5ab34b936c4491bcf14b38658c77df47501",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
     }
   ]
 }
