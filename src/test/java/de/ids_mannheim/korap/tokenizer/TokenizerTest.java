@@ -567,6 +567,30 @@ public class TokenizerTest {
         assertEquals(tokens[10], ".");
         assertEquals(11, tokens.length);
     }
+
+    @Test
+    public void IPtest () {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        String[] tokens = tok.tokenize("Meine IP ist 192.178.168.55.");
+        assertEquals(tokens[0], "Meine");
+        assertEquals(tokens[1], "IP");
+        assertEquals(tokens[2], "ist");
+        assertEquals(tokens[3], "192.178.168.55");
+        assertEquals(tokens[4], ".");
+        assertEquals(5, tokens.length);
+    }
+
+    @Test
+    public void CoronaTest () {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        String[] tokens = tok.tokenize("2G+ soll Covid19 verhindern.");
+        assertEquals(tokens[0], "2G+");
+        assertEquals(tokens[1], "soll");
+        assertEquals(tokens[2], "Covid19");
+        assertEquals(tokens[3], "verhindern");
+        assertEquals(tokens[4], ".");
+        assertEquals(5, tokens.length);
+    }
     
     @Test
     public void germanTokenizerKnowsGermanOmissionWords () {
