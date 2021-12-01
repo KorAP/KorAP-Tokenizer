@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db167d92_722cd64b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19
+      },
+      "writtenOn": "2021-12-01T10:39:36Z",
+      "side": 1,
+      "message": "It may be helpful for the Plusampersand-List to allow this being part of hyphenated tokens, like \"+2G-Regel\", \"Covid19-Erkrankung\" etc.",
+      "revId": "73e6fb45650e1a034b0e82f8e7f083eacec0bce4",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
+    }
+  ]
+}
