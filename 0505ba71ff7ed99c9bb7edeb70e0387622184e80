@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6e26124_58c73cab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2021-12-05T16:50:46Z",
+      "side": 1,
+      "message": "Does not yet work fully:\n\necho \"Nach 2G+-Regelung positiv.\" | java -jar ./target/KorAP-Tokenizer-2.2.1-standalone.jar\nNach\n2G+-Regel\nung\npositiv\n.\n",
+      "revId": "0505ba71ff7ed99c9bb7edeb70e0387622184e80",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
+    }
+  ]
+}
