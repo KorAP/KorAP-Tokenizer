@@ -34,6 +34,23 @@
       "parentUuid": "b6e26124_58c73cab",
       "revId": "0505ba71ff7ed99c9bb7edeb70e0387622184e80",
       "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "549c5bbd_adcc511d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19
+      },
+      "writtenOn": "2021-12-07T14:50:06Z",
+      "side": 1,
+      "message": "I tried to make Plusampersand part of the Word rule, so it can be also part in hyphenated compounds (as in https://github.com/KorAP/Datok/commit/936c0f5005720ecc626c194e8f4976ff14206169) - but it ran out of memory.",
+      "revId": "0505ba71ff7ed99c9bb7edeb70e0387622184e80",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
     }
   ]
 }
