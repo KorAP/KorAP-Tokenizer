@@ -69,6 +69,24 @@
       "parentUuid": "549c5bbd_adcc511d",
       "revId": "0505ba71ff7ed99c9bb7edeb70e0387622184e80",
       "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b74fdf8_9f14d412",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19
+      },
+      "writtenOn": "2021-12-12T13:09:08Z",
+      "side": 1,
+      "message": "I have tried it with -Xss512m, -Xss4g, and -Xss16g - no difference.\n\nIs there an advantage to set it like that instead of as part of the pom?",
+      "parentUuid": "699693a2_55da0bcd",
+      "revId": "0505ba71ff7ed99c9bb7edeb70e0387622184e80",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
     }
   ]
 }
