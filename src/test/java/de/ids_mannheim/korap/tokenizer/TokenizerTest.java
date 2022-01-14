@@ -581,6 +581,16 @@ public class TokenizerTest {
     }
 
     @Test
+    public void wordsCannotStartWithOmissions () {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        String[] tokens = tok.tokenize("'Ddorf 'Kudamm");
+        assertEquals("'", tokens[0]);
+        assertEquals("Ddorf", tokens[1]);
+        assertEquals("'", tokens[2]);
+        assertEquals("Kudamm", tokens[3]);
+    }
+
+    @Test
     public void germanTokenizerDoesNOTSeparateGermanContractions () {
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
         String[] tokens = tok.tokenize("mach's macht's was'n ist's haste willste kannste biste kriegste");

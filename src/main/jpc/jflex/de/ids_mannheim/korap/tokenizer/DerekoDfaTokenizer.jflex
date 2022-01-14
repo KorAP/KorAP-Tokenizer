@@ -534,7 +534,7 @@ XML = <(\/text|\?xml|\?xml-model|\/?raw_text|\/?metadata) ?[^\004\n>]{0,100}>
 EMOTICON = ( [<>]?[BX;8:=][o\-\']?[DdPp()\/3>oO*]+|<\/?3+|ಠ_ಠ|\(-.-\)|\(T_T\)|\(♥_♥\)|\)\':|\)-:|\(-:|\)=|\)o:|\)x|:\'C|:\/|:<|:C|:[|=\(|=\)|=D|=P|>:|D\':|D:|\:|]:|x\(|\^\^|o.O|oO|\\{o}\/|\\m\/|:;\)\)|_\)\)|\*_\*|._.|:wink:|>_<|\*<:-\)|[:;]\)|[;;]" "\))
 
 LC_CONSONANT = [bcdfgjklmnpqrstvwxs]
-OMISSIONWORD = ({p}resqu'île|{a}ujourd\'hui|{q}uelqu\'une?|[^\P{L}Qq]{LETTER}?[^dcjlmnstDCJLNMST][\'`]|{LETTER}+\*\*+{LETTER}*|{LETTER}+\*{LETTER}+|!(!({LETTER}+[\'`]{LC_CONSONANT})|{INIT_CLITIC})){LETTER}*
+OMISSIONWORD = ({p}resqu'île|{a}ujourd\'hui|{q}uelqu\'une?|[^\P{L}Qq]{LETTER}?[^dcjlmnstDCJLNMST{WHITESPACE}][\'`]|{LETTER}+\*\*+{LETTER}*|{LETTER}+\*{LETTER}+|!(!({LETTER}+[\'`]{LC_CONSONANT})|{INIT_CLITIC})){LETTER}*
 
 EXTENSION = (html?|doc|docx?|pptx?|xlsx?|pdf|jpe?g|mp[34]|ogg|png|avi|txt|xml|aac|HTML?|DOCX?|PPTX?|XLSX?|GIF|JPE?G|TXT)
 FNAME = ({LETTER}:[\\/]{LETTER})?({LETTER}|[\\_/-])+\.{EXTENSION}
