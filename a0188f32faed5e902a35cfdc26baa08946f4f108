@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc13cea7_5ba9c460",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21
+      },
+      "writtenOn": "2022-01-14T07:43:47Z",
+      "side": 1,
+      "message": "Why do I stil see this in \"your turn\" list?",
+      "revId": "a0188f32faed5e902a35cfdc26baa08946f4f108",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
+    }
+  ]
+}
