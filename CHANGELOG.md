@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.2
+
+* Bug fix: a single quotation mark at the beginning of a word
+  is no longer interpreted as a beginning of an omission, but as quotation mark token.
+* dependencies updated
+
 ## 2.2.1
 
 * "du." is no longer treated as an abbreviation.
