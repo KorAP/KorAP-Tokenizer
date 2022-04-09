@@ -1,4 +1,7 @@
 # KorAP Tokenizer
+
+[![DOI](https://zenodo.org/badge/319884208.svg)](https://zenodo.org/badge/latestdoi/319884208)
+
 Interface and implementation of a tokenizer and sentence splitter that can be used
 
 * for German, English, French, and with some limitations also for other languages
