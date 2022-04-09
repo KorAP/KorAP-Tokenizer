@@ -16,6 +16,24 @@
       "message": "While I am not a big fan of badges - this one is quite handy.",
       "revId": "7d926b27c9d58602cf664f87dfcd1675b482e8f9",
       "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7fdae8b_ebe8633e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2022-04-09T13:55:50Z",
+      "side": 1,
+      "message": "You\u0027re on a good way ;)",
+      "parentUuid": "ed5ae8e3_68d40e21",
+      "revId": "7d926b27c9d58602cf664f87dfcd1675b482e8f9",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
     }
   ]
 }
