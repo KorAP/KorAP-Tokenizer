@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed5ae8e3_68d40e21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19
+      },
+      "writtenOn": "2022-04-09T12:57:57Z",
+      "side": 1,
+      "message": "While I am not a big fan of badges - this one is quite handy.",
+      "revId": "7d926b27c9d58602cf664f87dfcd1675b482e8f9",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
+    }
+  ]
+}
