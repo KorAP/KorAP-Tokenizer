@@ -2,8 +2,9 @@ package de.ids_mannheim.korap.tokenizer;
 
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayOutputStream;
+
 import opennlp.tools.util.Span;
-import org.apache.maven.surefire.shade.org.apache.commons.io.output.ByteArrayOutputStream;
 import org.junit.Test;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;

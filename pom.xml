@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>groupId</groupId>
+    <groupId>de.ids_mannheim</groupId>
     <artifactId>KorAP-Tokenizer</artifactId>
     <version>2.2.2</version>
 
@@ -261,14 +261,10 @@
             <version>1.9.4</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.maven.surefire</groupId>
-            <artifactId>maven-surefire-common</artifactId>
-            <version>2.22.2</version>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.github.classgraph</groupId>

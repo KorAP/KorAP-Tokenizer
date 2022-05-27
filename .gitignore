@@ -10,3 +10,4 @@ cache_store
 /bin/
 *.log
 i5validation.json
+src/main/jflex/
