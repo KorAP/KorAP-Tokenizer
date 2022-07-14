@@ -131,4 +131,7 @@ if you are not familiar with Gerrit). However, we are also happy to accept comme
 via GitHub.
 
 ## References
-- Beißwenger, Michael / Bartsch, Sabine / Evert, Stefan / Würzner, Kay-Michael. (2016). EmpiriST 2015: A Shared Task on the Automatic Linguistic Annotation of Computer-Mediated Communication and Web Corpora. 44-56. 10.18653/v1/W16-2606. 
+
+* Beißwenger, Michael / Bartsch, Sabine / Evert, Stefan / Würzner, Kay-Michael (2016): EmpiriST 2015: A Shared Task on the Automatic Linguistic Annotation of Computer-Mediated Communication and Web Corpora. 44-56. 10.18653/v1/W16-2606.
+
+* Diewald, Nils / Kupietz, Marc / Lüngen, Harald (2022): Tokenizing on scale – Preprocessing large text corpora on the lexical and sentence level. In Klosa-Kückelhaus, Annette / Engelberg, Stefan / Möhrs, Christine / Storjohann, Petra (eds.): [Proceedings of the XX EURALEX International Congress (EURALEX 2022)](https://euralex2022.ids-mannheim.de/wp-content/uploads/2022/07/Proceedings_11.07.2022.pdf).
