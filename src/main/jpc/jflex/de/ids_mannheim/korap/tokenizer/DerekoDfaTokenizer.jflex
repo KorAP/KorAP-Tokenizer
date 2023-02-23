@@ -253,6 +253,16 @@ import opennlp.tools.util.Span;
         return sentences.toArray(new Span[0]);
     }
 
+    @Override
+    public String[] sentDetect(CharSequence s) {
+        return sentDetect(s.toString());
+    }
+
+    @Override
+    public Span[] sentPosDetect(CharSequence s) {
+        return sentPosDetect(s.toString());
+    }
+
     public final long yychar() {
         return yychar;
     }
