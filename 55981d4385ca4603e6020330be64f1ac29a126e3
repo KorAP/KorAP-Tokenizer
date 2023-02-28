@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89049019_87bcd2cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19
+      },
+      "writtenOn": "2023-02-28T09:24:57Z",
+      "side": 1,
+      "message": "Gibt es eine schnellere Möglichkeit als `mvn clean test` - z.B. mit Erhalt der Artefakte oder eine präferierte Java-Version?\n\nWir sollten wohl auch beim Tokenizer die Dependabot-Aktualisierungen einspielen, aber das lokale Bauen dauert so lang bei mir ....",
+      "revId": "55981d4385ca4603e6020330be64f1ac29a126e3",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
+    }
+  ]
+}
