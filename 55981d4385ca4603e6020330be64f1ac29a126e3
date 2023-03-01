@@ -16,6 +16,23 @@
       "message": "Gibt es eine schnellere Möglichkeit als `mvn clean test` - z.B. mit Erhalt der Artefakte oder eine präferierte Java-Version?\n\nWir sollten wohl auch beim Tokenizer die Dependabot-Aktualisierungen einspielen, aber das lokale Bauen dauert so lang bei mir ....",
       "revId": "55981d4385ca4603e6020330be64f1ac29a126e3",
       "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d93d36d0_b0d688ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19
+      },
+      "writtenOn": "2023-03-01T06:03:07Z",
+      "side": 1,
+      "message": "Already outdated ... vermutlich ist es besser, sich schlicht auf die CI-Tests zu verlassen als nochmal lokal zu bauen.",
+      "revId": "55981d4385ca4603e6020330be64f1ac29a126e3",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
     }
   ]
 }
