@@ -6,7 +6,7 @@
 
     <groupId>de.ids_mannheim</groupId>
     <artifactId>KorAP-Tokenizer</artifactId>
-    <version>2.2.2</version>
+    <version>2.2.3</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -93,7 +93,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.1.2</version>
                 <configuration>
                     <threadCount>15</threadCount>
                     <reuseForks>true</reuseForks>
@@ -112,7 +112,7 @@
                         <path>
                             <groupId>info.picocli</groupId>
                             <artifactId>picocli-codegen</artifactId>
-                            <version>4.7.1</version>
+                            <version>4.7.5</version>
                         </path>
                     </annotationProcessorPaths>
                     <compilerArgs>
@@ -251,14 +251,14 @@
         <dependency>
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
-            <version>4.7.1</version>
+            <version>4.7.5</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.opennlp/opennlp-tools -->
         <dependency>
             <groupId>org.apache.opennlp</groupId>
             <artifactId>opennlp-tools</artifactId>
-            <version>2.1.1</version>
+            <version>2.3.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -269,7 +269,7 @@
         <dependency>
             <groupId>io.github.classgraph</groupId>
             <artifactId>classgraph</artifactId>
-            <version>4.8.157</version>
+            <version>4.8.161</version>
         </dependency>
     </dependencies>
 </project>
