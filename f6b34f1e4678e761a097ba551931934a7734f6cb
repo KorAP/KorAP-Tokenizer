@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d70aaab_64d418a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2023-09-05T15:57:22Z",
+      "side": 1,
+      "message": "Changelog updated, but let\u0027s wait for dependabot",
+      "revId": "f6b34f1e4678e761a097ba551931934a7734f6cb",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
+    }
+  ]
+}
