@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "722ea177_3861b90c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19
+      },
+      "writtenOn": "2023-09-05T13:27:14Z",
+      "side": 1,
+      "message": "Tests ran fine on my system. Dependabot stopped reporting in KorAP-Tokenizer, so I think this is a necessary move. Also prior to Maven release.",
+      "revId": "ec604d7f2948b54adb5cdcc20e41bccc83d9b594",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
+    }
+  ]
+}
