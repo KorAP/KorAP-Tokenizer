@@ -14,8 +14,8 @@ The de-variant is used for the German Reference Corpus DeReKo. Being based on fi
 the tokenizers are potentially not as accurate as language model based ones, but with ~5 billion words per hour typically more efficient.
 An important feature in the DeReKo/KorAP context is also that token character offsets can be reported, which can be used for applying standoff annotations.
  
-The include mplementations of the `KorapTokenizer` interface also implement the [`opennlp.tools.tokenize.Tokenizer`](https://opennlp.apache.org/docs/1.8.2/apidocs/opennlp-tools/opennlp/tools/tokenize/Tokenizer.html)
-and [`opennlp.tools.sentdetect.SentenceDetector`](https://opennlp.apache.org/docs/1.8.2/apidocs/opennlp-tools/opennlp/tools/sentdetect/SentenceDetector.html)
+The included implementations of the `KorapTokenizer` interface also implement the [`opennlp.tools.tokenize.Tokenizer`](https://opennlp.apache.org/docs/2.3.0/apidocs/opennlp-tools/opennlp/tools/tokenize/Tokenizer.html)
+and [`opennlp.tools.sentdetect.SentenceDetector`](https://opennlp.apache.org/docs/2.3.0/apidocs/opennlp-tools/opennlp/tools/sentdetect/SentenceDetector.html)
 interfaces and can thus be used as a drop-in replacements in OpenNLP applications.
 
 The underlying scanner is based on the Lucene scanner with modifications from [David Hall](https://github.com/dlwh).
@@ -38,7 +38,7 @@ By default, KorAP tokenizer reads from standard input and writes to standard out
 
 #### Split English text into tokens
 ```
-$ echo "It's working." | java -jar target/KorAP-Tokenizer-2.2.2-standalone.jar -l en
+$ echo "It's working." | java -jar target/KorAP-Tokenizer-2.2.3-standalone.jar -l en
 It
 's
 working
@@ -47,7 +47,7 @@ working
 #### Split French text into tokens and sentences
 ```
 $ echo "C'est une phrase. Ici, il s'agit d'une deuxième phrase." \
-  | java -jar target/KorAP-Tokenizer-2.2.2-standalone.jar -s -l fr
+  | java -jar target/KorAP-Tokenizer-2.2.3-standalone.jar -s -l fr
 C'
 est
 une
@@ -72,7 +72,7 @@ With the `--positions` option, for example, the tokenizer prints all offsets of 
 In order to end a text, flush the output and reset the character position, an EOT character (0x04) can be used.
 ```
 $ echo -n -e 'This is a text.\x0a\x04\x0aAnd this is another text.\n\x04\n' |\
-     java -jar target/KorAP-Tokenizer-2.2.2-standalone.jar  --positions
+     java -jar target/KorAP-Tokenizer-2.2.3-standalone.jar  --positions
 This
 is
 a
@@ -90,7 +90,7 @@ text
 #### Print token and sentence offset
 ```
 echo -n -e ' This ist a start of a text. And this is a sentence!!! But what the hack????\x0a\x04\x0aAnd this is another text.'  |\
-   java -jar target/KorAP-Tokenizer-2.2.2-standalone.jar --no-tokens --positions --sentence-boundaries
+   java -jar target/KorAP-Tokenizer-2.2.3-standalone.jar --no-tokens --positions --sentence-boundaries
 1 5 6 9 10 11 12 17 18 20 21 22 23 27 27 28 29 32 33 37 38 40 41 42 43 51 51 54 55 58 59 63 64 67 68 72 72 76
 1 28 29 54 55 76
 0 3 4 8 9 11 12 19 20 24 24 25
@@ -111,7 +111,10 @@ Alternatively, you can also provide `KorAPTokenizer` implementations independent
 * [Marc Kupietz](https://www.ids-mannheim.de/digspra/personal/kupietz.html)
 * [Nils Diewald](https://www.ids-mannheim.de/digspra/personal/diewald.html)
 
-Copyright (c) 2021, [Leibniz Institute for the German Language](http://www.ids-mannheim.de/), Mannheim, Germany
+**Contributor**:
+* [Gregor Middell](https://github.com/gremid)
+
+Copyright (c) 2023, [Leibniz Institute for the German Language](http://www.ids-mannheim.de/), Mannheim, Germany
 
 This package is developed as part of the [KorAP](http://korap.ids-mannheim.de/)
 Corpus Analysis Platform at the Leibniz Institute for German Language
