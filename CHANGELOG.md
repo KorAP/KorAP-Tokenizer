@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.2.3
+
+* Updated dependencies
+* Minimum Java version raised to 17
+* Fixed group id in pom.xml
+* Removed compile dependency on Maven Surefire
+* Build artifacts in src/main/jflex are now ignored by git
+* java.io's ByteArrayOutputStream used instead of 3rd-party class
+
 ## 2.2.2
 
 * Bug fix: a single quotation mark at the beginning of a word
