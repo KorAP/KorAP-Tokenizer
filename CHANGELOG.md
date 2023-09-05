@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.3
+
+* dependencies updated
+
 ## 2.2.2
 
 * Bug fix: a single quotation mark at the beginning of a word

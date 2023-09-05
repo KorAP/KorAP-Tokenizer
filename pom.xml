@@ -6,7 +6,7 @@
 
     <groupId>de.ids_mannheim.korap.tokenizer</groupId>
     <artifactId>KorAP-Tokenizer</artifactId>
-    <version>2.2.2</version>
+    <version>2.2.3</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -112,7 +112,7 @@
                         <path>
                             <groupId>info.picocli</groupId>
                             <artifactId>picocli-codegen</artifactId>
-                            <version>4.7.4</version>
+                            <version>4.7.5</version>
                         </path>
                     </annotationProcessorPaths>
                     <compilerArgs>
@@ -251,14 +251,14 @@
         <dependency>
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
-            <version>4.7.4</version>
+            <version>4.7.5</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.opennlp/opennlp-tools -->
         <dependency>
             <groupId>org.apache.opennlp</groupId>
             <artifactId>opennlp-tools</artifactId>
-            <version>2.2.0</version>
+            <version>2.3.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
