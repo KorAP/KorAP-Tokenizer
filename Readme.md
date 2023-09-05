@@ -38,7 +38,7 @@ By default, KorAP tokenizer reads from standard input and writes to standard out
 
 #### Split English text into tokens
 ```
-$ echo "It's working." | java -jar target/KorAP-Tokenizer-2.2.2-standalone.jar -l en
+$ echo "It's working." | java -jar target/KorAP-Tokenizer-2.2.3-standalone.jar -l en
 It
 's
 working
@@ -47,7 +47,7 @@ working
 #### Split French text into tokens and sentences
 ```
 $ echo "C'est une phrase. Ici, il s'agit d'une deuxième phrase." \
-  | java -jar target/KorAP-Tokenizer-2.2.2-standalone.jar -s -l fr
+  | java -jar target/KorAP-Tokenizer-2.2.3-standalone.jar -s -l fr
 C'
 est
 une
@@ -72,7 +72,7 @@ With the `--positions` option, for example, the tokenizer prints all offsets of 
 In order to end a text, flush the output and reset the character position, an EOT character (0x04) can be used.
 ```
 $ echo -n -e 'This is a text.\x0a\x04\x0aAnd this is another text.\n\x04\n' |\
-     java -jar target/KorAP-Tokenizer-2.2.2-standalone.jar  --positions
+     java -jar target/KorAP-Tokenizer-2.2.3-standalone.jar  --positions
 This
 is
 a
@@ -90,7 +90,7 @@ text
 #### Print token and sentence offset
 ```
 echo -n -e ' This ist a start of a text. And this is a sentence!!! But what the hack????\x0a\x04\x0aAnd this is another text.'  |\
-   java -jar target/KorAP-Tokenizer-2.2.2-standalone.jar --no-tokens --positions --sentence-boundaries
+   java -jar target/KorAP-Tokenizer-2.2.3-standalone.jar --no-tokens --positions --sentence-boundaries
 1 5 6 9 10 11 12 17 18 20 21 22 23 27 27 28 29 32 33 37 38 40 41 42 43 51 51 54 55 58 59 63 64 67 68 72 72 76
 1 28 29 54 55 76
 0 3 4 8 9 11 12 19 20 24 24 25

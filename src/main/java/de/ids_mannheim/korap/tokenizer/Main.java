@@ -14,7 +14,7 @@ import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 @CommandLine.Command(mixinStandardHelpOptions = true,
-        name = "koraptokenizer", version = "2.2.1", description = "Tokenizes (and sentence splits) text input.")
+        name = "koraptokenizer", version = "2.2.3", description = "Tokenizes (and sentence splits) text input.")
 public class Main implements Callable<Integer> {
 
     public final String DEFAULT_LANGUAGE = "de";
