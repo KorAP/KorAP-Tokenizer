@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c64017a9_8252f74f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2023-09-06T07:38:46Z",
+      "side": 1,
+      "message": "@nils@diewald-online.de: Please have a last look before it goes to maven and zenodo",
+      "revId": "c2f448ce40518e8df5fa6e75c22580be09b00ad2",
+      "serverId": "626241b7-b7d0-4197-b843-1ee23887649c"
+    }
+  ]
+}
