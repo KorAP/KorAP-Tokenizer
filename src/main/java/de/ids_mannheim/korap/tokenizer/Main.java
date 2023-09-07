@@ -13,16 +13,37 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
+/**
+ * The type Main.
+ *
+ * @author kupietz
+ * @version $Id: $Id
+ */
 @CommandLine.Command(mixinStandardHelpOptions = true,
         name = "koraptokenizer", version = "2.2.3", description = "Tokenizes (and sentence splits) text input.")
 public class Main implements Callable<Integer> {
 
+    /**
+     * The Default language.
+     */
     public final String DEFAULT_LANGUAGE = "de";
+    /**
+     * The Default tokenizer class name.
+     */
     public final String DEFAULT_TOKENIZER_CLASS_NAME = DerekoDfaTokenizer_de.class.getName();
 
+    /**
+     * The Spec.
+     */
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec;
 
+    /**
+     * Gets tokenizer for language.
+     *
+     * @param languageTwoLetterCode the language two letter code
+     * @return the tokenizer for language
+     */
     public static String getTokenizerForLanguage(String languageTwoLetterCode) {
         try (ScanResult scanResult = new ClassGraph().enableAllInfo().acceptPackages("*")
                 .scan()) {
@@ -42,11 +63,22 @@ public class Main implements Callable<Integer> {
         return null;
     }
 
+    /**
+     * The type Available languages list.
+     */
     static class AvailableLanguagesList extends ArrayList<String> {
+        /**
+         * Instantiates a new Available languages list.
+         */
         AvailableLanguagesList() {
             super(listKorAPTokenizerLanguages());
         }
 
+        /**
+         * List kor ap tokenizer languages list.
+         *
+         * @return the list
+         */
         static List<String> listKorAPTokenizerLanguages() {
             ArrayList<String> languages = new ArrayList<>();
             try (ScanResult scanResult = new ClassGraph().enableAllInfo().acceptPackages("*")
@@ -64,11 +96,22 @@ public class Main implements Callable<Integer> {
         }
     }
 
+    /**
+     * The type Available korap tokenizer list.
+     */
     static class AvailableKorapTokenizerList extends ArrayList<String> {
+        /**
+         * Instantiates a new Available korap tokenizer list.
+         */
         AvailableKorapTokenizerList() {
             super(listKorAPTokenizerImplementations());
         }
 
+        /**
+         * List kor ap tokenizer implementations list.
+         *
+         * @return the list
+         */
         static List<String> listKorAPTokenizerImplementations() {
             List<String> korapTokenizerClassNames;
             try (ScanResult scanResult = new ClassGraph().enableAllInfo().acceptPackages("*")
@@ -80,13 +123,25 @@ public class Main implements Callable<Integer> {
         }
     }
 
+    /**
+     * The Tokenizer class name.
+     */
     @CommandLine.Option(names = {"-T", "--tokenizer-class"},
             completionCandidates= AvailableKorapTokenizerList.class,
             description = "Class name of the actual tokenizer that will be used (candidates: ${COMPLETION-CANDIDATES} default: ${DEFAULT-VALUE})")
     String tokenizerClassName = DEFAULT_TOKENIZER_CLASS_NAME;
 
 
+    /**
+     * The Language.
+     */
     String language = DEFAULT_LANGUAGE;
+
+    /**
+     * Sets language.
+     *
+     * @param requestedLanguage the requested language
+     */
     @CommandLine.Option(names = {"-l", "--language"},
             completionCandidates = AvailableLanguagesList.class,
             description = "ISO-639-1 two letter language code (valid candidates: ${COMPLETION-CANDIDATES}; default: " + DEFAULT_LANGUAGE + ")")
@@ -101,31 +156,55 @@ public class Main implements Callable<Integer> {
         language = requestedLanguage;
     }
 
+    /**
+     * The Tokens.
+     */
     @CommandLine.Option(names = {"--no-tokens"}, negatable = true, description = "Print tokens (default: ${DEFAULT-VALUE})")
     boolean tokens = true;
 
+    /**
+     * The Positions.
+     */
     @CommandLine.Option(names = {"-p", "--positions"}, description = "Print token start and end positions as character offsets (default: ${DEFAULT-VALUE})")
     boolean positions = false;
 
+    /**
+     * The Sentencize.
+     */
     @CommandLine.Option(names = {"-s", "--sentence-boundaries"}, description = "Print sentence boundary positions (default: ${DEFAULT-VALUE})")
     boolean sentencize = false;
 
+    /**
+     * The Ktt.
+     */
     @CommandLine.Option(names = {"-ktt"}, hidden = true, description = "Deprecated. For internal use only. (default: ${DEFAULT-VALUE})")
     boolean ktt = false;
 
+    /**
+     * The Normalize.
+     */
     @CommandLine.Option(names = {"-n", "--normalize"}, description = "Normalize tokens (default: ${DEFAULT-VALUE})")
     boolean normalize = false;
 
+    /**
+     * The Output filename.
+     */
     @SuppressWarnings("CanBeFinal")
     @CommandLine.Option(names = {"-o",
             "--output-file"}, paramLabel = "FILE", description = "Output file (default: ${DEFAULT-VALUE})")
     String output_filename = "-";
 
+    /**
+     * The Encoding.
+     */
     @SuppressWarnings("CanBeFinal")
     @CommandLine.Option(names = {"-e",
             "--encoding"}, description = "Input encoding (default: ${DEFAULT-VALUE})")
     Charset encoding = StandardCharsets.UTF_8;
 
+    /**
+     * The Force overwrite.
+     */
     @SuppressWarnings("CanBeFinal")
     @CommandLine.Option(names = {"--force"}, description = "Force overwrite (default: ${DEFAULT-VALUE})")
     boolean force_overwrite = false;
@@ -134,14 +213,23 @@ public class Main implements Callable<Integer> {
     @CommandLine.Parameters(arity = "0..*", paramLabel = "FILES", description = "input files")
     private final ArrayList<String> inputFiles = new ArrayList<>();
 
+    /**
+     * Instantiates a new Main.
+     */
     public Main() {
 
     }
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         new CommandLine(new Main()).execute(args);
     }
 
+    /** {@inheritDoc} */
     @Override
     public Integer call() throws FileNotFoundException {
         final PrintStream output_stream;
