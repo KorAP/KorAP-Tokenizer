@@ -6,7 +6,23 @@
 
     <groupId>de.ids_mannheim.korap.tokenizer</groupId>
     <artifactId>KorAP-Tokenizer</artifactId>
-    <version>2.2.3</version>
+    <version>2.2.3-SNAPSHOT</version>
+
+    <name>KorAP-Tokenizer</name>
+    <description>DFA tokenizer with character offset output, large abbreviation tables and CMC support.</description>
+    <url>https://github.com/KorAP/KorAP-Tokenizer</url>
+
+    <scm>
+        <connection>scm:git:https://korap.ids-mannheim.de/gerrit/KorAP/KorAP-Tokenizer</connection>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
