@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.ids_mannheim.korap.tokenizer</groupId>
     <artifactId>KorAP-Tokenizer</artifactId>
-    <version>2.2.3-SNAPSHOT</version>
+    <version>2.2.4-SNAPSHOT</version>
 
     <name>KorAP-Tokenizer</name>
     <description>DFA tokenizer with character offset output, large abbreviation tables and CMC support.</description>
@@ -14,7 +12,8 @@
 
     <scm>
         <connection>scm:git:https://korap.ids-mannheim.de/gerrit/KorAP/KorAP-Tokenizer</connection>
-    </scm>
+      <tag>HEAD</tag>
+  </scm>
 
     <licenses>
         <license>
@@ -233,7 +232,7 @@
                 <configuration>
                     <binFolder>bin</binFolder>
                     <binFileExtensions>
-                        <unix></unix>
+                        <unix />
                     </binFileExtensions>
                     <programs>
                         <program>
