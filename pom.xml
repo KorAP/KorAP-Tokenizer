@@ -30,8 +30,9 @@
 
     <scm>
         <connection>scm:git:https://korap.ids-mannheim.de/gerrit/KorAP/KorAP-Tokenizer</connection>
-      <tag>HEAD</tag>
-  </scm>
+        <developerConnection>scm:git:ssh://kupietz@korap.ids-mannheim.de:29418/KorAP/KorAP-Tokenizer</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 
     <licenses>
         <license>
