@@ -6,18 +6,12 @@ import java.nio.file.AccessDeniedException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 
-/**
- * The type Utils.
- *
- * @author kupietz
- * @version $Id: $Id
- */
 public class Utils {
     /**
-     * Create file file.
+     * Create a file.
      *
-     * @param fname           the fname
-     * @param force_overwrite the force overwrite
+     * @param fname           file name
+     * @param force_overwrite force overwrite flag
      * @return the file
      */
     public static File createFile(String fname, boolean force_overwrite) {

@@ -7,12 +7,6 @@ import java.io.PrintStream;
 import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 
-/**
- * The interface Korap tokenizer.
- *
- * @author kupietz
- * @version $Id: $Id
- */
 public interface KorapTokenizer extends opennlp.tools.tokenize.Tokenizer, opennlp.tools.sentdetect.SentenceDetector {
     /**
      * Scan.
@@ -24,7 +18,7 @@ public interface KorapTokenizer extends opennlp.tools.tokenize.Tokenizer, opennl
     /**
      * Mainly targeted language(s)
      *
-     * @return list of ISO 639 alpha-2 or alpha-3 language codes
+     * @return array of ISO 639 alpha-2 or alpha-3 language codes
      * @apiNote will later be used to find appropriate implementations via reflection
      */
     CharSequence[] getTargetLanguages();
@@ -92,12 +86,6 @@ public interface KorapTokenizer extends opennlp.tools.tokenize.Tokenizer, opennl
      */
     String[] sentDetect(String s);
 
-    /**
-     * Sent pos detect span [ ].
-     *
-     * @param s the s
-     * @return the span [ ]
-     */
     Span[] sentPosDetect(String s);
 
     /**
@@ -125,67 +113,31 @@ public interface KorapTokenizer extends opennlp.tools.tokenize.Tokenizer, opennl
             return this;
         }
 
-        /**
-         * Split sentences builder.
-         *
-         * @param splitSentences the split sentences
-         * @return the builder
-         */
         public Builder splitSentences(boolean splitSentences) {
             this.splitSentences = splitSentences;
             return this;
         }
 
-        /**
-         * Sets echo.
-         *
-         * @param echo the echo
-         * @return the echo
-         */
         public Builder setEcho(boolean echo) {
             this.echo = echo;
             return this;
         }
 
-        /**
-         * Print offsets builder.
-         *
-         * @param printOffsets the print offsets
-         * @return the builder
-         */
         public Builder printOffsets(boolean printOffsets) {
             this.printOffsets = printOffsets;
             return this;
         }
 
-        /**
-         * Print tokens builder.
-         *
-         * @param printTokens the print tokens
-         * @return the builder
-         */
         public Builder printTokens(boolean printTokens) {
             this.printTokens = printTokens;
             return this;
         }
 
-        /**
-         * Input reader builder.
-         *
-         * @param inputReader the input reader
-         * @return the builder
-         */
         public Builder inputReader(Reader inputReader) {
             this.inputReader = inputReader;
             return this;
         }
 
-        /**
-         * Normalize builder.
-         *
-         * @param normalize the normalize
-         * @return the builder
-         */
         public Builder normalize(boolean normalize) {
             this.normalize = normalize;
             return this;
