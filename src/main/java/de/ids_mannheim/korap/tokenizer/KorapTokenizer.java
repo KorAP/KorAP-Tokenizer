@@ -5,6 +5,7 @@ import opennlp.tools.util.Span;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Reader;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * The interface Korap tokenizer.
@@ -208,8 +209,8 @@ public interface KorapTokenizer extends opennlp.tools.tokenize.Tokenizer, opennl
          * @throws IllegalAccessException the illegal access exception
          * @throws InstantiationException the instantiation exception
          */
-        public KorapTokenizer build() throws IllegalAccessException, InstantiationException {
-            KorapTokenizer korapTokenizer = (KorapTokenizer) tokenizerClass.newInstance();
+        public KorapTokenizer build() throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+            KorapTokenizer korapTokenizer = (KorapTokenizer) tokenizerClass.getDeclaredConstructor().newInstance();
             korapTokenizer.setEcho(echo);
             korapTokenizer.setInputReader(inputReader);
             korapTokenizer.setOutputStream(outputStream);

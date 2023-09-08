@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
 
 @RunWith(JUnit4.class)
 public class TokenizerTest {
@@ -717,7 +718,7 @@ public class TokenizerTest {
     }
 
     @Test
-    public void testTextBreakOutputArchive () throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+    public void testTextBreakOutputArchive () throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         DerekoDfaTokenizer_de tok = (DerekoDfaTokenizer_de) new KorapTokenizer.Builder()
                 .tokenizerClassName(DerekoDfaTokenizer_de.class.getName())
                 .printOffsets(true)
