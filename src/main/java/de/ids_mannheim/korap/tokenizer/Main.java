@@ -4,13 +4,17 @@ import io.github.classgraph.*;
 import picocli.CommandLine;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 import java.util.stream.Collectors;
 
 /**
@@ -20,7 +24,7 @@ import java.util.stream.Collectors;
  * @version $Id: $Id
  */
 @CommandLine.Command(mixinStandardHelpOptions = true,
-        name = "koraptokenizer", version = "2.2.3", description = "Tokenizes (and sentence splits) text input.")
+        name = "koraptokenizer", versionProvider = Main.ManifestVersionProvider.class, description = "Tokenizes (and sentence splits) text input.")
 public class Main implements Callable<Integer> {
 
     /**
@@ -270,5 +274,33 @@ public class Main implements Callable<Integer> {
             output_stream.close();
         }
         return 0;
+    }
+
+    static class ManifestVersionProvider implements CommandLine.IVersionProvider {
+        public String[] getVersion() throws Exception {
+            Enumeration<URL> resources = CommandLine.class.getClassLoader().getResources("META-INF/MANIFEST.MF");
+            while (resources.hasMoreElements()) {
+                URL url = resources.nextElement();
+                try {
+                    Manifest manifest = new Manifest(url.openStream());
+                    if (isApplicableManifest(manifest)) {
+                        Attributes attr = manifest.getMainAttributes();
+                        return new String[] {(String) get(attr, "Implementation-Version")};
+                    }
+                } catch (IOException ex) {
+                    return new String[] { "Unable to read from " + url + ": " + ex };
+                }
+            }
+            return new String[0];
+        }
+
+        private boolean isApplicableManifest(Manifest manifest) {
+            Attributes attributes = manifest.getMainAttributes();
+            return "KorAP-Tokenizer".equals(get(attributes, "Implementation-Title"));
+        }
+
+        private static Object get(Attributes attributes, String key) {
+            return attributes.get(new Attributes.Name(key));
+        }
     }
 }
