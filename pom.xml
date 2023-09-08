@@ -10,6 +10,24 @@
     <description>DFA tokenizer with character offset output, large abbreviation tables and CMC support.</description>
     <url>https://github.com/KorAP/KorAP-Tokenizer</url>
 
+    <organization>
+        <name>Leibniz-Institut für Deutsche Sprache</name>
+        <url>https://www.ids-mannheim.de</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <id>kupietz</id>
+            <name>Marc Kupietz</name>
+            <email>kupietz@ids-mannheim.de</email>
+        </developer>
+        <developer>
+            <id>diewald</id>
+            <name>Nils Diewald</name>
+            <email>diewald@ids-mannheim.de</email>
+        </developer>
+    </developers>
+
     <scm>
         <connection>scm:git:https://korap.ids-mannheim.de/gerrit/KorAP/KorAP-Tokenizer</connection>
       <tag>HEAD</tag>
