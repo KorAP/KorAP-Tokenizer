@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.4
+
+* minor code cleanups
+* some API documentation added
+
 ## 2.2.3
 
 * Updated dependencies
