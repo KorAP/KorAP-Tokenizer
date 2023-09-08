@@ -32,7 +32,7 @@
     <scm>
         <connection>scm:git:https://korap.ids-mannheim.de/gerrit/KorAP/KorAP-Tokenizer</connection>
         <developerConnection>scm:git:ssh://kupietz@korap.ids-mannheim.de:29418/KorAP/KorAP-Tokenizer</developerConnection>
-        <tag>HEAD</tag>
+        <url>https://github.com/KorAP/KorAP-Tokenizer</url>
     </scm>
 
     <licenses>
