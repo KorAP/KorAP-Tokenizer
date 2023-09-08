@@ -1,6 +1,10 @@
 # Changelog
 
-## 2.2.4
+## 2.2.5
+
+* adds more ossrh sync data to maven pom
+
+## 2.2.4 [unreleased]
 
 * minor code cleanups
 * some API documentation added
