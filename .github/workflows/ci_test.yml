@@ -18,4 +18,4 @@ jobs:
       - name: Build and install
         env:
           MAVEN_OPTS: -Xss8m -Xms512m -Xmx4g
-        run: mvn install
+        run: mvn install -Dgpg.skip=true -B -V
