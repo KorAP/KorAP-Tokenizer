@@ -258,7 +258,7 @@ public class TokenizerTest {
     }
 
     @Test
-    public void testTokenizerEmoji1 () {
+    public void testTokenizerEmoticon1 () {
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
         String[] tokens = tok.tokenize("Das ist toll! ;)");
         assertEquals(tokens[0], "Das");
@@ -269,6 +269,42 @@ public class TokenizerTest {
         assertEquals(tokens.length, 5);
     }
 
+    @Test
+    public void testTokenizerEmojiSimple () {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        String[] tokens = tok.tokenize("Das ist toll! 👩");
+        assertEquals(tokens[0], "Das");
+        assertEquals(tokens[1], "ist");
+        assertEquals(tokens[2], "toll");
+        assertEquals(tokens[3], "!");
+        assertEquals(tokens[4], "👩");
+        assertEquals(tokens.length, 5);
+    }
+
+    @Test
+    public void testTokenizerEmojiMod () {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        String[] tokens = tok.tokenize("Das ist toll! 👩🏻");
+        assertEquals(tokens[0], "Das");
+        assertEquals(tokens[1], "ist");
+        assertEquals(tokens[2], "toll");
+        assertEquals(tokens[3], "!");
+        assertEquals(tokens[4], "👩🏻");
+        assertEquals(tokens.length, 5);
+    }
+
+    @Test
+    public void testTokenizerEmojiZWJ () {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        String[] tokens = tok.tokenize("Das ist toll! 👨‍👩‍👧");
+        assertEquals(tokens[0], "Das");
+        assertEquals(tokens[1], "ist");
+        assertEquals(tokens[2], "toll");
+        assertEquals(tokens[3], "!");
+        assertEquals(tokens[4], "👨‍👩‍👧");
+        assertEquals(tokens.length, 5);
+    }
+    
     @Test
     public void testTokenizerRef1 () {
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
