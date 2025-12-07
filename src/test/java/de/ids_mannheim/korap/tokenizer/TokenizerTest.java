@@ -333,6 +333,19 @@ public class TokenizerTest {
         assertEquals(tokens.length, 4);
     }
 
+    // Regression test for https://github.com/KorAP/KorAP-Tokenizer/issues/115
+    @Test
+    public void testTokenizerGendersternAfterHyphen () {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        String[] tokens = tok.tokenize("Die Serb*innen wie die Kosovo-Albaner*innen");
+        assertEquals("Die", tokens[0]);
+        assertEquals("Serb*innen", tokens[1]);
+        assertEquals("wie", tokens[2]);
+        assertEquals("die", tokens[3]);
+        assertEquals("Kosovo-Albaner*innen", tokens[4]);
+        assertEquals(5, tokens.length);
+    }
+
     @Test
     // Probably interpreted as HOST
     public void testTokenizerFileExtension1 () {

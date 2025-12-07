@@ -1,5 +1,10 @@
 # Changelog
 
+
+## 2.2.6 [unreleased]
+
+* Fixed genderstern and omission asterisk breaking after hyphens (issue #115)
+
 ## 2.2.5
 
 * adds more ossrh sync data to maven pom

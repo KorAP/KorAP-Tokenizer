@@ -26,7 +26,7 @@ and some updates for handling computer mediated communication, optimized and tes
 
 ## Installation
 ```shell script
-mvn clean install
+mvn clean package
 ```
 #### Note
 Because of the large table of abbreviations, the conversion from the jflex source to java,

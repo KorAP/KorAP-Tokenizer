@@ -635,7 +635,7 @@ d{Q} / ye                                                       {return currentT
 
 // normal stuff
 // dashed words
-{WORD}({DASH}{NEWLINE}*{WORD})+                                { return currentToken();}
+{WORD}({DASH}{NEWLINE}*({WORD}|{OMISSIONWORD}))+                 { return currentToken();}
 {WORD}{DASH}                                                   { return currentToken();}
 {TWITTER_HANDLE}                                               { return currentToken(); }
 {TWITTER_HASHTAG}                                              { return currentToken(); }
