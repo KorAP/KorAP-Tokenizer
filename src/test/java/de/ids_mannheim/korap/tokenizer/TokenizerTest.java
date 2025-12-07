@@ -373,6 +373,28 @@ public class TokenizerTest {
         assertEquals(5, tokens.length);
     }
 
+    // Regression test for https://github.com/KorAP/KorAP-Tokenizer/issues/114
+    @Test
+    public void testTokenizerWikipediaEmojiTemplate () {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        
+        // Test Wikipedia emoji template from the issue
+        String[] tokens = tok.tokenize("Ein Smiley [_EMOJI:{{S|;)}}_] hier");
+        assertEquals("Ein", tokens[0]);
+        assertEquals("Smiley", tokens[1]);
+        assertEquals("[_EMOJI:{{S|;)}}_]", tokens[2]); // Should be one token
+        assertEquals("hier", tokens[3]);
+        assertEquals(4, tokens.length);
+        
+        // Test simple pragma still works
+        tokens = tok.tokenize("Name: [_ANONYMIZED_] Ende");
+        assertEquals("Name", tokens[0]);
+        assertEquals(":", tokens[1]);
+        assertEquals("[_ANONYMIZED_]", tokens[2]); // Should be one token
+        assertEquals("Ende", tokens[3]);
+        assertEquals(4, tokens.length);
+    }
+
     @Test
     // Probably interpreted as HOST
     public void testTokenizerFileExtension1 () {

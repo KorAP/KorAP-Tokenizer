@@ -573,8 +573,8 @@ EMOJI_COMPLEX = {EMOJI_BASE}{VARIATION_SELECTOR}?({SKIN_TONE_MODIFIER}|{KEYCAP})
 
 WORD = ({IRISH_O}?{ALPHANUM}+|[Qq]ur{Q}an)
 
-// pragmas used for anonymization etc.
-PRAGMA = \[_[A-Z\-]+_\]
+// pragmas used for anonymization etc., optionally with content parameter (issue #114)
+PRAGMA = \[_[A-Z\-]+(:[^\[\]]+)?_\]
 
 %include language-specific_/*$target.language$*/.jflex-macro
 

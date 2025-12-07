@@ -5,6 +5,7 @@
 
 * Fixed genderstern and omission asterisk breaking after hyphens (issue #115)
 * Added emoji complex support (issue #116)
+* Added Wikipedia emoji template support (issue #114)
 
 ## 2.2.5
 
