@@ -4,6 +4,7 @@
 ## 2.2.6 [unreleased]
 
 * Fixed genderstern and omission asterisk breaking after hyphens (issue #115)
+* Added emoji complex support (issue #116)
 
 ## 2.2.5
 

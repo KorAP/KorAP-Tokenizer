@@ -557,6 +557,20 @@ TWITTER_HASHTAG = #{ALPHANUM}
 // blocks of question marks and exclamation marks are one token
 LONG_END_PUNCT = [?!][?!1]+
 
+// Emoji components (Issue #113: Support emojis with modifiers and ZWJs)
+ZWJ = \u200D
+SKIN_TONE_MODIFIER = [\u{1F3FB}-\u{1F3FF}]
+VARIATION_SELECTOR = [\uFE0E\uFE0F]
+KEYCAP = \u20E3
+REGIONAL_INDICATOR = [\u{1F1E6}-\u{1F1FF}]
+
+// Base emoji ranges (major emoji blocks)
+EMOJI_BASE = ([\u{1F300}-\u{1F9FF}] | [\u{1FA00}-\u{1FAFF}] | [\u{2600}-\u{27BF}] | [\u{2300}-\u{23FF}] | [\u{2700}-\u{27BF}])
+
+// Emoji complex: base emoji optionally followed by modifiers, with ZWJ chaining
+EMOJI_COMPLEX = {EMOJI_BASE}{VARIATION_SELECTOR}?({SKIN_TONE_MODIFIER}|{KEYCAP})?({ZWJ}{EMOJI_BASE}{VARIATION_SELECTOR}?{SKIN_TONE_MODIFIER}?)*
+               | {REGIONAL_INDICATOR}{REGIONAL_INDICATOR}
+
 WORD = ({IRISH_O}?{ALPHANUM}+|[Qq]ur{Q}an)
 
 // pragmas used for anonymization etc.
@@ -666,6 +680,7 @@ d{Q} / ye                                                       {return currentT
 {PUNCT}                                               { return currentToken();}
 {EMOTICON}                                          { return currentToken();}
 {DASH}{DoubleLiteral}                               { return currentToken();}
+{EMOJI_COMPLEX}                                    { return currentToken();}
 <<EOF>>                                             { fileEnd(); return null;}
 .                                                   { return currentToken();}
 

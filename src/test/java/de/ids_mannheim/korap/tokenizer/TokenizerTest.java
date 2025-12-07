@@ -271,6 +271,33 @@ public class TokenizerTest {
         assertEquals(tokens.length, 5);
     }
 
+    // Regression test for https://github.com/KorAP/KorAP-Tokenizer/issues/113
+    @Test
+    public void testTokenizerEmojiSequences () {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        
+        // Test emoji with skin tone modifier (U+270A U+1F3FF = raised fist dark skin tone)
+        String[] tokens = tok.tokenize("Power ✊🏿!");
+        assertEquals("Power", tokens[0]);
+        assertEquals("✊🏿", tokens[1]); // Should be one token
+        assertEquals("!", tokens[2]);
+        assertEquals(3, tokens.length);
+        
+        // Test emoji ZWJ sequence (family: man, man, boy)
+        tokens = tok.tokenize("Familie 👨‍👨‍👦 hier");
+        assertEquals("Familie", tokens[0]);
+        assertEquals("👨‍👨‍👦", tokens[1]); // Should be one token with ZWJ
+        assertEquals("hier", tokens[2]);
+        assertEquals(3, tokens.length);
+        
+        // Test flag emoji (regional indicators for Germany: U+1F1E9 U+1F1EA)
+        tokens = tok.tokenize("Flagge 🇩🇪 toll");
+        assertEquals("Flagge", tokens[0]);
+        assertEquals("🇩🇪", tokens[1]); // Should be one token
+        assertEquals("toll", tokens[2]);
+        assertEquals(3, tokens.length);
+    }
+
     @Test
     public void testTokenizerRef1 () {
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
