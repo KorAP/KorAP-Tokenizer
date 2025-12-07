@@ -33,6 +33,11 @@ Because of the large table of abbreviations, the conversion from the jflex sourc
 i.e. the calculation of the DFA, takes about 5 to 30 minutes, depending on your hardware,
 and requires a lot of heap space.
 
+For development, you can disable the large abbreviation lists to speed up the build:
+```shell script
+mvn clean generate-sources -Dforce.fast=true
+```
+
 ## Examples Usage
 By default, KorAP tokenizer reads from standard input and writes to standard output. It supports multiple modes of operations.
 
@@ -114,7 +119,7 @@ Alternatively, you can also provide `KorAPTokenizer` implementations independent
 **Contributor**:
 * [Gregor Middell](https://github.com/gremid)
 
-Copyright (c) 2023, [Leibniz Institute for the German Language](http://www.ids-mannheim.de/), Mannheim, Germany
+Copyright (c) 2023-2025, [Leibniz Institute for the German Language](http://www.ids-mannheim.de/), Mannheim, Germany
 
 This package is developed as part of the [KorAP](http://korap.ids-mannheim.de/)
 Corpus Analysis Platform at the Leibniz Institute for German Language

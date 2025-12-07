@@ -2,6 +2,7 @@ package de.ids_mannheim.korap.tokenizer;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.Assume;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
@@ -19,6 +20,7 @@ public class SentenceSplitterTest {
 
     @Test
     public void testSentSplitterAbbr () {
+        Assume.assumeFalse(Boolean.parseBoolean(System.getProperty("force.fast")));
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
         String[] sentences = tok.sentDetect("Der Vorsitzende der Abk. hat gewählt.");
         assertEquals(sentences.length, 1);
@@ -92,6 +94,7 @@ public class SentenceSplitterTest {
 
     @Test
     public void testSentSplitterStrasse () {
+        Assume.assumeFalse(Boolean.parseBoolean(System.getProperty("force.fast")));
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
         String[] sentences = tok.sentDetect("Ich wohne in der Weststr. und Du?");
         assertEquals(sentences.length, 1);

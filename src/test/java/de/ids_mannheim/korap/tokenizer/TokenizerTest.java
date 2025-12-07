@@ -7,6 +7,8 @@ import java.io.ByteArrayOutputStream;
 import opennlp.tools.util.Span;
 import org.junit.Test;
 import org.junit.Ignore;
+import org.junit.AssumptionViolatedException;
+import org.junit.Assume;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
@@ -466,6 +468,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerAbr () {
+        Assume.assumeFalse(Boolean.parseBoolean(System.getProperty("force.fast")));
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
         String[] tokens = tok.tokenize("Früher bzw. später ...");
         assertEquals(tokens[0], "Früher");
@@ -520,6 +523,7 @@ public class TokenizerTest {
 
     @Test
     public void testTokenizerStrasse () {
+        Assume.assumeFalse(Boolean.parseBoolean(System.getProperty("force.fast")));
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
         String[] tokens = tok.tokenize("Ich wohne in der Weststr. und Du?");
         assertEquals(tokens[4], "Weststr.");
@@ -625,6 +629,7 @@ public class TokenizerTest {
 
     @Test
     public void frenchTokenizerKnowsFrenchAbbreviations () {
+        Assume.assumeFalse(Boolean.parseBoolean(System.getProperty("force.fast")));
         DerekoDfaTokenizer_fr tok = new DerekoDfaTokenizer_fr();
         String[] tokens = tok.tokenize("Approx. en juill. 2004 mon prof. M. Foux m'a dit qu'il faut faire exerc. no. 4, et lire pp. 27-30.");
         assertEquals("Approx.", tokens[0]);
@@ -662,6 +667,7 @@ public class TokenizerTest {
 
     @Test
     public void testEnglishTokenizerScienceAbbreviations () {
+        Assume.assumeFalse(Boolean.parseBoolean(System.getProperty("force.fast")));
         DerekoDfaTokenizer_en tok = new DerekoDfaTokenizer_en();
         String[] tokens = tok.tokenize("Approx. in Sept. 1954, Assoc. Prof. Dr. R. J. Ewing reviewed articles on Enzymol. Bacteriol. effects later published in Nutr. Rheumatol. No. 12 and Nº. 13., pp. 17-18.");
         assertEquals("Approx.", tokens[0]);

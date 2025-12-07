@@ -5,6 +5,7 @@ import java.util.*;
 import java.io.*;
 import java.net.URLDecoder;
 import org.junit.Test;
+import org.junit.Assume;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
@@ -157,6 +158,7 @@ public class TokenizerCoverTest {
 
     @Test
     public void testTokenizerCoverEmpiristCmc () {
+        Assume.assumeFalse(Boolean.parseBoolean(System.getProperty("force.fast")));
 
         // Create tokenizer object
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
@@ -189,6 +191,7 @@ public class TokenizerCoverTest {
 
     @Test
     public void testTokenizerCoverEmpiristWeb () {
+        Assume.assumeFalse(Boolean.parseBoolean(System.getProperty("force.fast")));
 
         // Create tokenizer object
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();

@@ -46,6 +46,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <force.fast>false</force.fast>
     </properties>
 
     <distributionManagement>
@@ -126,6 +127,7 @@
                     <target>src/main/jflex</target>
                     <extensions>
                         <extension>jflex</extension>
+                        <extension>jflex-macro</extension>
                     </extensions>
                     <keepAttributes>true</keepAttributes>
                     <keepComments>false</keepComments>
@@ -135,6 +137,9 @@
                     <replaceSources>true</replaceSources>
                     <dontOverwriteSameContent>false</dontOverwriteSameContent>
                     <skip>false</skip>
+                    <vars>
+                        <force.fast>${force.fast}</force.fast>
+                    </vars>
                 </configuration>
             </plugin>
             <plugin>
@@ -145,6 +150,9 @@
                     <threadCount>15</threadCount>
                     <reuseForks>true</reuseForks>
                     <parallel>classes</parallel>
+                    <systemPropertyVariables>
+                        <force.fast>${force.fast}</force.fast>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
             <plugin>

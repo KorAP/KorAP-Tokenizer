@@ -1,6 +1,7 @@
 package de.ids_mannheim.korap.tokenizer;
 
 import org.junit.Test;
+import org.junit.Assume;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -58,6 +59,7 @@ public class IPCOffsetTests {
 
     @Test
     public void testMainWithOffsetsAndSentencesOnDifferentInputFiles() throws IOException {
+        Assume.assumeFalse(Boolean.parseBoolean(System.getProperty("force.fast")));
         File tempFile = File.createTempFile("position_output", ".txt");
         String[] args = {"--language", language, "--encoding", encoding, "--no-tokens", "--positions", "--sentence-boundaries", "--force", "-o", tempFile.getAbsolutePath(), input};
         Main.main(args);
@@ -68,6 +70,7 @@ public class IPCOffsetTests {
 
     @Test
     public void testMainWithTokenOutputOnDifferentInputFiles() throws IOException {
+        Assume.assumeFalse(Boolean.parseBoolean(System.getProperty("force.fast")));
         File tempFile = File.createTempFile("token_output", ".txt");
         String[] args = {"--language", language, "--encoding", encoding, "--tokens", "--force", "-o", tempFile.getAbsolutePath(), input};
         Main.main(args);
