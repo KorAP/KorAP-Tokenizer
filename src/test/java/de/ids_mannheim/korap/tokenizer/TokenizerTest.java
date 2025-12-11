@@ -795,4 +795,24 @@ public class TokenizerTest {
         assertEquals("Text1", tokens[0].getType());
         assertEquals(tokens.length, 9 );
     }
+
+    // Regression test for hyphenated abbreviations from Wiktionary (2024-12)
+    @Test
+    public void testHyphenatedAbbreviations() {
+        Assume.assumeFalse(Boolean.parseBoolean(System.getProperty("force.fast")));
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        String[] tokens = tok.tokenize("Ich wohne in Ba.-Wü. und bin Dipl.-Ing. bei Reg.-Bez. Karlsruhe.");
+        assertEquals("Ich", tokens[0]);
+        assertEquals("wohne", tokens[1]);
+        assertEquals("in", tokens[2]);
+        assertEquals("Ba.-Wü.", tokens[3]);
+        assertEquals("und", tokens[4]);
+        assertEquals("bin", tokens[5]);
+        assertEquals("Dipl.-Ing.", tokens[6]);
+        assertEquals("bei", tokens[7]);
+        assertEquals("Reg.-Bez.", tokens[8]);
+        assertEquals("Karlsruhe", tokens[9]);
+        assertEquals(".", tokens[10]);
+        assertEquals(11, tokens.length);
+    }
 }

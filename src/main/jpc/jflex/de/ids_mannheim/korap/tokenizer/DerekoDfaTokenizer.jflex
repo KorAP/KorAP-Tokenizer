@@ -607,6 +607,7 @@ PRAGMA = \[_[A-Z\-]+(:[^\[\]]+)?_\]
 {LETTER}{2,12} / \.[:uppercase:]                                {return currentToken();}
 {PLUSAMPERSAND}                                                 {return currentToken();}
 {SEABBR}\.                                                      {return currentToken();}
+{SEABBRHYPH}\.                                                  {return currentToken();}
 {PRAGMA}                                                        {return currentToken();}
 {FNAME}                                                         {return currentToken();}
 
