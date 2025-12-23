@@ -3,6 +3,7 @@
 !/.github
 !/.gitlab-ci.yml
 !/.mvn
+!/.mvn/jvm.config
 target
 tmp
 logs
