@@ -1,11 +1,13 @@
 # Changelog
 
 
-## 2.3.0 [unreleased]
+## 2.3.0 [2025-12-23]
 
 * Fixed genderstern and omission asterisk breaking after hyphens (issue #115)
-* Added emoji complex support (issue #116)
+* Added emoji complex support (issue #113)
 * Added Wikipedia emoji template support (issue #114)
+* Fixed breaking most frequent hyphenated compound abbreviations for German (issue #116)
+* Updated dependencies
 
 ## 2.2.5
 
