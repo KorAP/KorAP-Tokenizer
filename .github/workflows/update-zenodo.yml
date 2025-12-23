@@ -1,0 +1,29 @@
+name: Upload to Zenodo
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+env:
+  zenodo_deposition_id: 8329127
+  zenodo_server: 'https://zenodo.org'
+jobs:
+  new_version:
+    name: Create new version of zenodo deposition
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: kykrueger/zenodo-new-version@v1.0.1
+        with:
+          zenodo_deposition_id: ${{ env.zenodo_deposition_id }}
+          zenodo_server: ${{ env.zenodo_server }}
+          zenodo_token: ${{ secrets.ZENODO_TOKEN }}
+      # Add further actions between the DOI reservation and the publishing process
+      - uses: kykrueger/zenodo-publish@v1
+        with:
+          zenodo_deposition_id: ${{ env.zenodo_deposition_id }}
+          zenodo_server: ${{ env.zenodo_server }}
+          zenodo_token: ${{ secrets.ZENODO_TOKEN }}
+      - uses: EndBug/add-and-commit@v7.1.1
+        with:
+          message: 'published to Zenodo'
