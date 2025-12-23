@@ -5,7 +5,7 @@
 
     <groupId>de.ids-mannheim.korap.tokenizer</groupId>
     <artifactId>KorAP-Tokenizer</artifactId>
-    <version>2.3.0-SNAPSHOT</version>
+    <version>2.3.0</version>
 
     <name>KorAP-Tokenizer</name>
     <description>DFA tokenizer with character offset output, large abbreviation tables and CMC support.</description>
@@ -33,7 +33,7 @@
         <connection>scm:git:https://korap.ids-mannheim.de/gerrit/KorAP/KorAP-Tokenizer</connection>
         <developerConnection>scm:git:ssh://kupietz@korap.ids-mannheim.de:29418/KorAP/KorAP-Tokenizer</developerConnection>
         <url>https://github.com/KorAP/KorAP-Tokenizer</url>
-      <tag>HEAD</tag>
+      <tag>KorAP-Tokenizer-2.3.0</tag>
   </scm>
 
     <licenses>
