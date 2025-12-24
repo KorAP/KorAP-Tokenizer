@@ -1,0 +1,32 @@
+{
+  "title": "KorAP/KorAP-Tokenizer",
+  "description": "DFA tokenizer with character offset output, large abbreviation tables and CMC support.",
+  "license": "Apache-2.0",
+  "upload_type": "software",
+  "access_right": "open",
+  "creators": [
+    {
+      "name": "Kupietz, Marc",
+      "affiliation": "Leibniz-Institut für Deutsche Sprache"
+    },
+    {
+      "name": "Diewald, Nils",
+      "affiliation": "Leibniz-Institut für Deutsche Sprache"
+    }
+  ],
+  "communities": [
+    {
+      "identifier": "natural-language-processing"
+    }
+  ],
+  "keywords": [
+    "tokenizer",
+    "NLP",
+    "natural language processing",
+    "DFA",
+    "German",
+    "English",
+    "French",
+    "KorAP"
+  ]
+}

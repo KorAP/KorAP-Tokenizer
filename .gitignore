@@ -2,6 +2,7 @@
 !/.gitignore
 !/.github
 !/.gitlab-ci.yml
+!/.zenodo.json
 !/.mvn
 !/.mvn/jvm.config
 target
