@@ -1,7 +1,8 @@
 image: maven:3.9-eclipse-temurin-21
 
 variables:
-  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Xss16m -Xms2048m -Xmx16g"
+  # Reduced memory for CI runners - force.fast skips heavy DFA generation
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Xss8m -Xms512m -Xmx4g"
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
 
 cache:
@@ -14,7 +15,9 @@ stages:
 build:
   stage: build
   script:
-    - mvn $MAVEN_CLI_OPTS clean package -Dforce.fast=true
+    # Use force.fast to skip memory-intensive full DFA generation
+    # This creates smaller test tokenizers that still validate the code
+    - mvn $MAVEN_CLI_OPTS clean package -Dforce.fast=true -DskipTests=false
   artifacts:
     paths:
       - target/KorAP-Tokenizer-*-standalone.jar
