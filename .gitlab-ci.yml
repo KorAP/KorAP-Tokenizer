@@ -14,7 +14,7 @@ stages:
 build:
   stage: build
   script:
-    - mvn $MAVEN_CLI_OPTS clean package
+    - mvn $MAVEN_CLI_OPTS clean package -Dforce.fast=true
   artifacts:
     paths:
       - target/KorAP-Tokenizer-*-standalone.jar
