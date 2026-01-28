@@ -1,6 +1,10 @@
 # Changelog
 
 
+## 2.3.1-SNAPSHOT
+
+* Fixed soft hyphens (U+00AD) being incorrectly treated as token boundaries (issue #131)
+
 ## 2.3.0 [2025-12-23]
 
 * Fixed genderstern and omission asterisk breaking after hyphens (issue #115)

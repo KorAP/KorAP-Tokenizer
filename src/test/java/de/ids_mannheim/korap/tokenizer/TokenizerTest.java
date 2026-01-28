@@ -815,4 +815,14 @@ public class TokenizerTest {
         assertEquals(".", tokens[10]);
         assertEquals(11, tokens.length);
     }
+
+    // Regression test for https://github.com/KorAP/KorAP-Tokenizer/issues/131
+    @Test
+    public void testSoftHyphensShouldNotSplitWords() {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        // Soft hyphen U+00AD between word parts should not cause token split
+        String[] tokens = tok.tokenize("Donau\u00ADdampf\u00ADschiff");
+        assertEquals("Donau\u00ADdampf\u00ADschiff", tokens[0]);
+        assertEquals(1, tokens.length);
+    }
 }

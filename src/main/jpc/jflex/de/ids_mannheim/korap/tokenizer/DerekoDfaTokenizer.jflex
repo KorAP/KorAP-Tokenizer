@@ -347,7 +347,8 @@ import opennlp.tools.util.Span;
 THAI       = [\u0E00-\u0E59]
 
 // basic word: a sequence of digits & letters (includes Thai to enable ThaiAnalyzer to function)
-ALPHANUM   = ({LETTER}|{THAI}|[:digit:]|_)+
+// Soft hyphen (\u00AD) is included to prevent it from acting as a token boundary (issue #131)
+ALPHANUM   = ({LETTER}|{THAI}|[:digit:]|_|\u00AD)+
 
 // case insensitivity is useful sometimes
 a = [aA]
