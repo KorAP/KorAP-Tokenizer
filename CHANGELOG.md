@@ -1,9 +1,11 @@
 # Changelog
 
 
-## 2.3.1-SNAPSHOT
+## 2.3.1 [2026-01-28]
 
 * Fixed soft hyphens (U+00AD) being incorrectly treated as token boundaries (issue #131)
+* Updated dependencies
+* Improved compatibility with Java 25 (fixed deprecation warnings)
 
 ## 2.3.0 [2025-12-23]
 
