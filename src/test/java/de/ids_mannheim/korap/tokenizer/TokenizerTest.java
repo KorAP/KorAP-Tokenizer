@@ -825,4 +825,235 @@ public class TokenizerTest {
         assertEquals("Donau\u00ADdampf\u00ADschiff", tokens[0]);
         assertEquals(1, tokens.length);
     }
+
+    // Regression tests for German gender-sensitive forms
+    @Test
+    public void testGenderSensitiveColonForms() {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        
+        // Basic colon forms with -in/-innen
+        String[] tokens = tok.tokenize("Die Schüler:innen und Lehrer:in kamen.");
+        assertEquals("Die", tokens[0]);
+        assertEquals("Schüler:innen", tokens[1]);
+        assertEquals("und", tokens[2]);
+        assertEquals("Lehrer:in", tokens[3]);
+        assertEquals("kamen", tokens[4]);
+        assertEquals(".", tokens[5]);
+        assertEquals(6, tokens.length);
+        
+        // More colon examples
+        tokens = tok.tokenize("Künstler:innen Mitarbeiter:innen Bürger:innen");
+        assertEquals("Künstler:innen", tokens[0]);
+        assertEquals("Mitarbeiter:innen", tokens[1]);
+        assertEquals("Bürger:innen", tokens[2]);
+        assertEquals(3, tokens.length);
+    }
+
+    @Test
+    public void testGenderSensitiveSlashForms() {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        
+        // Basic slash forms
+        String[] tokens = tok.tokenize("Autor/in Autor/innen Teilnehmer/innen");
+        assertEquals("Autor/in", tokens[0]);
+        assertEquals("Autor/innen", tokens[1]);
+        assertEquals("Teilnehmer/innen", tokens[2]);
+        assertEquals(3, tokens.length);
+        
+        // Slash forms with hyphen: /-in, /-innen, /-frau
+        tokens = tok.tokenize("Kaufmann/-frau und Fachmann/-frau");
+        assertEquals("Kaufmann/-frau", tokens[0]);
+        assertEquals("und", tokens[1]);
+        assertEquals("Fachmann/-frau", tokens[2]);
+        assertEquals(3, tokens.length);
+        
+        // Slash forms without hyphen for frau (lowercase only)
+        tokens = tok.tokenize("Kaufmann/frau ist auch korrekt.");
+        assertEquals("Kaufmann/frau", tokens[0]);
+        assertEquals("ist", tokens[1]);
+        assertEquals("auch", tokens[2]);
+        assertEquals("korrekt", tokens[3]);
+        assertEquals(".", tokens[4]);
+        assertEquals(5, tokens.length);
+    }
+
+    @Test
+    public void testGenderSensitiveParentheticalForms() {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        
+        // Basic parenthetical forms
+        String[] tokens = tok.tokenize("Schüler(innen) und Lehrer(in) kamen.");
+        assertEquals("Schüler(innen)", tokens[0]);
+        assertEquals("und", tokens[1]);
+        assertEquals("Lehrer(in)", tokens[2]);
+        assertEquals("kamen", tokens[3]);
+        assertEquals(".", tokens[4]);
+        assertEquals(5, tokens.length);
+    }
+
+    @Test
+    public void testGenderSensitiveCompoundWords() {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        
+        // Compound words with hyphen + gender ending
+        String[] tokens = tok.tokenize("Die Kosovo-Albaner/innen und Kosovo-Albaner:innen trafen sich.");
+        assertEquals("Die", tokens[0]);
+        assertEquals("Kosovo-Albaner/innen", tokens[1]);
+        assertEquals("und", tokens[2]);
+        assertEquals("Kosovo-Albaner:innen", tokens[3]);
+        assertEquals("trafen", tokens[4]);
+        assertEquals("sich", tokens[5]);
+        assertEquals(".", tokens[6]);
+        assertEquals(7, tokens.length);
+        
+        // With hyphen: Kosovo-Albaner/-innen
+        tokens = tok.tokenize("Kosovo-Albaner/-innen kamen.");
+        assertEquals("Kosovo-Albaner/-innen", tokens[0]);
+        assertEquals("kamen", tokens[1]);
+        assertEquals(".", tokens[2]);
+        assertEquals(3, tokens.length);
+    }
+
+    @Test
+    public void testGenderSensitiveShouldSeparateMannFrau() {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        
+        // Mann/Frau should be separated (capital F = standalone word, not suffix)
+        String[] tokens = tok.tokenize("Ob Mann/Frau das will?");
+        assertEquals("Ob", tokens[0]);
+        assertEquals("Mann", tokens[1]);
+        assertEquals("/", tokens[2]);
+        assertEquals("Frau", tokens[3]);
+        assertEquals("das", tokens[4]);
+        assertEquals("will", tokens[5]);
+        assertEquals("?", tokens[6]);
+        assertEquals(7, tokens.length);
+        
+        // Also Männer/Frauen
+        tokens = tok.tokenize("Männer/Frauen sind willkommen.");
+        assertEquals("Männer", tokens[0]);
+        assertEquals("/", tokens[1]);
+        assertEquals("Frauen", tokens[2]);
+        assertEquals("sind", tokens[3]);
+        assertEquals("willkommen", tokens[4]);
+        assertEquals(".", tokens[5]);
+        assertEquals(6, tokens.length);
+    }
+
+    @Test
+    public void testGenderSensitiveSlashFrauOnlyAfterMann() {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        
+        // /frau should only be joined when word ends in "mann"
+        // "xxx/frau" where xxx doesn't end in "mann" should be SEPARATED
+        String[] tokens = tok.tokenize("xxx/frau sollte getrennt sein.");
+        assertEquals("xxx", tokens[0]);
+        assertEquals("/", tokens[1]);
+        assertEquals("frau", tokens[2]);
+        assertEquals("sollte", tokens[3]);
+        assertEquals("getrennt", tokens[4]);
+        assertEquals("sein", tokens[5]);
+        assertEquals(".", tokens[6]);
+        assertEquals(7, tokens.length);
+        
+        // But Kaufmann/frau should be one token (word ends in "mann")
+        tokens = tok.tokenize("Kaufmann/frau ist ein Beruf.");
+        assertEquals("Kaufmann/frau", tokens[0]);
+        assertEquals("ist", tokens[1]);
+        assertEquals("ein", tokens[2]);
+        assertEquals("Beruf", tokens[3]);
+        assertEquals(".", tokens[4]);
+        assertEquals(5, tokens.length);
+        
+        // And Fachmann/-frau should be one token
+        tokens = tok.tokenize("Fachmann/-frau gesucht");
+        assertEquals("Fachmann/-frau", tokens[0]);
+        assertEquals("gesucht", tokens[1]);
+        assertEquals(2, tokens.length);
+        
+        // Geschäftsmann/frau should also be one token
+        tokens = tok.tokenize("Ein Geschäftsmann/frau wird gesucht.");
+        assertEquals("Ein", tokens[0]);
+        assertEquals("Geschäftsmann/frau", tokens[1]);
+        assertEquals("wird", tokens[2]);
+        assertEquals("gesucht", tokens[3]);
+        assertEquals(".", tokens[4]);
+        assertEquals(5, tokens.length);
+    }
+
+    @Test
+    public void testGenderSensitiveGenderstern() {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        
+        // Genderstern forms (these should already work via existing rules)
+        String[] tokens = tok.tokenize("Schüler*innen und Lehrer*innen");
+        assertEquals("Schüler*innen", tokens[0]);
+        assertEquals("und", tokens[1]);
+        assertEquals("Lehrer*innen", tokens[2]);
+        assertEquals(3, tokens.length);
+    }
+
+    @Test
+    public void testGenderSensitiveMixedSentence() {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        
+        // Mixed sentence with various gender forms
+        String[] tokens = tok.tokenize("Die Schüler:innen, Lehrer/innen und Mitarbeiter(innen) sowie Kaufmann/-frau trafen sich.");
+        assertEquals("Die", tokens[0]);
+        assertEquals("Schüler:innen", tokens[1]);
+        assertEquals(",", tokens[2]);
+        assertEquals("Lehrer/innen", tokens[3]);
+        assertEquals("und", tokens[4]);
+        assertEquals("Mitarbeiter(innen)", tokens[5]);
+        assertEquals("sowie", tokens[6]);
+        assertEquals("Kaufmann/-frau", tokens[7]);
+        assertEquals("trafen", tokens[8]);
+        assertEquals("sich", tokens[9]);
+        assertEquals(".", tokens[10]);
+        assertEquals(11, tokens.length);
+    }
+
+    @Test
+    public void testGenderSensitiveFormsNotRecognizedInEnglish() {
+        DerekoDfaTokenizer_en tok = new DerekoDfaTokenizer_en();
+        
+        // English tokenizer should NOT recognize German gender-sensitive forms
+        // Colon forms should be separated
+        String[] tokens = tok.tokenize("Nutzer:innen and Teacher:in test");
+        assertEquals("Nutzer", tokens[0]);
+        assertEquals(":", tokens[1]);
+        assertEquals("innen", tokens[2]);
+        
+        // Slash forms should be separated
+        tokens = tok.tokenize("Nutzer/innen Kaufmann/frau");
+        assertEquals("Nutzer", tokens[0]);
+        assertEquals("/", tokens[1]);
+        assertEquals("innen", tokens[2]);
+        assertEquals("Kaufmann", tokens[3]);
+        assertEquals("/", tokens[4]);
+        assertEquals("frau", tokens[5]);
+        assertEquals(6, tokens.length);
+    }
+
+    @Test
+    public void testGenderSensitiveFormsNotRecognizedInFrench() {
+        DerekoDfaTokenizer_fr tok = new DerekoDfaTokenizer_fr();
+        
+        // French tokenizer should NOT recognize German gender-sensitive forms
+        // Colon forms should be separated
+        String[] tokens = tok.tokenize("Nutzer:innen et Teacher:in test");
+        assertEquals("Nutzer", tokens[0]);
+        assertEquals(":", tokens[1]);
+        assertEquals("innen", tokens[2]);
+        
+        // Slash forms should be separated
+        tokens = tok.tokenize("Nutzer/innen Kaufmann/frau");
+        assertEquals("Nutzer", tokens[0]);
+        assertEquals("/", tokens[1]);
+        assertEquals("innen", tokens[2]);
+        assertEquals("Kaufmann", tokens[3]);
+        assertEquals("/", tokens[4]);
+        assertEquals("frau", tokens[5]);
+        assertEquals(6, tokens.length);
+    }
 }

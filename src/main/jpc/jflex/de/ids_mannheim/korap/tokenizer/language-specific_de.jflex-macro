@@ -17,3 +17,18 @@ SEABBR = (AAnw|AAnz|ABC-Dir|ABest|ABez|ABgm|ABl|ABlAllKdtr|ABlEurGem|ABlSch|ADAn
 SEABBRHYPH = (Art\.-Nr|At\.-Gew|Ba\.-Wü|Best\.-Nr|Br\.-M|Br\.-Mstr|Dipl\.-Bibl|Dipl\.-Ing|Dipl\.-Kff|Dipl\.-Kffr|Dipl\.-Kfm|Dipl\.-Kfr|Dipl\.-Psych|Do\.-Gge|Ers\.-D|Erschl\.-Geb|Erw\.-Bldg|Geb\.-T|H\.-I|H\.-Qu|Hd\.-Bibl|Hs\.-Nr|klass\.-lat|Krim\.-Ob\.-Insp|Kto\.-Nr|L\.-Abg|M\.-Schr|Orch\.-Bes|Priv\.-Doz|prov\.-fr|Proz\.-Bev|r\.-k|Reg\.-Bez|Rg\.-Präs|röm\.-kath|S\.-Wk|St\.-Nr)
 //#endif
 
+// Gender-sensitive endings (German)
+// Matches patterns like: in, innen, In, Innen, IN, INNEN (case-insensitive)
+GENDER_ENDING_IN = ([iI][nN]|[iI][nN][nN][eE][nN])
+
+// Gender-sensitive endings with frau/frauen (lowercase only - capitalized Frau is a standalone word)
+// Note: This is now only used with MANN_WORD, not in general GENDER_ENDING
+GENDER_ENDING_FRAU = (frau(en)?)
+
+// General gender endings (only -in/-innen forms for colon, slash, parenthetical)
+GENDER_ENDING = ({GENDER_ENDING_IN})
+
+// Words ending in "mann" (with non-empty prefix) for Kaufmann/frau pattern
+// Matches: Kaufmann, Geschäftsmann, etc. but NOT just "mann"
+MANN_WORD = ({LETTER}+[Mm][Aa][Nn][Nn])
+

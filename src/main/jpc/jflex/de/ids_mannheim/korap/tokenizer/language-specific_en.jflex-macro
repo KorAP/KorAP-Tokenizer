@@ -6,3 +6,9 @@ SEABBR = ([:letter:]|No|Dr|pp|Mr|pg|Op|ca|Ms|Prof|Dec|Nov|Jan|Oct|Feb|Sept|op|Au
 SEABBRHYPH = ("DUMMY")
 //#endif
 CLITIC = ({ENGLISH_CLITIC}|{FRENCH_CLITIC})
+
+// Gender-sensitive endings not used for English (German-only feature)
+// Use NUL character so the rules never match
+GENDER_ENDING = (\u0000)
+GENDER_ENDING_FRAU = (\u0000)
+MANN_WORD = (\u0000)

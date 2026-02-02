@@ -1,6 +1,15 @@
 # Changelog
 
 
+## 2.4.0 [unreleased]
+
+* Added German gender-sensitive form tokenization:
+  - Colon forms: `Nutzer:in`, `Nutzer:innen`, `Kosovo-Albaner:innen`
+  - Slash forms: `Nutzer/in`, `Nutzer/innen`, `Nutzer/-in`, `Kosovo-Albaner/innen`
+  - Parenthetical forms: `Nutzer(in)`, `Nutzer(innen)`, `Nutzer(-in)`
+  - Kaufmann/frau pattern: `Kaufmann/frau`, `Kaufmann/-frau`, `Geschäftsmann/frau`
+    (only applies when word ends in "mann" with non-empty prefix)
+
 ## 2.3.1 [2026-01-28]
 
 * Fixed soft hyphens (U+00AD) being incorrectly treated as token boundaries (issue #131)

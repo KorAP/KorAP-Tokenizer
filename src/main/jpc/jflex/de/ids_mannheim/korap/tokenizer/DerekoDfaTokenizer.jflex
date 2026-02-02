@@ -649,7 +649,28 @@ d{Q} / ye                                                       {return currentT
 \[\[+                                                          { return currentToken();}
 \]\]+                                                          { return currentToken();}
 
+// Gender-sensitive forms (German-specific, via GENDER_ENDING macro in language-specific_de.jflex-macro)
+// Colon forms: Nutzer:in, Nutzer:innen, Kosovo-Albaner:innen
+({WORD}({DASH}{WORD})*):{GENDER_ENDING}                    { return currentToken(); }
+
+// Slash forms for -in/-innen: Nutzer/in, Nutzer/innen, Nutzer/-in, Kosovo-Albaner/innen
+({WORD}({DASH}{WORD})*){SLASH}-?{GENDER_ENDING}            { return currentToken(); }
+
+// Slash forms for -frau: Kaufmann/frau, Kaufmann/-frau, Geschäftsmann/frau
+// Only applies when word ends in "mann" (with non-empty prefix before it)
+({WORD}({DASH}{WORD})*{DASH})?{MANN_WORD}{SLASH}-?{GENDER_ENDING_FRAU}  { return currentToken(); }
+
+// Parenthetical forms for -in/-innen: Nutzer(in), Nutzer(innen), Nutzer(-in)
+({WORD}({DASH}{WORD})*)"("-?{GENDER_ENDING}")"             { return currentToken(); }
+
+// Parenthetical forms for -frau: Kaufmann(frau), Kaufmann(-frau)
+// Only applies when word ends in "mann" (with non-empty prefix before it)
+({WORD}({DASH}{WORD})*{DASH})?{MANN_WORD}"("-?{GENDER_ENDING_FRAU}")"  { return currentToken(); }
+
+
 // normal stuff
+
+
 // dashed words
 {WORD}({DASH}{NEWLINE}*({WORD}|{OMISSIONWORD}))+                 { return currentToken();}
 {WORD}{DASH}                                                   { return currentToken();}
