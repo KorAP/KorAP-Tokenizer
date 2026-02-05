@@ -9,6 +9,7 @@
   - Parenthetical forms: `Nutzer(in)`, `Nutzer(innen)`, `Nutzer(-in)`
   - Kaufmann/frau pattern: `Kaufmann/frau`, `Kaufmann/-frau`, `Geschäftsmann/frau`
     (only applies when word ends in "mann" with non-empty prefix)
+  - Short forms for determiners, adjectives, pronouns: `eine(n)`, `gute:r`, `ihm/r`, `diese(r)`, `ein(e)`
 
 ## 2.3.1 [2026-01-28]
 

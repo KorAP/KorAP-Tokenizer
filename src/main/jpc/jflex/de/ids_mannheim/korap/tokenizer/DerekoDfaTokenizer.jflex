@@ -199,7 +199,10 @@ import opennlp.tools.util.Span;
         int i = 0;
         List<Span> list = new ArrayList<Span>();
         tokenId = 0;
-        yyreset(new StringReader(s));
+        // Ensure input ends with newline so that $ (end-of-line) rules work correctly
+        // at end of string. This is needed for gender suffix detection at EOF.
+        String input = s.endsWith("\n") || s.endsWith("\r") ? s : s + "\n";
+        yyreset(new StringReader(input));
         try {
             while (!this.zzAtEOF) {
                 token = this.getNextToken();
@@ -341,6 +344,93 @@ import opennlp.tools.util.Span;
         int start = 13;
         name = matched.substring(start, matched.length() - 3);
         outputStream.println("<file name=\"" + name + "\"/>");
+    }
+
+    /**
+     * Check if a character is a Unicode letter.
+     */
+    private boolean isLetter(int ch) {
+        return ch >= 0 && Character.isLetter(ch);
+    }
+
+    /**
+     * Handle gender short suffix with colon separator.
+     * Pattern: {WORD}:{suffix}{lookahead}
+     * If lookahead is a letter, return just WORD, pushing back the rest.
+     * If lookahead is not a letter, return WORD:suffix.
+     */
+    final Span genderColonSuffixToken() {
+        String matched = yytext();
+        int lastChar = matched.codePointAt(matched.length() - 1);
+        
+        // Find the colon position
+        int colonPos = matched.lastIndexOf(':');
+        
+        if (isLetter(lastChar)) {
+            // Followed by a letter - not a valid gender form
+            // Return just the WORD part (before colon)
+            yypushback(matched.length() - colonPos);
+            return currentToken();
+        } else {
+            // Followed by non-letter - valid gender form
+            // Push back just the lookahead character
+            yypushback(1);
+            return currentToken();
+        }
+    }
+
+    /**
+     * Handle gender short suffix with slash separator.
+     * Pattern: {WORD}/{-suffix}{lookahead}
+     */
+    final Span genderSlashSuffixToken() {
+        String matched = yytext();
+        int lastChar = matched.codePointAt(matched.length() - 1);
+        
+        // Find the slash position
+        int slashPos = matched.lastIndexOf('/');
+        
+        if (isLetter(lastChar)) {
+            // Followed by a letter - not a valid gender form
+            // Return just the WORD part (before slash)
+            yypushback(matched.length() - slashPos);
+            return currentToken();
+        } else {
+            // Followed by non-letter - valid gender form
+            yypushback(1);
+            return currentToken();
+        }
+    }
+
+    /**
+     * Handle gender short suffix with star separator.
+     * Pattern: {WORD}*{suffix}{lookahead}
+     */
+    final Span genderStarSuffixToken() {
+        String matched = yytext();
+        int lastChar = matched.codePointAt(matched.length() - 1);
+        
+        // Find the star position
+        int starPos = matched.lastIndexOf('*');
+        
+        if (isLetter(lastChar)) {
+            // Followed by a letter - not a valid gender form
+            // Return just the WORD part (before star)
+            yypushback(matched.length() - starPos);
+            return currentToken();
+        } else {
+            // Followed by non-letter - valid gender form
+            yypushback(1);
+            return currentToken();
+        }
+    }
+
+    /**
+     * Handle gender short suffix at end of input (no lookahead char).
+     * This is always a valid gender form since there's nothing following.
+     */
+    final Span genderShortSuffixAtEOF() {
+        return currentToken();
     }
 %}
 
@@ -666,6 +756,31 @@ d{Q} / ye                                                       {return currentT
 // Parenthetical forms for -frau: Kaufmann(frau), Kaufmann(-frau)
 // Only applies when word ends in "mann" (with non-empty prefix before it)
 ({WORD}({DASH}{WORD})*{DASH})?{MANN_WORD}"("-?{GENDER_ENDING_FRAU}")"  { return currentToken(); }
+
+// Short gender endings (determiners, adjectives, pronouns)
+// e.g. eine(n), gute:r, ihm/r, ein(e)
+// Separators: colon, slash (optional dash), parens, star
+
+// Colon: gute:r, ein:e
+// Match pattern + one extra char, check if it's a letter in semantic action
+({WORD}):{GENDER_SHORT_SUFFIX}.  { return genderColonSuffixToken(); }
+({WORD}):{GENDER_SHORT_SUFFIX}$  { return genderShortSuffixAtEOF(); }
+
+// Slash: ihm/r, eine/-n, ein/e
+({WORD}){SLASH}-?{GENDER_SHORT_SUFFIX}.  { return genderSlashSuffixToken(); }
+({WORD}){SLASH}-?{GENDER_SHORT_SUFFIX}$  { return genderShortSuffixAtEOF(); }
+
+// Parens: eine(n), ein(e) - parentheses already provide word boundary
+({WORD})"("-?{GENDER_SHORT_SUFFIX}")"       { return currentToken(); }
+
+// Star: gute*r
+({WORD})\*{GENDER_SHORT_SUFFIX}.  { return genderStarSuffixToken(); }
+({WORD})\*{GENDER_SHORT_SUFFIX}$  { return genderShortSuffixAtEOF(); }
+
+
+
+
+
 
 
 // normal stuff

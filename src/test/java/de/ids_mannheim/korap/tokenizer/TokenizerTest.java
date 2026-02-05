@@ -13,6 +13,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.io.PrintStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.lang.reflect.InvocationTargetException;
 
 @RunWith(JUnit4.class)
@@ -1055,5 +1060,36 @@ public class TokenizerTest {
         assertEquals("/", tokens[4]);
         assertEquals("frau", tokens[5]);
         assertEquals(6, tokens.length);
+    }
+
+    @Test
+    public void testGenderSensitiveFromFile() throws IOException {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        try (InputStream is = getClass().getResourceAsStream("/tokenizer/dontsplit.txt");
+             BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty() || line.startsWith("#")) continue;
+                String[] tokens = tok.tokenize(line);
+                assertEquals("Should not split: " + line, 1, tokens.length);
+                assertEquals("Should match exact string: " + line, line, tokens[0]);
+            }
+        }
+    }
+
+    @Test
+    public void testSplitFromFile() throws IOException {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        try (InputStream is = getClass().getResourceAsStream("/tokenizer/split.txt");
+             BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty() || line.startsWith("#")) continue;
+                String[] tokens = tok.tokenize(line);
+                assertTrue("Should split: " + line, tokens.length > 1);
+            }
+        }
     }
 }

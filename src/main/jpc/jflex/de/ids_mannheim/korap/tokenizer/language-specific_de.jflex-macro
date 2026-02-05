@@ -21,6 +21,11 @@ SEABBRHYPH = (Art\.-Nr|At\.-Gew|Ba\.-Wü|Best\.-Nr|Br\.-M|Br\.-Mstr|Dipl\.-Bibl|
 // Matches patterns like: in, innen, In, Innen, IN, INNEN (case-insensitive)
 GENDER_ENDING_IN = ([iI][nN]|[iI][nN][nN][eE][nN])
 
+// Short endings for determiners, adjectives, pronouns
+// e, n, r, s, m, es, er, em, en (lowercase only - gender suffixes are never uppercase)
+GENDER_SHORT_SUFFIX = ([enrsm]|e[srmn])
+
+
 // Gender-sensitive endings with frau/frauen (lowercase only - capitalized Frau is a standalone word)
 // Note: This is now only used with MANN_WORD, not in general GENDER_ENDING
 GENDER_ENDING_FRAU = (frau(en)?)
@@ -32,3 +37,6 @@ GENDER_ENDING = ({GENDER_ENDING_IN})
 // Matches: Kaufmann, Geschäftsmann, etc. but NOT just "mann"
 MANN_WORD = ({LETTER}+[Mm][Aa][Nn][Nn])
 
+// Non-letter character for lookahead (word boundary equivalent)
+// Matches whitespace, newlines, common punctuation, and NUL (for EOF detection)
+NON_LETTER = [\x00\n\r\t ,.;:!?'\)\]\}\>]

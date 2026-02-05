@@ -8,7 +8,13 @@ SEABBRHYPH = ("DUMMY")
 CLITIC = ({ENGLISH_CLITIC}|{FRENCH_CLITIC})
 
 // Gender-sensitive endings not used for English (German-only feature)
-// Use NUL character so the rules never match
-GENDER_ENDING = (\u0000)
-GENDER_ENDING_FRAU = (\u0000)
-MANN_WORD = (\u0000)
+// Use Unicode non-characters (U+FDD0-FDD2) so the rules never match
+GENDER_ENDING = ("\uFDD0\uFDD1\uFDD2")
+GENDER_ENDING_FRAU = ("\uFDD0\uFDD1\uFDD2")
+GENDER_SHORT_SUFFIX = ("\uFDD0\uFDD1\uFDD2")
+MANN_WORD = ("\uFDD0\uFDD1\uFDD2")
+
+// Non-letter character for lookahead (word boundary equivalent)
+NON_LETTER = [\x00\n\r\t ,.;:!?'\)\]\}\>]
+
+
