@@ -118,6 +118,18 @@ public class TokenizerCoverTest {
      * levenshtein distances.
      */
     public int distanceToGoldStandard (DerekoDfaTokenizer_de tok, String suite, String postings) {
+        // Check for report.diff system property
+        boolean reportDiff = Boolean.parseBoolean(System.getProperty("report.diff"));
+        return distanceToGoldStandard(tok, suite, postings, reportDiff);
+    }
+
+    /**
+     * Compare the tokenized data of one example file
+     * with the gold standard and return the sum of
+     * levenshtein distances.
+     * @param reportDiff if true, print diff between gold and actual tokens to stderr
+     */
+    public int distanceToGoldStandard (DerekoDfaTokenizer_de tok, String suite, String postings, boolean reportDiff) {
 
         // Load raw postings
         EmpiristScanner esRaw = new EmpiristScanner(
@@ -130,31 +142,81 @@ public class TokenizerCoverTest {
             );
 
         int distance = 0;
+        int postingNum = 0;
+        StringBuilder diffReport = new StringBuilder();
         
         // Iterate over all postings
         while (esRaw.hasNext() && esTokenized.hasNext()) {
+            postingNum++;
 
             // Get the gold standard splitted on new lines
-            String [] goldTokens = esTokenized.next().split("\n+");
+            String [] goldTokens = esTokenized.next().split("\\n+");
 
             // Tokenize the test data
             String [] testTokens = tok.tokenize(esRaw.next());
 
-            if (false) {
-                System.err.println("-----------------");
-                for (int i = 0; i < Math.min(goldTokens.length, testTokens.length); i++) {
-                    System.err.println(goldTokens[i] + " = "+ testTokens[i]);
-                }
-            }
-            
             // Calculate the edit distance of both arrays
-            distance += levenshteinForStringArrays(goldTokens, testTokens);
+            int postingDistance = levenshteinForStringArrays(goldTokens, testTokens);
+            distance += postingDistance;
+
+            // Report diff if requested and there are differences
+            if (reportDiff && postingDistance > 0) {
+                diffReport.append("\n--- Posting #" + postingNum + " (distance: " + postingDistance + ") ---\n");
+                diffReport.append(formatDiff(goldTokens, testTokens));
+            }
+        }
+
+        if (reportDiff && diffReport.length() > 0) {
+            System.err.println("\n=== DIFF REPORT for " + suite + "/" + postings + " ===");
+            System.err.println(diffReport.toString());
         }
 
         // Return the sum of all distances
         return distance;
     }
 
+    /**
+     * Format a diff between two token arrays using LCS-based algorithm.
+     * Produces output similar to Unix diff with - for deletions and + for insertions.
+     */
+    private String formatDiff(String[] gold, String[] actual) {
+        StringBuilder sb = new StringBuilder();
+        
+        // Compute LCS table
+        int m = gold.length;
+        int n = actual.length;
+        int[][] lcs = new int[m + 1][n + 1];
+        
+        for (int i = m - 1; i >= 0; i--) {
+            for (int j = n - 1; j >= 0; j--) {
+                if (gold[i].equals(actual[j])) {
+                    lcs[i][j] = lcs[i + 1][j + 1] + 1;
+                } else {
+                    lcs[i][j] = Math.max(lcs[i + 1][j], lcs[i][j + 1]);
+                }
+            }
+        }
+        
+        // Trace back to produce diff
+        int i = 0, j = 0;
+        while (i < m || j < n) {
+            if (i < m && j < n && gold[i].equals(actual[j])) {
+                // Match - skip (or optionally print with space prefix)
+                i++;
+                j++;
+            } else if (i < m && (j >= n || lcs[i + 1][j] >= lcs[i][j + 1])) {
+                // Deletion from gold (not in actual)
+                sb.append(String.format("- %s%n", gold[i]));
+                i++;
+            } else if (j < n && (i >= m || lcs[i][j + 1] > lcs[i + 1][j])) {
+                // Insertion in actual (not in gold)
+                sb.append(String.format("+ %s%n", actual[j]));
+                j++;
+            }
+        }
+        
+        return sb.toString();
+    }
 
     @Test
     public void testTokenizerCoverEmpiristCmc () {
