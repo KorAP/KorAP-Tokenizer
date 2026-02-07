@@ -1179,5 +1179,22 @@ public class TokenizerTest {
         assertEquals("Kosovo-Albaner", tokens[0]);
         assertEquals(1, tokens.length);
     }
+
+    // Regression test for ver.di (German trade union)
+    @Test
+    public void testVerdiAbbreviation() {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        
+        String[] tokens = tok.tokenize("Die Gewerkschaft ver.di fordert mehr Lohn.");
+        assertEquals("Die", tokens[0]);
+        assertEquals("Gewerkschaft", tokens[1]);
+        assertEquals("ver.di", tokens[2]);
+        assertEquals("fordert", tokens[3]);
+        assertEquals("mehr", tokens[4]);
+        assertEquals("Lohn", tokens[5]);
+        assertEquals(".", tokens[6]);
+        assertEquals(7, tokens.length);
+    }
 }
+
 

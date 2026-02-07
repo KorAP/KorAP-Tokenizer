@@ -783,6 +783,7 @@ PRAGMA = \[_[A-Z\-]+(:[^\[\]]+)?_\]
 {PLUSAMPERSAND}                                                 {return currentToken();}
 {SEABBR}\.                                                      {return currentToken();}
 {SEABBRHYPH}\.                                                  {return currentToken();}
+ver\.di                                                         {return currentToken();}
 {PRAGMA}                                                        {return currentToken();}
 {FNAME}                                                         {return currentToken();}
 
