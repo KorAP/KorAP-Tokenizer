@@ -1195,6 +1195,24 @@ public class TokenizerTest {
         assertEquals(".", tokens[6]);
         assertEquals(7, tokens.length);
     }
+
+    // Regression test for emoticon not matching before letters
+    // Wikipedia:Diskussionen should NOT tokenize :D as an emoticon
+    @Test
+    public void testEmoticonNotMatchBeforeLetter() {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        
+        String[] tokens = tok.tokenize("Wikipedia:Diskussionen");
+        assertEquals("Wikipedia", tokens[0]);
+        assertEquals(":", tokens[1]);
+        assertEquals("Diskussionen", tokens[2]);
+        assertEquals(3, tokens.length);
+        
+        // But emoticons followed by space/punct should still work
+        tokens = tok.tokenize("Great :D!");
+        assertEquals("Great", tokens[0]);
+        assertEquals(":D", tokens[1]);
+        assertEquals("!", tokens[2]);
+        assertEquals(3, tokens.length);
+    }
 }
-
-

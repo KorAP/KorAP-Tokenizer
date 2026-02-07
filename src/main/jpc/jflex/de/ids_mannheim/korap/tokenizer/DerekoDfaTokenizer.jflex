@@ -910,7 +910,7 @@ d{Q} / ye                                                       {return currentT
 ([.][.]+|…+)                                                 {return currentToken("...");}
 {LONG_END_PUNCT}                                        { return currentToken();}
 {PUNCT}                                               { return currentToken();}
-{EMOTICON}                                          { return currentToken();}
+{EMOTICON} / [^[:letter:]]                         { return currentToken();}
 {DASH}{DoubleLiteral}                               { return currentToken();}
 {EMOJI_COMPLEX}                                    { return currentToken();}
 <<EOF>>                                             { fileEnd(); return null;}
