@@ -432,6 +432,90 @@ import opennlp.tools.util.Span;
     final Span genderShortSuffixAtEOF() {
         return currentToken();
     }
+
+    /**
+     * Handle noun gender ending with colon separator.
+     * Pattern: {WORD}:{GENDER_ENDING}{lookahead}
+     * If lookahead is a letter, return just WORD, pushing back the rest.
+     * If lookahead is not a letter, return WORD:ending.
+     */
+    final Span genderNounColonToken() {
+        String matched = yytext();
+        int lastChar = matched.codePointAt(matched.length() - 1);
+        
+        // Find the colon position
+        int colonPos = matched.lastIndexOf(':');
+        
+        if (isLetter(lastChar)) {
+            // Followed by a letter - not a valid gender form
+            // Return just the WORD part (before colon)
+            yypushback(matched.length() - colonPos);
+            return currentToken();
+        } else {
+            // Followed by non-letter - valid gender form
+            // Push back just the lookahead character
+            yypushback(1);
+            return currentToken();
+        }
+    }
+
+    /**
+     * Handle noun gender ending with slash separator.
+     * Pattern: {WORD}/{-}{GENDER_ENDING}{lookahead}
+     * If lookahead is a letter, return just WORD, pushing back the rest.
+     * If lookahead is not a letter, return WORD/ending or WORD/-ending.
+     */
+    final Span genderNounSlashToken() {
+        String matched = yytext();
+        int lastChar = matched.codePointAt(matched.length() - 1);
+        
+        // Find the slash position
+        int slashPos = matched.lastIndexOf('/');
+        
+        if (isLetter(lastChar)) {
+            // Followed by a letter - not a valid gender form
+            // Return just the WORD part (before slash)
+            yypushback(matched.length() - slashPos);
+            return currentToken();
+        } else {
+            // Followed by non-letter - valid gender form
+            yypushback(1);
+            return currentToken();
+        }
+    }
+
+    /**
+     * Handle noun gender ending with parentheses.
+     * Pattern: {WORD}({-}{GENDER_ENDING}){lookahead}
+     * If lookahead is a letter, return just WORD, pushing back the rest.
+     * If lookahead is not a letter, return WORD(ending).
+     */
+    final Span genderNounParenToken() {
+        String matched = yytext();
+        int lastChar = matched.codePointAt(matched.length() - 1);
+        
+        // Find the opening paren position
+        int parenPos = matched.lastIndexOf('(');
+        
+        if (isLetter(lastChar)) {
+            // Followed by a letter - not a valid gender form
+            // Return just the WORD part (before open paren)
+            yypushback(matched.length() - parenPos);
+            return currentToken();
+        } else {
+            // Followed by non-letter - valid gender form
+            yypushback(1);
+            return currentToken();
+        }
+    }
+
+    /**
+     * Handle noun gender ending at end of input (no lookahead char).
+     * This is always a valid gender form since there's nothing following.
+     */
+    final Span genderNounAtEOF() {
+        return currentToken();
+    }
 %}
 
 THAI       = [\u0E00-\u0E59]
@@ -740,22 +824,31 @@ d{Q} / ye                                                       {return currentT
 \]\]+                                                          { return currentToken();}
 
 // Gender-sensitive forms (German-specific, via GENDER_ENDING macro in language-specific_de.jflex-macro)
+// These rules use lookahead to ensure the ending is NOT followed by a letter
+// (e.g., "Nutzer/in " is valid, but "Innenminister/Innenministerinnen" is two words)
+
 // Colon forms: Nutzer:in, Nutzer:innen, Kosovo-Albaner:innen
-({WORD}({DASH}{WORD})*):{GENDER_ENDING}                    { return currentToken(); }
+// Match pattern + one extra char, check if it's a letter in semantic action
+({WORD}({DASH}{WORD})*):{GENDER_ENDING}.                   { return genderNounColonToken(); }
+({WORD}({DASH}{WORD})*):{GENDER_ENDING}$                   { return genderNounAtEOF(); }
 
 // Slash forms for -in/-innen: Nutzer/in, Nutzer/innen, Nutzer/-in, Kosovo-Albaner/innen
-({WORD}({DASH}{WORD})*){SLASH}-?{GENDER_ENDING}            { return currentToken(); }
+({WORD}({DASH}{WORD})*){SLASH}-?{GENDER_ENDING}.           { return genderNounSlashToken(); }
+({WORD}({DASH}{WORD})*){SLASH}-?{GENDER_ENDING}$           { return genderNounAtEOF(); }
 
 // Slash forms for -frau: Kaufmann/frau, Kaufmann/-frau, Geschäftsmann/frau
 // Only applies when word ends in "mann" (with non-empty prefix before it)
-({WORD}({DASH}{WORD})*{DASH})?{MANN_WORD}{SLASH}-?{GENDER_ENDING_FRAU}  { return currentToken(); }
+({WORD}({DASH}{WORD})*{DASH})?{MANN_WORD}{SLASH}-?{GENDER_ENDING_FRAU}.  { return genderNounSlashToken(); }
+({WORD}({DASH}{WORD})*{DASH})?{MANN_WORD}{SLASH}-?{GENDER_ENDING_FRAU}$  { return genderNounAtEOF(); }
 
 // Parenthetical forms for -in/-innen: Nutzer(in), Nutzer(innen), Nutzer(-in)
-({WORD}({DASH}{WORD})*)"("-?{GENDER_ENDING}")"             { return currentToken(); }
+({WORD}({DASH}{WORD})*)"("-?{GENDER_ENDING}")".            { return genderNounParenToken(); }
+({WORD}({DASH}{WORD})*)"("-?{GENDER_ENDING}")"$            { return genderNounAtEOF(); }
 
 // Parenthetical forms for -frau: Kaufmann(frau), Kaufmann(-frau)
 // Only applies when word ends in "mann" (with non-empty prefix before it)
-({WORD}({DASH}{WORD})*{DASH})?{MANN_WORD}"("-?{GENDER_ENDING_FRAU}")"  { return currentToken(); }
+({WORD}({DASH}{WORD})*{DASH})?{MANN_WORD}"("-?{GENDER_ENDING_FRAU}")".  { return genderNounParenToken(); }
+({WORD}({DASH}{WORD})*{DASH})?{MANN_WORD}"("-?{GENDER_ENDING_FRAU}")"$  { return genderNounAtEOF(); }
 
 // Short gender endings (determiners, adjectives, pronouns)
 // e.g. eine(n), gute:r, ihm/r, ein(e)

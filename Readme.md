@@ -30,7 +30,7 @@ mvn clean package
 ```
 #### Note
 Because of the large table of abbreviations, the conversion from the jflex source to java,
-i.e. the calculation of the DFA, takes about 5 to 30 minutes, depending on your hardware,
+i.e. the calculation of the DFA, takes about 20 to 40 minutes, depending on your hardware,
 and requires a lot of heap space.
 
 For development, you can disable the large abbreviation lists to speed up the build:
