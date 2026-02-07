@@ -112,6 +112,19 @@
                             <target>src/main/jflex/fr</target>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>preprocess for de-trad</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>preprocess</goal>
+                        </goals>
+                        <configuration>
+                            <vars>
+                                <target.language>de_old</target.language>
+                            </vars>
+                            <target>src/main/jflex/de_old</target>
+                        </configuration>
+                    </execution>
                 </executions>
                 <configuration>
                     <sources>src/main/jpc/jflex</sources>

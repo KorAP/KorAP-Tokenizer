@@ -10,6 +10,8 @@
   - Kaufmann/frau pattern: `Kaufmann/frau`, `Kaufmann/-frau`, `Geschäftsmann/frau`
     (only applies when word ends in "mann" with non-empty prefix)
   - Short forms for determiners, adjectives, pronouns: `eine(n)`, `gute:r`, `ihm/r`, `diese(r)`, `ein(e)`
+* Added `de_old` German tokenizer variant without gender-sensitive rules
+  (use `-l de_old` to split forms like `Nutzer:in` into separate tokens)
 
 ## 2.3.1 [2026-01-28]
 

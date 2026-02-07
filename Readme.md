@@ -9,10 +9,16 @@ Interface and implementation of a tokenizer and sentence splitter that can be us
 * or within the KorAP ingestion pipeline
 * or within the [OpenNLP tools](https://opennlp.apache.org) framework
 
-The included implementations (`DerekoDfaTokenizer_de, DerekoDfaTokenizer_en, DerekoDfaTokenizer_fr`) are highly efficient DFA tokenizers and sentence splitters with character offset output based on [JFlex](https://www.jflex.de/).
-The de-variant is used for the German Reference Corpus DeReKo. Being based on finite state automata,
+The included implementations (`DerekoDfaTokenizer_de, DerekoDfaTokenizer_de_old, DerekoDfaTokenizer_en, DerekoDfaTokenizer_fr`) are highly efficient DFA tokenizers and sentence splitters with character offset output based on [JFlex](https://www.jflex.de/).
+The de-variant is used for the German Reference Corpus DeReKo and supports gender-sensitive forms (e.g., `Nutzer:in`, `Nutzer/innen`). Being based on finite state automata,
 the tokenizers are potentially not as accurate as language model based ones, but with ~5 billion words per hour typically more efficient.
 An important feature in the DeReKo/KorAP context is also that token character offsets can be reported, which can be used for applying standoff annotations.
+
+### German Tokenizer Variants
+
+- **`de`** (default): Modern German with support for gender-sensitive forms. Forms like `Nutzer:in`, `Nutzer/innen`, `Kaufmann/frau` are kept as single tokens.
+- **`de_old`**: Traditional German without gender-sensitive rules. These forms are split into separate tokens (e.g., `Nutzer:in` → `Nutzer` `:` `in`). Useful for processing older texts or when gender forms should not be treated specially.
+
  
 The included implementations of the `KorapTokenizer` interface also implement the [`opennlp.tools.tokenize.Tokenizer`](https://opennlp.apache.org/docs/2.3.0/apidocs/opennlp-tools/opennlp/tools/tokenize/Tokenizer.html)
 and [`opennlp.tools.sentdetect.SentenceDetector`](https://opennlp.apache.org/docs/2.3.0/apidocs/opennlp-tools/opennlp/tools/sentdetect/SentenceDetector.html)

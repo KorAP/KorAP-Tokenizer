@@ -1092,4 +1092,92 @@ public class TokenizerTest {
             }
         }
     }
+
+    // Tests for de_old tokenizer variant (without gender-sensitive rules)
+    @Test
+    public void testDeOldSplitsGenderColonForms() {
+        DerekoDfaTokenizer_de_old tok = new DerekoDfaTokenizer_de_old();
+        
+        // Colon forms should be separated
+        String[] tokens = tok.tokenize("Nutzer:in");
+        assertEquals("Nutzer", tokens[0]);
+        assertEquals(":", tokens[1]);
+        assertEquals("in", tokens[2]);
+        assertEquals(3, tokens.length);
+        
+        tokens = tok.tokenize("Nutzer:innen");
+        assertEquals("Nutzer", tokens[0]);
+        assertEquals(":", tokens[1]);
+        assertEquals("innen", tokens[2]);
+        assertEquals(3, tokens.length);
+        
+        // Short suffix forms with colon should be separated
+        tokens = tok.tokenize("dem:r jede:r gute:s");
+        assertEquals("dem", tokens[0]);
+        assertEquals(":", tokens[1]);
+        assertEquals("r", tokens[2]);
+        assertEquals("jede", tokens[3]);
+        assertEquals(":", tokens[4]);
+        assertEquals("r", tokens[5]);
+        assertEquals("gute", tokens[6]);
+        assertEquals(":", tokens[7]);
+        assertEquals("s", tokens[8]);
+        assertEquals(9, tokens.length);
+    }
+
+    @Test
+    public void testDeOldSplitsGenderSlashForms() {
+        DerekoDfaTokenizer_de_old tok = new DerekoDfaTokenizer_de_old();
+        
+        // Slash forms should be separated
+        String[] tokens = tok.tokenize("Nutzer/in");
+        assertEquals("Nutzer", tokens[0]);
+        assertEquals("/", tokens[1]);
+        assertEquals("in", tokens[2]);
+        assertEquals(3, tokens.length);
+        
+        tokens = tok.tokenize("Nutzer/innen");
+        assertEquals("Nutzer", tokens[0]);
+        assertEquals("/", tokens[1]);
+        assertEquals("innen", tokens[2]);
+        assertEquals(3, tokens.length);
+        
+        // Kaufmann/frau should be separated
+        tokens = tok.tokenize("Kaufmann/frau");
+        assertEquals("Kaufmann", tokens[0]);
+        assertEquals("/", tokens[1]);
+        assertEquals("frau", tokens[2]);
+        assertEquals(3, tokens.length);
+    }
+
+    @Test
+    public void testDeOldSplitsGenderParenForms() {
+        DerekoDfaTokenizer_de_old tok = new DerekoDfaTokenizer_de_old();
+        
+        // Parenthetical forms should be separated
+        String[] tokens = tok.tokenize("Nutzer(in)");
+        assertEquals("Nutzer", tokens[0]);
+        assertEquals("(", tokens[1]);
+        assertEquals("in", tokens[2]);
+        assertEquals(")", tokens[3]);
+        assertEquals(4, tokens.length);
+    }
+
+    @Test
+    public void testDeOldStillKeepsNonGenderTokens() {
+        DerekoDfaTokenizer_de_old tok = new DerekoDfaTokenizer_de_old();
+        
+        // Regular words should still work
+        String[] tokens = tok.tokenize("Der alte Mann");
+        assertEquals("Der", tokens[0]);
+        assertEquals("alte", tokens[1]);
+        assertEquals("Mann", tokens[2]);
+        assertEquals(3, tokens.length);
+        
+        // Compound words with hyphen should be kept together
+        tokens = tok.tokenize("Kosovo-Albaner");
+        assertEquals("Kosovo-Albaner", tokens[0]);
+        assertEquals(1, tokens.length);
+    }
 }
+
