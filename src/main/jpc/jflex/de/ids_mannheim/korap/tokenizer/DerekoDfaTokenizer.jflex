@@ -663,12 +663,17 @@ EMAIL = {EMAILlocalPart} ("@"|"["at"]") ({EMAILbracketedHost})
 
 // floating point, serial, model numbers, ip addresses, etc.
 // every other segment must have at least one digit
+// THOUSANDS_SEP for thousands separators: apostrophe (Swiss) and thin/narrow no-break space (issue #135)
+THOUSANDS_SEP = ("'"|"'"|[\u2009\u202F])
+
 NUM        = ({ALPHANUM} {P} {HAS_DIGIT}
            | {HAS_DIGIT} {P} {ALPHANUM}
            | {ALPHANUM} ({P} {HAS_DIGIT} {P} {ALPHANUM})+
            | {HAS_DIGIT} ({P} {ALPHANUM} {P} {HAS_DIGIT})+
            | {ALPHANUM} {P} {HAS_DIGIT} ({P} {ALPHANUM} {P} {HAS_DIGIT})+
-           | {HAS_DIGIT} {P} {ALPHANUM} ({P} {HAS_DIGIT} {P} {ALPHANUM})+)
+           | {HAS_DIGIT} {P} {ALPHANUM} ({P} {HAS_DIGIT} {P} {ALPHANUM})+
+           | {HAS_DIGIT} ({THOUSANDS_SEP} {HAS_DIGIT})+
+           | {HAS_DIGIT} ({THOUSANDS_SEP} {HAS_DIGIT})+ {P} {HAS_DIGIT})
 
 
 /* floating point literals */
@@ -681,6 +686,7 @@ Exponent = [eE] [+-]? [0-9]+
 
 // punctuation
 P	         = ("_"|"-"|"."|",")|{SLASH}
+
 
 Q = [’\'`]
 

@@ -12,6 +12,9 @@
   - Short forms for determiners, adjectives, pronouns: `eine(n)`, `gute:r`, `ihm/r`, `diese(r)`, `ein(e)`
 * Added `de_old` German tokenizer variant without gender-sensitive rules
   (use `-l de_old` to split forms like `Nutzer:in` into separate tokens)
+* Fixed thousands separators not being handled consistently (issue #135):
+  - Apostrophe `'` (Swiss format: `1'000'000`)
+  - Thin space U+2009 and narrow no-break space U+202F
 
 ## 2.3.1 [2026-01-28]
 

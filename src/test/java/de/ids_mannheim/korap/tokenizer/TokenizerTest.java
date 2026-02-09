@@ -1215,4 +1215,55 @@ public class TokenizerTest {
         assertEquals("!", tokens[2]);
         assertEquals(3, tokens.length);
     }
+
+    // Regression test for https://github.com/KorAP/KorAP-Tokenizer/issues/135
+    @Test
+    public void testTokenizerThousandsSeparators() {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+        
+        // Swiss apostrophe format (straight apostrophe)
+        String[] tokens = tok.tokenize("Das kostet 1'000'000 Franken");
+        assertEquals("Das", tokens[0]);
+        assertEquals("kostet", tokens[1]);
+        assertEquals("1'000'000", tokens[2]);
+        assertEquals("Franken", tokens[3]);
+        assertEquals(4, tokens.length);
+        
+        // Swiss apostrophe format (curly apostrophe)
+        tokens = tok.tokenize("Der Preis ist 1'234'567 CHF");
+        assertEquals("Der", tokens[0]);
+        assertEquals("Preis", tokens[1]);
+        assertEquals("ist", tokens[2]);
+        assertEquals("1'234'567", tokens[3]);
+        assertEquals("CHF", tokens[4]);
+        assertEquals(5, tokens.length);
+        
+        // Swiss format with decimal
+        tokens = tok.tokenize("Betrag: 1'234'567.89");
+        assertEquals("Betrag", tokens[0]);
+        assertEquals(":", tokens[1]);
+        assertEquals("1'234'567.89", tokens[2]);
+        assertEquals(3, tokens.length);
+        
+        // Thin space format (U+2009)
+        tokens = tok.tokenize("Population: 1\u2009000\u2009000");
+        assertEquals("Population", tokens[0]);
+        assertEquals(":", tokens[1]);
+        assertEquals("1\u2009000\u2009000", tokens[2]);
+        assertEquals(3, tokens.length);
+        
+        // Narrow no-break space format (U+202F)
+        tokens = tok.tokenize("Value: 1\u202F234\u202F567");
+        assertEquals("Value", tokens[0]);
+        assertEquals(":", tokens[1]);
+        assertEquals("1\u202F234\u202F567", tokens[2]);
+        assertEquals(3, tokens.length);
+        
+        // Thin space with decimal
+        tokens = tok.tokenize("Result: 1\u2009000\u2009000,50");
+        assertEquals("Result", tokens[0]);
+        assertEquals(":", tokens[1]);
+        assertEquals("1\u2009000\u2009000,50", tokens[2]);
+        assertEquals(3, tokens.length);
+    }
 }
