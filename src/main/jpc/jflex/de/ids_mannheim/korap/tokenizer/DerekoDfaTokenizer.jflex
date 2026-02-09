@@ -834,6 +834,13 @@ d{Q} / ye                                                       {return currentT
 // These rules use lookahead to ensure the ending is NOT followed by a letter
 // (e.g., "Nutzer/in " is valid, but "Innenminister/Innenministerinnen" is two words)
 
+// Compound forms: Lehrer:innenfortbildung, Nutzer/innenfreundlichkeit
+// These rules are greedy and match if the ending is followed by further alphanumeric characters
+// RESTRICTION: Only matches lowercase endings to avoid merging capitalized words like "Innenminister/Innenministerinnen"
+({WORD}({DASH}{WORD})*):{GENDER_ENDING_LC}{ALPHANUM}+         { return currentToken(); }
+({WORD}({DASH}{WORD})*){SLASH}-?{GENDER_ENDING_LC}{ALPHANUM}+ { return currentToken(); }
+({WORD}({DASH}{WORD})*{DASH})?{MANN_WORD}{SLASH}-?{GENDER_ENDING_FRAU}{ALPHANUM}+ { return currentToken(); }
+
 // Colon forms: Nutzer:in, Nutzer:innen, Kosovo-Albaner:innen
 // Match pattern + one extra char, check if it's a letter in semantic action
 ({WORD}({DASH}{WORD})*):{GENDER_ENDING}.                   { return genderNounColonToken(); }

@@ -30,8 +30,13 @@ GENDER_SHORT_SUFFIX = ([enrsm]|e[srmn])
 // Note: This is now only used with MANN_WORD, not in general GENDER_ENDING
 GENDER_ENDING_FRAU = (frau(en)?)
 
+
+// Lowercase gender endings for compound detection (to avoid matching capitalized words like Innenminister)
+GENDER_ENDING_IN_LC = (in|innen)
+
 // General gender endings (only -in/-innen forms for colon, slash, parenthetical)
 GENDER_ENDING = ({GENDER_ENDING_IN})
+GENDER_ENDING_LC = ({GENDER_ENDING_IN_LC})
 
 // Words ending in "mann" (with non-empty prefix) for Kaufmann/frau pattern
 // Matches: Kaufmann, Geschäftsmann, etc. but NOT just "mann"
