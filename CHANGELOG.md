@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 2.4.0 [unreleased]
+## 2.4.0 [2026-02-25]
 
 * Added German gender-sensitive form tokenization:
   - Colon forms: `Nutzer:in`, `Nutzer:innen`, `Kosovo-Albaner:innen`
@@ -15,6 +15,7 @@
 * Fixed thousands separators not being handled consistently (issue #135):
   - Apostrophe `'` (Swiss format: `1'000'000`)
   - Thin space U+2009 and narrow no-break space U+202F
+* Updated dependencies
 
 ## 2.3.1 [2026-01-28]
 
