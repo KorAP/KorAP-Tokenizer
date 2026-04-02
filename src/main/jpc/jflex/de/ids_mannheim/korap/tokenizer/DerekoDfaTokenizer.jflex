@@ -131,12 +131,56 @@ import opennlp.tools.util.Span;
         this.normalize = normalize;
     }
 
+    /**
+     * Skip past one character in the scanner buffer to recover from unmatched input.
+     * Advances zzMarkedPos by the appropriate number of chars (2 for surrogate pairs, 1 otherwise).
+     * This is needed because JFlex's zzScanError leaves the scanner position unchanged.
+     * Logs a warning with the skipped character, its Unicode codepoint, and surrounding context.
+     */
+    private void skipOneCharacter() {
+        int cp;
+        int charsToSkip;
+        if (zzMarkedPos < zzBuffer.length && Character.isHighSurrogate(zzBuffer[zzMarkedPos])
+                && zzMarkedPos + 1 < zzBuffer.length && Character.isLowSurrogate(zzBuffer[zzMarkedPos + 1])) {
+            cp = Character.toCodePoint(zzBuffer[zzMarkedPos], zzBuffer[zzMarkedPos + 1]);
+            charsToSkip = 2;
+        } else if (zzMarkedPos < zzBuffer.length) {
+            cp = zzBuffer[zzMarkedPos];
+            charsToSkip = 1;
+        } else {
+            System.err.println("Warning: could not match input at position " + yychar + " (at end of buffer)");
+            zzMarkedPos++;
+            return;
+        }
+
+        // Extract surrounding context (up to 10 chars on each side)
+        int ctxStart = Math.max(0, zzMarkedPos - 10);
+        int ctxEnd = Math.min(zzBuffer.length, zzMarkedPos + charsToSkip + 10);
+        String context = new String(zzBuffer, ctxStart, ctxEnd - ctxStart)
+                .replace("\n", "\\n").replace("\r", "\\r");
+
+        System.err.println("Warning: could not match input at position " + yychar
+                + ": U+" + String.format("%04X", cp)
+                + " '" + new String(Character.toChars(cp)) + "'"
+                + " context: \"..." + context + "...\"");
+
+        zzMarkedPos += charsToSkip;
+    }
+
     @Override
     public void scan() throws IOException {
         List<Span> list = new ArrayList<Span>();
         Span token;
         while (!zzAtEOF) {
-            token = this.getNextToken();
+            try {
+                token = this.getNextToken();
+            } catch (Error e) {
+                // JFlex throws Error (not Exception) for unmatched input.
+                // This can happen with unusual Unicode characters in social media text.
+                // Skip the problematic character and continue scanning.
+                skipOneCharacter();
+                continue;
+            }
             if (atEOT) {
                 if (echo && printOffsets) {
                     printTokenPositions(list, splitSentences);
@@ -205,7 +249,14 @@ import opennlp.tools.util.Span;
         yyreset(new StringReader(input));
         try {
             while (!this.zzAtEOF) {
-                token = this.getNextToken();
+                try {
+                    token = this.getNextToken();
+                } catch (Error e) {
+                    // JFlex throws Error (not Exception) for unmatched input.
+                    // Skip the problematic character and continue scanning.
+                    skipOneCharacter();
+                    continue;
+                }
                 if (atEOT) {
                     if (echo) {
                         printTokenPositions(list, splitSentences);
