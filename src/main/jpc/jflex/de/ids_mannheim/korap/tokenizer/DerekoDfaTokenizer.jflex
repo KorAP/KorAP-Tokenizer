@@ -412,7 +412,7 @@ import opennlp.tools.util.Span;
      */
     final Span genderColonSuffixToken() {
         String matched = yytext();
-        int lastChar = matched.codePointAt(matched.length() - 1);
+        int lastChar = matched.codePointBefore(matched.length());
         
         // Find the colon position
         int colonPos = matched.lastIndexOf(':');
@@ -424,8 +424,8 @@ import opennlp.tools.util.Span;
             return currentToken();
         } else {
             // Followed by non-letter - valid gender form
-            // Push back just the lookahead character
-            yypushback(1);
+            // Push back just the lookahead character (may be 2 chars for supplementary)
+            yypushback(Character.charCount(lastChar));
             return currentToken();
         }
     }
@@ -436,7 +436,7 @@ import opennlp.tools.util.Span;
      */
     final Span genderSlashSuffixToken() {
         String matched = yytext();
-        int lastChar = matched.codePointAt(matched.length() - 1);
+        int lastChar = matched.codePointBefore(matched.length());
         
         // Find the slash position
         int slashPos = matched.lastIndexOf('/');
@@ -448,7 +448,7 @@ import opennlp.tools.util.Span;
             return currentToken();
         } else {
             // Followed by non-letter - valid gender form
-            yypushback(1);
+            yypushback(Character.charCount(lastChar));
             return currentToken();
         }
     }
@@ -459,7 +459,7 @@ import opennlp.tools.util.Span;
      */
     final Span genderStarSuffixToken() {
         String matched = yytext();
-        int lastChar = matched.codePointAt(matched.length() - 1);
+        int lastChar = matched.codePointBefore(matched.length());
         
         // Find the star position
         int starPos = matched.lastIndexOf('*');
@@ -471,7 +471,7 @@ import opennlp.tools.util.Span;
             return currentToken();
         } else {
             // Followed by non-letter - valid gender form
-            yypushback(1);
+            yypushback(Character.charCount(lastChar));
             return currentToken();
         }
     }
@@ -492,7 +492,7 @@ import opennlp.tools.util.Span;
      */
     final Span genderNounColonToken() {
         String matched = yytext();
-        int lastChar = matched.codePointAt(matched.length() - 1);
+        int lastChar = matched.codePointBefore(matched.length());
         
         // Find the colon position
         int colonPos = matched.lastIndexOf(':');
@@ -504,8 +504,8 @@ import opennlp.tools.util.Span;
             return currentToken();
         } else {
             // Followed by non-letter - valid gender form
-            // Push back just the lookahead character
-            yypushback(1);
+            // Push back just the lookahead character (may be 2 chars for supplementary)
+            yypushback(Character.charCount(lastChar));
             return currentToken();
         }
     }
@@ -518,7 +518,7 @@ import opennlp.tools.util.Span;
      */
     final Span genderNounSlashToken() {
         String matched = yytext();
-        int lastChar = matched.codePointAt(matched.length() - 1);
+        int lastChar = matched.codePointBefore(matched.length());
         
         // Find the slash position
         int slashPos = matched.lastIndexOf('/');
@@ -530,7 +530,7 @@ import opennlp.tools.util.Span;
             return currentToken();
         } else {
             // Followed by non-letter - valid gender form
-            yypushback(1);
+            yypushback(Character.charCount(lastChar));
             return currentToken();
         }
     }
@@ -543,7 +543,7 @@ import opennlp.tools.util.Span;
      */
     final Span genderNounParenToken() {
         String matched = yytext();
-        int lastChar = matched.codePointAt(matched.length() - 1);
+        int lastChar = matched.codePointBefore(matched.length());
         
         // Find the opening paren position
         int parenPos = matched.lastIndexOf('(');
@@ -555,7 +555,7 @@ import opennlp.tools.util.Span;
             return currentToken();
         } else {
             // Followed by non-letter - valid gender form
-            yypushback(1);
+            yypushback(Character.charCount(lastChar));
             return currentToken();
         }
     }

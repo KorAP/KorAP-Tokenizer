@@ -378,6 +378,49 @@ public class TokenizerTest {
         assertEquals(5, tokens.length);
     }
 
+    // Regression test: gender-sensitive forms directly followed by emoji (supplementary chars)
+    // Previously crashed with "Error: could not match input" because yypushback(1) only pushed back
+    // half of a surrogate pair, leaving an orphaned low surrogate.
+    @Test
+    public void testTokenizerGenderFormsFollowedByEmoji () {
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+
+        // Colon noun gender + flag emoji: "Andersson:Innen🇸🇪"
+        String[] tokens = tok.tokenize("Andersson:Innen\uD83C\uDDF8\uD83C\uDDEA entscheid");
+        assertEquals("Andersson:Innen", tokens[0]);
+        assertEquals("\uD83C\uDDF8\uD83C\uDDEA", tokens[1]); // flag emoji 🇸🇪
+        assertEquals("entscheid", tokens[2]);
+        assertEquals(3, tokens.length);
+
+        // Slash short suffix + emoji: "jeder/e😜"
+        tokens = tok.tokenize("jeder/e\uD83D\uDE1C mues");
+        assertEquals("jeder/e", tokens[0]);
+        assertEquals("\uD83D\uDE1C", tokens[1]); // 😜
+        assertEquals("mues", tokens[2]);
+        assertEquals(3, tokens.length);
+
+        // Star short suffix + emoji: "Katze*n😻"
+        tokens = tok.tokenize("Katze*n\uD83D\uDE3B hier");
+        assertEquals("Katze*n", tokens[0]);
+        assertEquals("\uD83D\uDE3B", tokens[1]); // 😻
+        assertEquals("hier", tokens[2]);
+        assertEquals(3, tokens.length);
+
+        // Colon noun gender ending + emoji: "alt:innen🥳"
+        tokens = tok.tokenize("alt:innen\uD83E\uDD73 ergänzen");
+        assertEquals("alt:innen", tokens[0]);
+        assertEquals("\uD83E\uDD73", tokens[1]); // 🥳
+        assertEquals("ergänzen", tokens[2]);
+        assertEquals(3, tokens.length);
+
+        // Colon noun gender ending + emoji: "ant:innen🔴"
+        tokens = tok.tokenize("ant:innen\uD83D\uDD34 Querden");
+        assertEquals("ant:innen", tokens[0]);
+        assertEquals("\uD83D\uDD34", tokens[1]); // 🔴
+        assertEquals("Querden", tokens[2]);
+        assertEquals(3, tokens.length);
+    }
+
     // Regression test for https://github.com/KorAP/KorAP-Tokenizer/issues/114
     @Test
     public void testTokenizerWikipediaEmojiTemplate () {
