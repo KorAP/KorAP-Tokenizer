@@ -1,6 +1,12 @@
 # Changelog
 
 
+## 2.4.1 [2026-04-03]
+
+* Fixed Unicode surrogate pair handling bugs in German gender sensitive forms
+   (Fixed #139 crash on unmatched characters)
+* Updated dependencies
+
 ## 2.4.0 [2026-02-25]
 
 * Added German gender-sensitive form tokenization:
@@ -15,7 +21,7 @@
 * Fixed thousands separators not being handled consistently (issue #135):
   - Apostrophe `'` (Swiss format: `1'000'000`)
   - Thin space U+2009 and narrow no-break space U+202F
-* Updated dependencies
+* Updated dependencies                                                                                                                                                                                                                                                
 
 ## 2.3.1 [2026-01-28]
 
