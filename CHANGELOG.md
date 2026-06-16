@@ -1,6 +1,12 @@
 # Changelog
 
 
+## 2.4.2 [2026-06-16]
+
+* Fixed a crash (`pushback value was too large`) on German gender-sensitive forms
+  separated by a non-ASCII slash — division slash (U+2215 `∕`), fraction slash
+  (U+2044 `⁄`) or fullwidth solidus (U+FF0F `／`) — which could occur on EPUB input
+
 ## 2.4.1 [2026-04-03]
 
 * Fixed Unicode surrogate pair handling bugs in German gender sensitive forms

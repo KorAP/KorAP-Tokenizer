@@ -405,6 +405,23 @@ import opennlp.tools.util.Span;
     }
 
     /**
+     * Find the last index of a SLASH-class separator. MUST stay in sync with the
+     * SLASH macro ([/⁄∕／]): matched.lastIndexOf('/') alone misses the non-ASCII
+     * variants (U+2044, U+2215, U+FF0F); for those it returns -1, which made
+     * yypushback(length - (-1)) overflow and throw "pushback value was too large"
+     * on gender-slash forms (e.g. "Lehrer∕innenx").
+     */
+    private static int lastIndexOfSlash(String s) {
+        for (int i = s.length() - 1; i >= 0; i--) {
+            char c = s.charAt(i);
+            if (c == '/' || c == '⁄' || c == '∕' || c == '／') {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
      * Handle gender short suffix with colon separator.
      * Pattern: {WORD}:{suffix}{lookahead}
      * If lookahead is a letter, return just WORD, pushing back the rest.
@@ -439,7 +456,7 @@ import opennlp.tools.util.Span;
         int lastChar = matched.codePointBefore(matched.length());
         
         // Find the slash position
-        int slashPos = matched.lastIndexOf('/');
+        int slashPos = lastIndexOfSlash(matched);
         
         if (isLetter(lastChar)) {
             // Followed by a letter - not a valid gender form
@@ -521,7 +538,7 @@ import opennlp.tools.util.Span;
         int lastChar = matched.codePointBefore(matched.length());
         
         // Find the slash position
-        int slashPos = matched.lastIndexOf('/');
+        int slashPos = lastIndexOfSlash(matched);
         
         if (isLetter(lastChar)) {
             // Followed by a letter - not a valid gender form

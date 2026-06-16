@@ -926,6 +926,31 @@ public class TokenizerTest {
     }
 
     @Test
+    public void testGenderSensitiveSlashFormsWithUnicodeSlash() {
+        // Regression: the SLASH macro matches four characters (/ ⁄ ∕ ／), but the
+        // gender-slash handlers located the separator with matched.lastIndexOf('/'),
+        // which returns -1 for the non-ASCII variants. That made yypushback compute
+        // length-(-1) and throw "pushback value was too large" (crash on real epub
+        // input, e.g. DNB25). See genderSlashSuffixToken/genderNounSlashToken.
+        DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
+
+        // Valid Unicode-slash gender form (non-letter lookahead) is kept as one
+        // token, exactly like its ASCII counterpart:
+        String[] tokens = tok.tokenize("Lehrer∕innen kamen.");  // U+2215 DIVISION SLASH
+        assertEquals("Lehrer∕innen", tokens[0]);
+        assertEquals("kamen", tokens[1]);
+        assertEquals(".", tokens[2]);
+        assertEquals(3, tokens.length);
+
+        // Crash cases (genderSlashSuffixToken): a non-ASCII slash + short gender
+        // suffix + letter lookahead must not overflow the pushback. The stem, the
+        // slash and the remainder are all emitted (no character is lost):
+        assertArrayEquals(new String[]{"Auto", "∕", "nn"}, tok.tokenize("Auto∕nn")); // U+2215
+        assertArrayEquals(new String[]{"Gerd", "⁄", "ss"}, tok.tokenize("Gerd⁄ss")); // U+2044
+        assertArrayEquals(new String[]{"Tag", "／", "rr"}, tok.tokenize("Tag／rr"));   // U+FF0F
+    }
+
+    @Test
     public void testGenderSensitiveParentheticalForms() {
         DerekoDfaTokenizer_de tok = new DerekoDfaTokenizer_de();
         
