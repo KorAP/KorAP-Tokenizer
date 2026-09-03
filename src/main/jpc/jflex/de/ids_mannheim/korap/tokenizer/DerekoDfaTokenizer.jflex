@@ -224,6 +224,17 @@ import opennlp.tools.util.Span;
                     tokenStringBuffer.append(" ");
             }
             if (isSentenceBound(s.getType()) || (i == spanList.size() - 1)) {
+                while (i + 1 < spanList.size() && isClosingQuote(spanList.get(i + 1).getType())) {
+                    i++;
+                    s = spanList.get(i);
+                    if (printOffsets) {
+                        tokenStringBuffer.append(s.getStart())
+                                .append(" ")
+                                .append(s.getEnd());
+                        if (i < spanList.size() - 1)
+                            tokenStringBuffer.append(" ");
+                    }
+                }
                 sentenceStringBuffer.append(sentenceStart)
                         .append(" ")
                         .append(s.getEnd());
@@ -297,7 +308,10 @@ import opennlp.tools.util.Span;
         if (tokens.length > 0)
             tokens[0].getStart();
         for (int i = 0; i < tokens.length; i++) {
-            if (tokens[i].getType().matches("^[.?!]+$") || i == tokens.length - 1) {
+            if (isSentenceBound(tokens[i].getType()) || i == tokens.length - 1) {
+                while (i + 1 < tokens.length && isClosingQuote(tokens[i + 1].getType())) {
+                    i++;
+                }
                 sentences.add(new Span(sentenceStart, tokens[i].getEnd(), s.substring(sentenceStart, tokens[i].getEnd())));
                 if (i < tokens.length - 1) {
                     sentenceStart = tokens[i + 1].getStart();
@@ -326,7 +340,11 @@ import opennlp.tools.util.Span;
     }
 
     public boolean isSentenceBound(String s) {
-        return s.matches("^[.?!]+$");
+        return s.matches("^[.?!\u2026]+$");
+    }
+
+    private boolean isClosingQuote(String tokenText) {
+        return tokenText.equals("\u201C") || tokenText.equals("\u201D") || tokenText.equals("''");
     }
 
     final Span currentToken(String normalizedValue) {
@@ -886,6 +904,8 @@ d{Q} / ye                                                       {return currentT
 ‘                                                  { yybegin(OPEN_QUOTE); return currentToken("`"); }
 ’                                                  { yybegin(YYINITIAL); return currentToken("'"); }
 <OPEN_QUOTE>\"                                                 { yybegin(YYINITIAL); return currentToken("''"); }
+<OPEN_QUOTE>“                                             { yybegin(YYINITIAL); return currentToken("''"); }
+„                                                         { yybegin(OPEN_QUOTE); return currentToken("``"); }
 “                                                 { yybegin(YYINITIAL); return currentToken("``"); }
 ”                                                 { yybegin(YYINITIAL); return currentToken("''"); }
 \"/.*{ALPHANUM}+                                  { yybegin(OPEN_QUOTE); return currentToken("``"); }

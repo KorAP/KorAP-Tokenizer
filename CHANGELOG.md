@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.5.0 [2026-09-03]
+* Fixed sentence splitting behaviour for opening/closing german double quotes
+* Added horizontal ellipsis as a sentence boundary
+* Join closing quotes in sentence boundaries
 
 ## 2.4.2 [2026-06-16]
 
