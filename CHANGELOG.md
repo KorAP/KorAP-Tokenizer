@@ -4,6 +4,8 @@
 * Fixed sentence splitting behaviour for opening/closing german double quotes
 * Added horizontal ellipsis as a sentence boundary
 * Join closing quotes in sentence boundaries
+* Updated dependencies (opennlp-tools 2.5.10, maven-jar 3.5.1,
+  maven-dependency 3.11.0, maven-surefire 3.5.6, central-publishing 0.11.0)
 
 ## 2.4.2 [2026-06-16]
 
